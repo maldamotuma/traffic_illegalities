@@ -1,7 +1,10 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const { schemaRefs, secretVariables } = require('./datas');
+const { sendRespose } = require('./utils');
 
-module.exports.registerSession = async (req, currentUser, token) => {
+
+registerSession = async (req, currentUser, token) => {
     currentUser.activeSessions.push({
         token,
         dateTime: new Date(),
@@ -12,7 +15,35 @@ module.exports.registerSession = async (req, currentUser, token) => {
     await currentUser.save();
 }
 
-module.exports.generateToken = async (data) => {
-    const tmptoken = await jwt.sign({...data}, process.env.ADMIN_SIGN_STRING, { expiresIn: process.env.TOKEN_MAX_AGE });
+generateToken = async (data, whichModel) => {
+    const tmptoken = await jwt.sign({ ...data, gs: whichModel}, secretVariables[whichModel], { expiresIn: process.env.TOKEN_MAX_AGE });
     return tmptoken;
+}
+
+const setCookies = (res, token, actor) => {
+    res.cookie('secauth', {token, gs: actor}, { maxAge: process.env.TOKEN_MAX_AGE });
+    res.status(200);
+}
+
+const attempt = (currentUser, password) => {
+    const loginStatus = (currentUser && currentUser.password === password) ? 1 : 0;
+    return loginStatus;
+}
+
+module.exports.authenticate = async (req, res, SchemaInstance) => {
+    try {
+        var resMessage = "Invalid Credentials";
+        const { username, password } = req.body;
+        const currentUser = await schemaRefs[SchemaInstance].findOne({ username });
+        if (attempt(currentUser, password)) {
+            const token = await generateToken({ username }, SchemaInstance); // SchemaInstance identifies actor
+            registerSession(req, currentUser, token);
+            setCookies(res, token, SchemaInstance);
+            resMessage = { user: currentUser };
+        }
+        sendRespose(res, resMessage);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: 0, message: "Server Error" });;
+    }
 }
