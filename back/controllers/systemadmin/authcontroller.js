@@ -1,25 +1,17 @@
-const mongoose = require('mongoose');
-const Systemadmin = require('../../models/Systemadmin');
-const { registerSession, generateToken } = require('../helpers/auth');
-
-const message = (message, res, status = 0) => {
-    return res.json({ status, message });
-}
+// const mongoose = require('mongoose');
+// const Systemadmin = require('../../models/Systemadmin');
+const {
+    // registerSession,
+    // generateToken,
+    // setCookies,
+    // attempt,
+    authenticate
+} = require('../helpers/auth');
+// const { sendRespose } = require('../helpers/utils');
 
 module.exports.signIn = async (req, res) => {
     try {
-        const { username, password } = req.body;
-        const currentUser = await Systemadmin.findOne({ username });
-        if (currentUser) {
-            if (currentUser.password === password) {
-                const token = await generateToken({username, password});
-                registerSession(req, currentUser, token);
-                res.cookie('token',token,{maxAge: process.env.TOKEN_MAX_AGE});
-                return res.status(200).json({ success: 1, user: currentUser });
-            }
-        }
-        message("invalid credentisl", res);
-        return;
+        return await authenticate(req, res, 0); // 0 referes to system admin
     } catch (error) {
         console.log(error);
         return res.status(500).json({ success: 0, message: "Server Error" });
@@ -139,5 +131,5 @@ module.exports.signUp = async (req, res) => {
 }
 
 module.exports.test = async (req, res) => {
-    return  res.json({message: 'hitted success fully', user: req.user});
+    return res.json({ message: 'hitted success fully', user: req.user });
 }
