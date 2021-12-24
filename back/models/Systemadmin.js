@@ -25,11 +25,17 @@ const SystemadminSchema = new mongoose.Schema({
         default: false
     },
     status: {
-        _id: this,
+        updatedBy: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Systemadmin'
+        },
         current: Boolean,
         reason: String
     },
-    assignedBy: this,
+    assignedBy: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Systemadmin'
+    },
     activeSessions: [{
         token: String,
         dateTime: Date,
