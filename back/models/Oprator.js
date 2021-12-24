@@ -2,13 +2,29 @@ const mongoose = require("mongoose");
 
 const OpratorSchema = new mongoose.Schema({
     name: {
-        first: String,
-        last: String
+        first: {
+            type: String,
+            required: true
+        },
+        last: {
+            type: String,
+            required: true
+        }
     },
-    email: String,
-    phoneNumber: String,
+    email: {
+        type: String,
+        required: true
+    },
+    phoneNumber: {
+        type: String,
+        required: true
+    },
     profilePicture: String,
-    username: String,
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
     identificationCards: [{
         idType: String,
         issuedDate: Date,
@@ -19,17 +35,25 @@ const OpratorSchema = new mongoose.Schema({
         region: { latitude: String, longitude: String },
         specific: [{ latitude: String, longitude: String }]
     }],
-    password: String,
+    password: {
+        type: String,
+        required: true
+    },
     status: {
-        _id: mongoose.Types.ObjectId,
-        ref: 'Systemadmin',
         current: Boolean,
-        reason: String
+        reason: String,
+        updatedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Systemadmin',
+        }
     },
     assignedBy: {
-        _id: mongoose.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'Systemadmin',
     }
-}, { timestamps });
+}, { timestamps: true });
 
-module.exports = OpratorSchema;
+
+const Operator = mongoose.model('Operator', OpratorSchema);
+
+module.exports = Operator;
