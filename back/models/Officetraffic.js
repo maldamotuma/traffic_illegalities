@@ -2,30 +2,53 @@ const mongoose = require("mongoose");
 
 const OfficeTrafficSchema = new mongoose.Schema({
     name: {
-        first: String,
-        last: String
+        first: {
+            type: String,
+            required: true
+        },
+        last: {
+            type: String,
+            required: true
+        }
     },
-    email: String,
-    phoneNumber: String,
+    email: {
+        type: String,
+        required: true
+    },
+    phoneNumber: {
+        type: String,
+        required: true
+    },
     profilePicture: String,
-    username: String,
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
     identificationCards: [{
         idType: String,
         issuedDate: Date,
         expiryDate: Date,
         photos: [String]
     }],
-    password: String,
+    password: {
+        type: String,
+        required: true
+    },
     status: {
-        _id: mongoose.Types.ObjectId,
-        ref: 'Systemadmin',
+        updatedBy: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Systemadmin',
+        },
         current: Boolean,
         reason: String
     },
     assignedBy: {
-        _id: mongoose.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'Systemadmin',
     }
-}, { timestamps });
+}, { timestamps: true });
 
-module.exports = OfficeTrafficSchema;
+const Officetraffic = mongoose.model('Officetraffic', OfficeTrafficSchema);
+
+module.exports = Officetraffic;
