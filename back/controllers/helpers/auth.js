@@ -4,6 +4,7 @@ const { schemaRefs, secretVariables } = require('./datas');
 const { PasswordResetMail } = require('./mails');
 const { transporter } = require('./sendmessage');
 const { sendRespose } = require('./utils');
+var bcrypt = require('bcryptjs');
 
 
 registerSession = async (req, currentUser, token) => {
@@ -18,18 +19,34 @@ registerSession = async (req, currentUser, token) => {
 }
 
 generateToken = async (data, whichModel) => {
-    const tmptoken = await jwt.sign({ ...data, gs: whichModel}, secretVariables[whichModel], { expiresIn: process.env.TOKEN_MAX_AGE });
+    const tmptoken = await jwt.sign({ ...data, gs: whichModel }, secretVariables[whichModel], { expiresIn: process.env.TOKEN_MAX_AGE });
     return tmptoken;
 }
 
 const setCookies = (res, token, actor) => {
-    res.cookie('secauth', {token, gs: actor}, { maxAge: process.env.TOKEN_MAX_AGE });
+    res.cookie('secauth', { token, gs: actor }, { maxAge: process.env.TOKEN_MAX_AGE });
     res.status(200);
 }
 
-const attempt = (currentUser, password) => {
-    const loginStatus = (currentUser && currentUser.password === password) ? 1 : 0;
-    return loginStatus;
+const attempt = async (currentUser, password) => {
+    try {
+        const pswd = await bcrypt.compare(password, currentUser.password);
+        // const loginStatus = (currentUser && currentUser.password === password) ? 1 : 0;
+        // console.log("malda : "+pswd);
+        return pswd;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const hashPassword = async (password) => {
+    try {
+        const salt = await bcrypt.genSalt(12);
+        const hash = await bcrypt.hash(password, salt);
+        return hash;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 module.exports.authenticate = async (req, res, SchemaInstance) => {
@@ -37,12 +54,12 @@ module.exports.authenticate = async (req, res, SchemaInstance) => {
         var resMessage = "Invalid Credentials";
         const { username, password } = req.body;
         const currentUser = await schemaRefs[SchemaInstance].findOne({ username });
-        if (attempt(currentUser, password)) {
+        if (await attempt(currentUser, password)) {
             const token = await generateToken({ username }, SchemaInstance); // SchemaInstance identifies actor
             registerSession(req, currentUser, token);
             setCookies(res, token, SchemaInstance);
             resMessage = { user: currentUser };
-        }
+        };
         sendRespose(res, resMessage);
     } catch (error) {
         console.log(error);
@@ -51,9 +68,14 @@ module.exports.authenticate = async (req, res, SchemaInstance) => {
 }
 
 module.exports.changePassword = async (currentUser, password) => {
-    currentUser.password = password;
-    const upuser = await currentUser.save();
-    return upuser;
+    try {
+        const hash = await hashPassword(password);
+        currentUser.password = hash;
+        const upuser = await currentUser.save();
+        return upuser;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 module.exports.sendForgotPassword = async (req, res, gsn) => {
@@ -67,7 +89,7 @@ module.exports.sendForgotPassword = async (req, res, gsn) => {
             from: process.env.EMAIL,
             to: email,
             subject: 'Password Reset',
-            html: PasswordResetMail(uid.name.first +" "+uid.name.last, token)
+            html: PasswordResetMail(uid.name.first + " " + uid.name.last, token)
         };
 
         const info = await transporter.sendMail(mailOptions);
@@ -78,3 +100,5 @@ module.exports.sendForgotPassword = async (req, res, gsn) => {
         return res.status(500).json({ success: 0, message: "Server Error" });
     }
 }
+
+module.exports.hashPassword = hashPassword;
