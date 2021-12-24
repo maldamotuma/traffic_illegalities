@@ -2,13 +2,23 @@ const mongoose = require("mongoose");
 
 const DriverSchema = new mongoose.Schema({
     name: {
-        first: String,
-        last: String
+        first: {
+            type: String,
+            required: true
+        },
+        last: {
+            type: String,
+            required: true
+        }
     },
     email: [String],
     phoneNumber: [String],
     profilePicture: [String],
-    username: String,
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
     identificationCards: [{
         idType: String,
         issuedDate: Date,
@@ -22,26 +32,32 @@ const DriverSchema = new mongoose.Schema({
     licsenceType: String,
     password: String,
     status: {
-        _id: mongoose.Types.ObjectId,
-        ref: 'Oprator',
+        updatedBy: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Oprator'
+        },
         current: Boolean,
         reason: String
     },
     carsDriving: [{
-        _id: mongoose.Types.ObjectId,
-        ref: 'Car',
+        car: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Car'
+        },
         current: Boolean,
         StartingDateTime: Date,
         lastingDateTime: Date
     }],
     ownedCar: [{
-        _id: mongoose.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'Car',
     }],
     history: [{
-        _id: mongoose.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'Recordpunishment',
     }]
-}, { timestamps });
+}, { timestamps: true });
 
-module.exports = DriverSchema;
+const DriverOwner = mongoose.model('DriverOwner', DriverSchema);
+
+module.exports = DriverOwner;
