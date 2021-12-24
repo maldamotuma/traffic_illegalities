@@ -2,30 +2,53 @@ const mongoose = require("mongoose");
 
 const TrafficPoliceSchema = new mongoose.Schema({
     name: {
-        first: String,
-        last: String
+        first: {
+            type: String,
+            required: true
+        },
+        last: {
+            type: String,
+            required: true
+        }
     },
-    email: String,
-    phoneNumber: String,
+    email: {
+        type: String,
+        required: true
+    },
+    phoneNumber: {
+        type: String,
+        required: true
+    },
     profilePicture: String,
-    username: String,
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
     identificationCards: [{
         idType: String,
         issuedDate: Date,
         expiryDate: Date,
         photos: [String]
     }],
-    password: String,
+    password: {
+        type: String,
+        required: true
+    },
     status: {
-        _id: mongoose.Types.ObjectId,
-        ref: 'Systemadmin',
         current: Boolean,
-        reason: String
+        reason: String,
+        updatedBy: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Systemadmin',
+        }
     },
     assignedBy: {
-        _id: mongoose.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'Systemadmin',
     }
-}, { timestamps });
+}, { timestamps: true });
 
-module.exports = TrafficPoliceSchema;
+const Trafficpolice = mongoose.model('Trafficpolice', TrafficPoliceSchema);
+
+module.exports = Trafficpolice;
