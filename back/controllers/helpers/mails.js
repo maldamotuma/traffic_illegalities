@@ -1,7 +1,7 @@
 module.exports.PasswordResetMail = (name, token) => {
     return `
     <p>
-        <p>${name},</p>
+        <p>Hello ${name},</p>
         <p>There was a request to change your password!</p>
         <p>If you did not make this request then please ignore this email.</p>
         Otherwise, please click this link to change your password:

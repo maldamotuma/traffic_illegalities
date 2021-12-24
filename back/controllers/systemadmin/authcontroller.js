@@ -5,10 +5,11 @@ const {
     // generateToken,
     // setCookies,
     // attempt,
-    authenticate, changePassword, sendForgotPassword
+    authenticate, changePassword, sendForgotPassword, hashPassword
 } = require('../helpers/auth');
 const jwt = require('jsonwebtoken');
 const { sendServerError, sendRespose } = require('../helpers/utils');
+
 
 module.exports.signIn = async (req, res) => {
     try {
@@ -22,6 +23,17 @@ module.exports.signIn = async (req, res) => {
 
 module.exports.signUp = async (req, res) => {
     try {
+        // const newAdmin = await Systemadmin.create({
+        //             "name": {
+        //               "first": "test",
+        //               "last": "test1"
+        //             },
+        //             "email": "maldamotuma@gmail.com",
+        //             "phoneNumber": "927 237 9610",
+        //             "profilePicture": "Yamia",
+        //             "password": await hashPassword('123'),
+        //             "username": "HelloMalda1st"
+        //           });
         // const newAdmin = await Systemadmin.insertMany(
         //     [{
         //         "name": {
@@ -125,6 +137,7 @@ module.exports.signUp = async (req, res) => {
         //         "username": "jledingham9"
         //       }]
         // );
+        //
         // return  res.json({admins: newAdmin});
     } catch (error) {
         console.log(error);
