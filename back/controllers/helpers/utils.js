@@ -5,3 +5,7 @@ module.exports.sendRespose = (res, message) => {
     formatted_message = status ? { status, ...message } : { status, message: message };
     return res.json(formatted_message);
 }
+
+module.exports.sendServerError = (res) => {
+    return res.status(500).json({ success: 0, message: "Server Error"});
+}

@@ -1,6 +1,8 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const { schemaRefs, secretVariables } = require('./datas');
+const { PasswordResetMail } = require('./mails');
+const { transporter } = require('./sendmessage');
 const { sendRespose } = require('./utils');
 
 
@@ -45,5 +47,34 @@ module.exports.authenticate = async (req, res, SchemaInstance) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: 0, message: "Server Error" });;
+    }
+}
+
+module.exports.changePassword = async (currentUser, password) => {
+    currentUser.password = password;
+    const upuser = await currentUser.save();
+    return upuser;
+}
+
+module.exports.sendForgotPassword = async (req, res, gsn) => {
+    try {
+        const { email } = req.body;
+        const uid = await schemaRefs[gsn].findOne({ email }, '_id, name');
+        const token = await jwt.sign({ secid: uid._id, gs: gsn }, secretVariables[gsn], { expiresIn: '10m' });
+
+
+        var mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Password Reset',
+            html: PasswordResetMail(uid.name.first +" "+uid.name.last, token)
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent: ' + info.response);
+        res.send(token);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: 0, message: "Server Error" });
     }
 }
