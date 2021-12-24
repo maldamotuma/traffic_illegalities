@@ -63,7 +63,7 @@ module.exports.authenticate = async (req, res, SchemaInstance) => {
         sendRespose(res, resMessage);
     } catch (error) {
         console.log(error);
-        res.status(500).json({ success: 0, message: "Server Error" });;
+        res.status(500).json({ success: 0, message: "Server Error" });
     }
 }
 
