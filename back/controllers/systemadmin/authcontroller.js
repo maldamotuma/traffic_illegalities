@@ -1,13 +1,14 @@
 // const mongoose = require('mongoose');
-// const Systemadmin = require('../../models/Systemadmin');
+const Systemadmin = require('../../models/Systemadmin');
 const {
     // registerSession,
     // generateToken,
     // setCookies,
     // attempt,
-    authenticate
+    authenticate, changePassword, sendForgotPassword
 } = require('../helpers/auth');
-// const { sendRespose } = require('../helpers/utils');
+const jwt = require('jsonwebtoken');
+const { sendServerError, sendRespose } = require('../helpers/utils');
 
 module.exports.signIn = async (req, res) => {
     try {
@@ -130,6 +131,32 @@ module.exports.signUp = async (req, res) => {
     }
 }
 
+module.exports.forgotPassword = async (req, res) => {
+    return sendForgotPassword(req, res, 0);
+}
+
+
+module.exports.resetPassword = async (req, res) => {
+    try {
+        const token = req.query._system_admin;
+        var { secid, gs } = await jwt.verify(token, process.env.SYSTEM_ADMIN_SIGN_STRING);
+        res.send({ secid, gs });
+    } catch (error) {
+        res.send(error);
+        console.log(error);
+    }
+}
+
+module.exports.createNewPassword = async (req, res) => {
+    try {
+        const { password } = req.body;
+        const nusrpswd = await changePassword(req.user, password);
+        sendRespose(res, { password, nusrpswd });
+    } catch (error) {
+        console.log(error);
+        sendServerError(res);
+    }
+}
 module.exports.test = async (req, res) => {
     return res.json({ message: 'hitted success fully', user: req.user });
 }
