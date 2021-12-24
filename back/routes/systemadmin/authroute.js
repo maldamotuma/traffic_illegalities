@@ -7,6 +7,7 @@ const { VerifyAuth } = require('../../middlewares/authmiddlewares/Verifyauth');
 const { addOfficeTraffic } = require('../../controllers/systemadmin/OfficeTrafficControllers');
 const { addCar } = require('../../controllers/systemadmin/CarsController');
 const { addSystemAdmin } = require('../../controllers/systemadmin/SystemAdminsControllor');
+const { addDriverOwner } = require('../../controllers/systemadmin/DriverandorOwnersController');
 
 
 router.post('/signin', signIn);
@@ -19,6 +20,7 @@ router.post('/add-traffic-police', VerifyAuth, addTrafficPolices);
 router.post('/add-traffic-office', VerifyAuth, addOfficeTraffic);
 router.post('/add-car', VerifyAuth, addCar);
 router.post('/add-system-admin', VerifyAuth, addSystemAdmin);
+router.post('/add-driver-owner', VerifyAuth, addDriverOwner);
 
 router.post('/testauth', VerifyAuth,test);
 
