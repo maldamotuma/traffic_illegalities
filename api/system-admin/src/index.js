@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import {
   BrowserRouter,
 } from "react-router-dom";
+import 'overlayscrollbars/css/OverlayScrollbars.css';
 
 ReactDOM.render(
   <React.StrictMode>
