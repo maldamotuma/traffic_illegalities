@@ -11,8 +11,22 @@ import { Divider } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/navbar/Navbar';
 import Drawerlinks from '../components/navbar/Drawerlinks';
+import Searchautocomplete from '../components/Searchautocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
+import $ from 'jquery';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
 const drawerWidth = 240;
+
+const navigationLinks = [
+  { label: 'Dashboard', year: 1994 },
+  { label: 'Active Session', year: 1972 },
+  { label: 'Add system Admin', year: 1974 },
+  { label: 'Add Operator', year: 2008 },
+  { label: 'Add Traffic Police', year: 1957 },
+  { label: "Edit Operator", year: 1993 },
+  { label: 'Delete Operator', year: 1994 }
+]
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -37,13 +51,14 @@ const closedMixin = (theme) => ({
 
 const DrawerHeader = styled('div')(({ theme }) => {
   return {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}});
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+  }
+});
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -83,6 +98,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function Mainpage(props) {
   const [open, setOpen] = React.useState(false);
 
+  React.useEffect(() => {
+    // $('body').overlayscrollbars();overlay_scroll_bar
+    // $('.overlay_scroll_bar').overlayscrollbars();
+  }, []);
+
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
@@ -91,7 +111,7 @@ export default function Mainpage(props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} elevation={0} xs={{bgColor: '#fff'}}>
+      <AppBar position="fixed" open={open} elevation={0} xs={{ bgColor: '#fff' }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -109,17 +129,46 @@ export default function Mainpage(props) {
       </AppBar>
       <Drawer variant="permanent" open={open} anchorOrigin="top">
         <div className='h-100'>
-          <h3 className="pl-2 position-absolute" style={{ textColor: '#1976d2', marginLeft: '10px', marginTop: '10px' }}>Choose action</h3>
-        <DrawerHeader />
-        <Divider />
-        <Drawerlinks />
+          {/* <h3 className="pl-2 position-absolute" style={{ textColor: '#1976d2', marginLeft: '10px', marginTop: '10px' }}>Choose action</h3> */}
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={navigationLinks}
+            freeSolo
+            renderInput={(params) => (
+              <div ref={params.InputProps.ref} className={"position-absolute"}>
+                <Searchautocomplete params={params.inputProps} />
+              </div>
+            )}
+          />
+          <DrawerHeader />
+          <Divider />
+          <OverlayScrollbarsComponent
+          className="os-host-scrollbar-horizontal-hidden"
+          style={{
+            height: 'calc(100vh - 68px)',
+          }}
+          options={{
+            overflowBehavior: {
+              x: 'hidden'
+            }
+          }}
+          >
+            <Drawerlinks />
+          </OverlayScrollbarsComponent>
         </div>
       </Drawer>
 
       <Box component="main" sx={{ flexGrow: 1, backgroundColor: '#f5f5f5' }}>
         <DrawerHeader />
         {/* <Mapfitun /> */}
-        <Outlet />
+        <OverlayScrollbarsComponent
+        style={{
+          height: 'calc(100vh - 68px)'
+        }}
+        >
+          <Outlet />
+        </OverlayScrollbarsComponent>
       </Box>
     </Box>
   );
