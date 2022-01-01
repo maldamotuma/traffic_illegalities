@@ -1,6 +1,5 @@
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import React from 'react'
-import SendIcon from '@mui/icons-material/Send';
 import { NavLink } from 'react-router-dom';
 
 const Singlelist = ({ Icon, name, address }) => {

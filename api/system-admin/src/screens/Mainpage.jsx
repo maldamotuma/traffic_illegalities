@@ -8,7 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Divider } from '@mui/material';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from '../components/navbar/Navbar';
 import Drawerlinks from '../components/navbar/Drawerlinks';
 import Searchautocomplete from '../components/Searchautocomplete';
@@ -97,11 +97,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function Mainpage(props) {
   const [open, setOpen] = React.useState(false);
+  const [cname, setcname] = React.useState('/');
+  const location = useLocation();
 
   React.useEffect(() => {
-    // $('body').overlayscrollbars();overlay_scroll_bar
-    // $('.overlay_scroll_bar').overlayscrollbars();
-  }, []);
+    setcname(location.pathname === "/active-session" ? "" : 'p-3');
+  }, [location]);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -144,15 +145,15 @@ export default function Mainpage(props) {
           <DrawerHeader />
           <Divider />
           <OverlayScrollbarsComponent
-          className="os-host-scrollbar-horizontal-hidden"
-          style={{
-            height: 'calc(100vh - 68px)',
-          }}
-          options={{
-            overflowBehavior: {
-              x: 'hidden'
-            }
-          }}
+            style={{
+              height: 'calc(100vh - 68px)',
+              padding: 0
+            }}
+            options={{
+              overflowBehavior: {
+                x: 'hidden'
+              }
+            }}
           >
             <Drawerlinks />
           </OverlayScrollbarsComponent>
@@ -166,6 +167,7 @@ export default function Mainpage(props) {
         style={{
           height: 'calc(100vh - 68px)'
         }}
+        className={cname}
         >
           <Outlet />
         </OverlayScrollbarsComponent>
