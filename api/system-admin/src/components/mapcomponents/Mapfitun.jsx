@@ -2,15 +2,15 @@ import React from 'react'
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import OnmapOptions from './OnmapOptions';
 
-const containerStyle = {
-  width: '100%',
-  height: `calc(100vh - ${64}px)`,
-  position: 'relative',
-};
-
 const center = {lat: 8.564339, lng: 39.289629};
 
-function Mapfitun() {
+function Mapfitun({filtersView}) {
+  const containerStyle = {
+    width: '100%',
+    height: filtersView ? `calc(100vh - ${64}px)` : '500px',
+    position: 'relative',
+  };
+
   return (
     <LoadScript
       googleMapsApiKey="AIzaSyBSzJu3Sc0vMvpjUe83sBEqpG7PzdLh1sI"
@@ -27,7 +27,7 @@ function Mapfitun() {
         <div style={{
           position: 'absolute',
         }}>
-          <OnmapOptions />
+          {filtersView && <OnmapOptions />}
         </div>
       </GoogleMap>
     </LoadScript>
