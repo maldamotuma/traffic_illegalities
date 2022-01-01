@@ -7,11 +7,16 @@ import {
   BrowserRouter,
 } from "react-router-dom";
 import 'overlayscrollbars/css/OverlayScrollbars.css';
+import store from './redux/Store';
+import { Provider } from 'react-redux';
+
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
