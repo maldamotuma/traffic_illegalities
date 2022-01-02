@@ -1,8 +1,8 @@
 
-module.exports.sendRespose = (res, message) => {
-    const status = typeof (message) === 'string' ? 0 : 1; // error message or success message
+module.exports.sendRespose = (res, message, cstatus = null) => {
+    const success = (cstatus === null) ? typeof (message) === 'string' ? 0 : 1 : cstatus; // error message or success message
     let formatted_message = {};
-    formatted_message = status ? { status, ...message } : { status, message: message };
+    formatted_message = success ? { success, ...message } : { success, message: message };
     return res.json(formatted_message);
 }
 

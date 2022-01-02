@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -14,6 +14,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ForgotPasswordComponent from '../components/ForgotPasswordComponent';
 import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { login } from '../redux/actions/authactions';
+import CustomizedSnackbars from '../components/CustomSnackbar'
 
 function Copyright(props) {
     return (
@@ -30,20 +33,32 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function LogIn() {
+const Login = ({login}) => {
+    const [credentials, setCredentials] = React.useState({username: null, password: null});
+    const [loading, setloading] = React.useState(false);
+    const [authmess, setauthmess] = React.useState({snack: false, status: 'error'});
+
     let navigate = useNavigate();
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+
+    const handleUsernameChange = (e) => {
+        setCredentials({...credentials, username: e.target.value});
+    }
+
+    const handlePasswordChange = (e) => {
+        setCredentials({...credentials, password: e.target.value});
+    }
+
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        setloading(true);
+        login(credentials, setloading);
+    }
 
     return (
         <ThemeProvider theme={theme}>
+        <CustomizedSnackbars open={authmess} setOpen={setauthmess} message={"Invalid Credential"}/>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -60,16 +75,18 @@ export default function LogIn() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleFormSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
                             autoFocus
+                            value={credentials.username}
+                            onChange={handleUsernameChange}
                         />
                         <TextField
                             margin="normal"
@@ -79,21 +96,24 @@ export default function LogIn() {
                             label="Password"
                             type="password"
                             id="password"
-                            autoComplete="current-password"
+                            autoComplete="password"
+                            value={credentials.password}
+                            onChange={handlePasswordChange}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
                         />
-                        <Button
+                        <LoadingButton
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
-                            onClick={() => navigate('/')}
+                            // onClick={handleFormSubmit}
+                            loading={loading}
                         >
                             Sign In
-                        </Button>
+                        </LoadingButton>
                         <Grid
                         container
                         justifyContent="flex-end"
@@ -111,3 +131,14 @@ export default function LogIn() {
         </ThemeProvider>
     );
 }
+
+
+const mapStateToProps = (state) => ({
+    
+})
+
+const mapDispatchToProps = {
+    login
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

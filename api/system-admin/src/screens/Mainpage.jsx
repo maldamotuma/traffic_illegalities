@@ -15,7 +15,8 @@ import Searchautocomplete from '../components/Searchautocomplete';
 import Autocomplete from '@mui/material/Autocomplete';
 import $ from 'jquery';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
-
+import { connect } from 'react-redux';
+import { cancelNotifyFixed } from '../redux/actions/helperActions'
 const drawerWidth = 240;
 
 const navigationLinks = [
@@ -95,11 +96,14 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function Mainpage(props) {
+const Mainpage = ({close}) => {
   const [open, setOpen] = React.useState(false);
   const [cname, setcname] = React.useState('/');
   const location = useLocation();
 
+  React.useEffect(()=>{
+    close();
+  },[]);
   React.useEffect(() => {
     setcname(location.pathname === "/active-session" ? "" : 'p-3');
   }, [location]);
@@ -175,3 +179,14 @@ export default function Mainpage(props) {
     </Box>
   );
 }
+
+
+const mapStateToProps = (state) => ({
+    
+})
+
+const mapDispatchToProps = {
+    close: cancelNotifyFixed
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Mainpage)

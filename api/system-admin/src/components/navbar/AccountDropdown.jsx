@@ -9,9 +9,12 @@ import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logout } from '../../redux/actions/authactions';
 
-export default function AccountDropdown() {
+const AccountDropdown = ({ logout }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [loading, setloading] = React.useState(false);
   let navigate = useNavigate();
 
   const open = Boolean(anchorEl);
@@ -21,6 +24,10 @@ export default function AccountDropdown() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () => {
+    logout();
+  }
   return (
     <React.Fragment>
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
@@ -79,7 +86,7 @@ export default function AccountDropdown() {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={e => navigate('/login')}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
@@ -89,3 +96,13 @@ export default function AccountDropdown() {
     </React.Fragment>
   );
 }
+
+const mapStateToProps = (state) => ({
+
+})
+
+const mapDispatchToProps = {
+    logout: logout
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountDropdown)

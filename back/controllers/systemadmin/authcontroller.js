@@ -5,7 +5,7 @@ const {
     // generateToken,
     // setCookies,
     // attempt,
-    authenticate, changePassword, sendForgotPassword, hashPassword
+    authenticate, changePassword, sendForgotPassword, logout
 } = require('../helpers/auth');
 const jwt = require('jsonwebtoken');
 const { sendServerError, sendRespose } = require('../helpers/utils');
@@ -14,6 +14,15 @@ const { sendServerError, sendRespose } = require('../helpers/utils');
 module.exports.signIn = async (req, res) => {
     try {
         return await authenticate(req, res, 0); // 0 referes to system admin
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: 0, message: "Server Error" });
+    }
+}
+
+module.exports.signOut = async (req, res) => {
+    try {
+        return await logout(req, res, 0); // 0 referes to system admin
     } catch (error) {
         console.log(error);
         return res.status(500).json({ success: 0, message: "Server Error" });
@@ -172,4 +181,8 @@ module.exports.createNewPassword = async (req, res) => {
 }
 module.exports.test = async (req, res) => {
     return res.json({ message: 'hitted success fully', user: req.user });
+}
+
+module.exports.currentUser = async (req, res) => {
+    sendRespose(res, {user: req.user});
 }
