@@ -15,11 +15,11 @@ registerSession = async (req, currentUser, token) => {
         Os: req.headers['sec-ch-ua-platform'],
         device: req.headers['sec-ch-ua-mobile']
     });
-    await currentUser.save();
+    return await currentUser.save();
 }
 
 generateToken = async (data, whichModel) => {
-    const tmptoken = await jwt.sign({ ...data, gs: whichModel }, secretVariables[whichModel], { expiresIn: process.env.TOKEN_MAX_AGE });
+    const tmptoken = await jwt.sign({ ...data, gs: whichModel }, secretVariables[whichModel], { expiresIn: parseInt(process.env.TOKEN_MAX_AGE) });
     return tmptoken;
 }
 
@@ -53,17 +53,17 @@ module.exports.authenticate = async (req, res, SchemaInstance) => {
     try {
         var resMessage = "Invalid Credentials";
         const { username, password } = req.body;
-        const currentUser = await schemaRefs[SchemaInstance].findOne({ username });
-        if (await attempt(currentUser, password)) {
+        let currentUser = await schemaRefs[SchemaInstance].findOne({ username });
+        if (currentUser && await attempt(currentUser, password)) {
             const token = await generateToken({ username }, SchemaInstance); // SchemaInstance identifies actor
-            registerSession(req, currentUser, token);
+            currentUser = await registerSession(req, currentUser, token);
             setCookies(res, token, SchemaInstance);
             resMessage = { user: currentUser };
         };
         sendRespose(res, resMessage);
     } catch (error) {
         console.log(error);
-        res.status(500).json({ success: 0, message: "Server Error" });
+        res.status(500).json({ success: 0, message: error });
     }
 }
 
@@ -101,4 +101,14 @@ module.exports.sendForgotPassword = async (req, res, gsn) => {
     }
 }
 
+module.exports.logout = async (req, res, gsn) => {
+    try{
+        await schemaRefs[gsn].updateOne({ _id: req.user._id }, {$pull: {activeSessions: {token: req.user.secToken}}});
+        res.clearCookie('secauth');
+        sendRespose(res, {user: null}, -1);
+    }catch(err){
+        console.log(err);
+        sendRespose(res, 'something went wrong');
+    }
+}
 module.exports.hashPassword = hashPassword;

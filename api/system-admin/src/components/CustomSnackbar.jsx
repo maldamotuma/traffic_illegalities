@@ -9,23 +9,23 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 
-const CustomizedSnackbars = ({setOpen, open}) => {
+const CustomizedSnackbars = ({setOpen, open, message}) => {
   const config = {
     cancelled: {
       type: 'warning',
-      message: 'Email not sent'
+      message: message ? message : 'Email not sent'
     },
     sending: {
       type: 'info',
-      message: 'Sending email...'
+      message: message ? message : 'Sending email...'
     },
     success: {
       type: 'success',
-      message: 'Email Successfully sent'
+      message: message ? message : 'Email Successfully sent'
     },
     fail: {
       type: 'error',
-      message: 'Your Email do not much our record'
+      message: message ? message : 'Your Email do not much our record'
     }
   }
   const handleClose = () => {

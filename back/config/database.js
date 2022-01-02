@@ -11,7 +11,7 @@ async function main() {
         });
         await mongoose.connect('mongodb://localhost:27017/traffic_illegality');
     } catch (error) {
-        console.log(err)
+        console.log(error)
     }
 }
 

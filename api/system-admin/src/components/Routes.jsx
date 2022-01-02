@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Routes,
     Route
@@ -9,9 +9,12 @@ import Mainpage from '../screens/Mainpage';
 import Activesession from '../screens/Activesession';
 import AddOperator from '../screens/AddOperator';
 import AddSystemAdmin from '../screens/AddSystemAdmin';
+import { connect } from 'react-redux'
+import { checkAuth } from '../redux/actions/authactions';
+import FullscreenBackDrop from './FullscreenBackDrop';
 
 const routesList = [
-    { path: '/login', element: <Login /> },
+    // { path: '/login', element: <Login /> },
     {
         path: '/', element: <Mainpage />, childs: [
             { path: '/', element: <Dashboard /> },
@@ -21,8 +24,15 @@ const routesList = [
         ]
     },
 ];
-const RoutingComponent = () => {
-    return (
+const RoutingComponent = ({checkAuth, user}) => {
+    useEffect(() => {
+        checkAuth();
+    }, []);
+
+    if(user === -1) {
+        return <FullscreenBackDrop />
+    }else if(user) {
+        return (
         <Routes>
             {
                 // eslint-disable-next-line array-callback-return
@@ -43,6 +53,18 @@ const RoutingComponent = () => {
             }
         </Routes>
     )
+
+    }else {
+        return <Login />
+    }
 }
 
-export default RoutingComponent;
+const mapStateToProps = (state) => ({
+    user: state.user
+})
+
+const mapDispatchToProps = {
+    checkAuth: checkAuth
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RoutingComponent)
