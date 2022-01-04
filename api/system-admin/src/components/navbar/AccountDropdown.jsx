@@ -8,14 +8,12 @@ import IconButton from '@mui/material/IconButton';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../redux/actions/authactions';
+import { Link } from 'react-router-dom';
 
 const AccountDropdown = ({ logout }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [loading, setloading] = React.useState(false);
-  let navigate = useNavigate();
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -30,9 +28,9 @@ const AccountDropdown = ({ logout }) => {
   }
   return (
     <React.Fragment>
-          <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <Avatar sx={{ width: 32, height: 32 , background: '#eeeeee', color: 'rgb(25 118 210)'}}>M</Avatar>
-          </IconButton>
+      <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
+        <Avatar sx={{ width: 32, height: 32, background: '#eeeeee', color: 'rgb(25 118 210)' }}>M</Avatar>
+      </IconButton>
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -70,16 +68,20 @@ const AccountDropdown = ({ logout }) => {
         <MenuItem>
           <Avatar /> Profile
         </MenuItem>
-        <MenuItem>
-          <Avatar /> My account
-        </MenuItem>
+        <Link to="/create-new-password" className="text-decoration-none text-dark">
+          <MenuItem>
+            <Avatar /> Create new Password
+          </MenuItem>
+        </Link>
         <Divider />
-        <MenuItem>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Add another account
-        </MenuItem>
+        <Link to="/change-password" className="text-decoration-none text-dark">
+          <MenuItem>
+            <ListItemIcon>
+              <PersonAdd fontSize="small" />
+            </ListItemIcon>
+            Change Password
+          </MenuItem>
+        </Link>
         <MenuItem>
           <ListItemIcon>
             <Settings fontSize="small" />
@@ -102,7 +104,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    logout: logout
+  logout: logout
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountDropdown)

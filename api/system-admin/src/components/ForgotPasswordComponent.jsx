@@ -6,34 +6,38 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import CustomizedSnackbars from './CustomSnackbar';
 import { Slide } from '@mui/material';
-
+import {connect} from 'react-redux';
+import { forgotPassword } from '../redux/actions/authactions';
+import { notifyFixed } from '../redux/actions/helperActions';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-export default function ForgotPasswordComponent() {
-  const [open, setOpen] = React.useState({self: false, snack: false, status: ''}); //cancelled, sending, success, fail
-
-  // React.useEffect(() => {
-  //   alert(open.snack ? '1' : 0);
-  // }, [open.snack]);
+const ForgotPasswordComponent = ({sendResetMail, notifyFixed}) => {
+  const [open, setOpen] = React.useState(false); //cancelled, sending, success, fail
+  const [email, setEmail] = React.useState('');
 
   const handleClickOpen = () => {
-    setOpen({...open, self: true, snack: false});
+    setOpen(true);
   };
 
   const handleCancel = () => {
-    setOpen({self: false, snack: true, status: 'cancelled'});
+    setOpen(false);
   };
 
   const handleSend = () => {
-    setOpen({self: false, snack: true, status: 'sending'});
-    setTimeout(() => {
-      setOpen({self: false, snack: true, status: 'success'});
-    }, 6000);
+    if(email !== '')
+    {
+      notifyFixed('info', 'sending email...');
+      setOpen(false);
+      sendResetMail(email);
+    }
+    // setOpen({self: false, snack: true, status: 'sending'});
+    // setTimeout(() => {
+    //   setOpen({self: false, snack: true, status: 'success'});
+    // }, 6000);
   };
 
   return (
@@ -41,8 +45,7 @@ export default function ForgotPasswordComponent() {
       <span className='btn btn-link p-0 m-0' onClick={handleClickOpen}>
         Forgot Password?
       </span>
-      <CustomizedSnackbars open={open} setOpen={setOpen}/>
-      <Dialog open={open.self} onClose={handleCancel} sx={{top: '-20%'}} TransitionComponent={Transition}>
+      <Dialog open={open} onClose={handleCancel} sx={{top: '-20%'}} TransitionComponent={Transition}>
         <DialogTitle>Password Reset</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -57,6 +60,8 @@ export default function ForgotPasswordComponent() {
             type="email"
             fullWidth
             variant="standard"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
@@ -67,3 +72,14 @@ export default function ForgotPasswordComponent() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+
+})
+
+const mapDispatchToProps = {
+    sendResetMail: forgotPassword,
+    notifyFixed: notifyFixed
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordComponent)

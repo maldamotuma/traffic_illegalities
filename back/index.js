@@ -19,7 +19,7 @@ const mongoose = require('mongoose');
 app.use(require('cookie-parser')());
 app.use(express.json());
 const systemAdminCorsConfig = {
-   origin: 'http://localhost:3000',
+   origin: ['http://localhost:3000'],
    credentials: true
 };
 app.use('/sa', cors(systemAdminCorsConfig));

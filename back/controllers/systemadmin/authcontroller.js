@@ -5,7 +5,7 @@ const {
     // generateToken,
     // setCookies,
     // attempt,
-    authenticate, changePassword, sendForgotPassword, logout
+    authenticate, changePassword, sendForgotPassword, logout, attempt, login
 } = require('../helpers/auth');
 const jwt = require('jsonwebtoken');
 const { sendServerError, sendRespose } = require('../helpers/utils');
@@ -160,29 +160,49 @@ module.exports.forgotPassword = async (req, res) => {
 
 module.exports.resetPassword = async (req, res) => {
     try {
-        const token = req.query._system_admin;
-        var { secid, gs } = await jwt.verify(token, process.env.SYSTEM_ADMIN_SIGN_STRING);
-        res.send({ secid, gs });
+        const {token} = req.body;
+        var {secid, gs} = await jwt.verify(token, process.env.SYSTEM_ADMIN_SIGN_STRING);        
+        if (gs === 0) {
+            return await login(req, res, secid, 0);
+        }
+        sendRespose(res, 'forbidden');
     } catch (error) {
-        res.send(error);
         console.log(error);
+        sendRespose(res, 'forbidden');
     }
 }
 
 module.exports.createNewPassword = async (req, res) => {
     try {
         const { password } = req.body;
-        const nusrpswd = await changePassword(req.user, password);
+        const nusrpswd = await changePassword(req.user, password, true);
         sendRespose(res, { password, nusrpswd });
     } catch (error) {
         console.log(error);
         sendServerError(res);
     }
 }
+
+module.exports.change_Password = async (req, res) => {
+    try {
+        const { password, new_password } = req.body;
+        const old_password = await attempt(req.user, password);
+        let message = "Incorrect Password";
+        if (old_password) {
+            const nusrpswd = await changePassword(req.user, new_password);
+            message = {message: "successfully changed"};
+        }
+        sendRespose(res, message);
+    } catch (error) {
+        console.log(error);
+        sendServerError(res);
+    }
+}
+
 module.exports.test = async (req, res) => {
     return res.json({ message: 'hitted success fully', user: req.user });
 }
 
 module.exports.currentUser = async (req, res) => {
-    sendRespose(res, {user: req.user});
+    sendRespose(res, { user: req.user });
 }

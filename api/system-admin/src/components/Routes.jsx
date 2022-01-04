@@ -12,6 +12,9 @@ import AddSystemAdmin from '../screens/AddSystemAdmin';
 import { connect } from 'react-redux'
 import { checkAuth } from '../redux/actions/authactions';
 import FullscreenBackDrop from './FullscreenBackDrop';
+import CreateNewPassword from '../screens/CreateNewPassword';
+import ChangePassword from '../screens/ChangePassword';
+import ForgotPassword from '../screens/ForgotPassword';
 
 const routesList = [
     // { path: '/login', element: <Login /> },
@@ -21,6 +24,8 @@ const routesList = [
             { path: '/active-session', element: <Activesession /> },
             { path: '/add-operator', element: <AddOperator /> },
             { path: '/add-system-admin', element: <AddSystemAdmin /> },
+            { path: '/create-new-password', element: <CreateNewPassword /> },
+            { path: '/change-password', element: <ChangePassword /> },
         ]
     },
 ];
@@ -31,6 +36,12 @@ const RoutingComponent = ({checkAuth, user}) => {
 
     if(user === -1) {
         return <FullscreenBackDrop />
+    }else if(user?.oneTime){
+        return (
+            <Routes>
+                <Route path={"*"} element={<CreateNewPassword />}/>
+            </Routes>
+        )
     }else if(user) {
         return (
         <Routes>
@@ -55,7 +66,12 @@ const RoutingComponent = ({checkAuth, user}) => {
     )
 
     }else {
-        return <Login />
+        return (
+            <Routes>
+                <Route path={'/forgot-password'} element={<ForgotPassword />} />
+                <Route path={'*'} element={<Login />}/>
+            </Routes>
+        )
     }
 }
 
