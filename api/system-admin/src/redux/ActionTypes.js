@@ -2,3 +2,4 @@ export const CURRENT_USER = "CURRENT_USER";
 export const SETADMIN = "SETADMIN";
 export const LOGOUT = "LOGOUT";
 export const FIXEDNOTIFICATION = "FIXEDNOTIFICATION";
+export const UPDATEONETIME = "UPDATEONETIME";

@@ -32,6 +32,10 @@ const SystemadminSchema = new mongoose.Schema({
         current: Boolean,
         reason: String
     },
+    oneTime: {
+        type: Boolean,
+        default: true
+    },
     assignedBy: {
         type: mongoose.Types.ObjectId,
         ref: 'Systemadmin'

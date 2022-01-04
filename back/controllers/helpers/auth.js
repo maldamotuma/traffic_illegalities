@@ -7,7 +7,7 @@ const { sendRespose } = require('./utils');
 var bcrypt = require('bcryptjs');
 
 
-registerSession = async (req, currentUser, token) => {
+const registerSession = async (req, currentUser, token, oneTime=false) => {
     currentUser.activeSessions.push({
         token,
         dateTime: new Date(),
@@ -15,10 +15,13 @@ registerSession = async (req, currentUser, token) => {
         Os: req.headers['sec-ch-ua-platform'],
         device: req.headers['sec-ch-ua-mobile']
     });
+    if (oneTime) {
+        currentUser.oneTime = true;
+    }
     return await currentUser.save();
 }
 
-generateToken = async (data, whichModel) => {
+const generateToken = async (data, whichModel) => {
     const tmptoken = await jwt.sign({ ...data, gs: whichModel }, secretVariables[whichModel], { expiresIn: parseInt(process.env.TOKEN_MAX_AGE) });
     return tmptoken;
 }
@@ -67,10 +70,11 @@ module.exports.authenticate = async (req, res, SchemaInstance) => {
     }
 }
 
-module.exports.changePassword = async (currentUser, password) => {
+module.exports.changePassword = async (currentUser, password, oneTime = false) => {
     try {
         const hash = await hashPassword(password);
         currentUser.password = hash;
+        if (oneTime) {currentUser.oneTime = false;}
         const upuser = await currentUser.save();
         return upuser;
     } catch (error) {
@@ -82,7 +86,7 @@ module.exports.sendForgotPassword = async (req, res, gsn) => {
     try {
         const { email } = req.body;
         const uid = await schemaRefs[gsn].findOne({ email }, '_id, name');
-        const token = await jwt.sign({ secid: uid._id, gs: gsn }, secretVariables[gsn], { expiresIn: '10m' });
+        const token = await jwt.sign({ secid: uid._id, gs: gsn }, secretVariables[gsn], { expiresIn: '1d' });
 
 
         var mailOptions = {
@@ -111,4 +115,19 @@ module.exports.logout = async (req, res, gsn) => {
         sendRespose(res, 'something went wrong');
     }
 }
+
+module.exports.login = async(req, res, _id, actorIndex) => {
+    try{
+       let currentUser = await schemaRefs[actorIndex].findOne({ _id });
+       const token = await generateToken({ username:  currentUser.username}, actorIndex);
+       currentUser = await registerSession(req, currentUser, token, true);
+       setCookies(res, token, actorIndex);
+       return sendRespose(res, {user: currentUser}); 
+    }catch(error){
+        console.log(error);
+        sendRespose(res, 'something went wrong');
+    }
+    
+}
 module.exports.hashPassword = hashPassword;
+module.exports.attempt = attempt;

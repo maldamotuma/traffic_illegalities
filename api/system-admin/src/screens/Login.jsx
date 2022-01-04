@@ -13,7 +13,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ForgotPasswordComponent from '../components/ForgotPasswordComponent';
-import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../redux/actions/authactions';
 import CustomizedSnackbars from '../components/CustomSnackbar'
@@ -37,8 +36,6 @@ const Login = ({login}) => {
     const [credentials, setCredentials] = React.useState({username: null, password: null});
     const [loading, setloading] = React.useState(false);
     const [authmess, setauthmess] = React.useState({snack: false, status: 'error'});
-
-    let navigate = useNavigate();
 
 
     const handleUsernameChange = (e) => {

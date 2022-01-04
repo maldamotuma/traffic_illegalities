@@ -13,7 +13,6 @@ import Navbar from '../components/navbar/Navbar';
 import Drawerlinks from '../components/navbar/Drawerlinks';
 import Searchautocomplete from '../components/Searchautocomplete';
 import Autocomplete from '@mui/material/Autocomplete';
-import $ from 'jquery';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { connect } from 'react-redux';
 import { cancelNotifyFixed } from '../redux/actions/helperActions'
@@ -102,7 +101,7 @@ const Mainpage = ({close}) => {
   const location = useLocation();
 
   React.useEffect(()=>{
-    close();
+    // close();
   },[]);
   React.useEffect(() => {
     setcname(location.pathname === "/active-session" ? "" : 'p-3');
