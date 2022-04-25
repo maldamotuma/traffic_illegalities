@@ -10,7 +10,7 @@ import StarBorder from '@mui/icons-material/StarBorder';
 import { NavLink } from 'react-router-dom';
 
 export default function Dropdownist({ title, submenus, Icon }) {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
     setOpen(!open);
@@ -29,7 +29,7 @@ export default function Dropdownist({ title, submenus, Icon }) {
     >
       <ListItemButton onClick={handleClick}>
         <ListItemIcon>
-          <Icon />
+          <Icon sx={{color: 'primary.main'}}/>
         </ListItemIcon>
         <ListItemText primary={title} />
         {open ? <ExpandLess /> : <ExpandMore />}
@@ -40,11 +40,11 @@ export default function Dropdownist({ title, submenus, Icon }) {
             submenus.map(smenu => (
               <NavLink
                 to={smenu.address}
-                className={({ isActive }) => "nav-link p-0 d-block " + (isActive ? 'bg-secondary text-light' : 'text-dark')}
+                className={({ isActive }) => "nav-link p-0 d-block " + (isActive ? 'bgsub_active' : 'text-dark')}
               >
                 <ListItemButton sx={{ pl: 4 }}>
                   <ListItemIcon>
-                    <StarBorder />
+                    <StarBorder sx={{color: "secondary.main"}}/>
                   </ListItemIcon>
                   <ListItemText primary={smenu.title} />
                 </ListItemButton>

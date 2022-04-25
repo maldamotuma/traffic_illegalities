@@ -6,11 +6,11 @@ const Singlelist = ({ Icon, name, address }) => {
     return (
         <NavLink
             to={address}
-            className={({isActive}) => "nav-link p-0 d-block " + (isActive ? 'bg-secondary text-light' : 'text-dark')}
+            className={({isActive}) => "nav-link p-0 d-block " + (isActive ? 'bg_active' : 'text-dark')}
         >
             <ListItemButton>
                     <ListItemIcon>
-                        <Icon />
+                        <Icon sx={{color: "primary.main"}}/>
                     </ListItemIcon>
                     <ListItemText primary={name} />
             </ListItemButton>

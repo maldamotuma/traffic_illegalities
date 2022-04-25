@@ -16,6 +16,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { connect } from 'react-redux';
 import { cancelNotifyFixed } from '../redux/actions/helperActions'
+import Chat from '../components/chat/Index';
 const drawerWidth = 240;
 
 const navigationLinks = [
@@ -113,69 +114,72 @@ const Mainpage = ({close}) => {
 
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open} elevation={0} xs={{ bgColor: '#fff' }}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerToggle}
-            edge="start"
-            sx={{
-              marginRight: '36px',
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Navbar />
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open} anchorOrigin="top">
-        <div className='h-100'>
-          {/* <h3 className="pl-2 position-absolute" style={{ textColor: '#1976d2', marginLeft: '10px', marginTop: '10px' }}>Choose action</h3> */}
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={navigationLinks}
-            freeSolo
-            renderInput={(params) => (
-              <div ref={params.InputProps.ref} className={"position-absolute"}>
-                <Searchautocomplete params={params.inputProps} />
-              </div>
-            )}
-          />
-          <DrawerHeader />
-          <Divider />
-          <OverlayScrollbarsComponent
-            style={{
-              height: 'calc(100vh - 68px)',
-              padding: 0
-            }}
-            options={{
-              overflowBehavior: {
-                x: 'hidden'
-              }
-            }}
-          >
-            <Drawerlinks />
-          </OverlayScrollbarsComponent>
-        </div>
-      </Drawer>
+    <>
+      <Chat />
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open} elevation={0} xs={{ bgColor: '#fff' }}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerToggle}
+              edge="start"
+              sx={{
+                marginRight: '36px',
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Navbar />
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open} anchorOrigin="top">
+          <div className='h-100'>
+            {/* <h3 className="pl-2 position-absolute" style={{ textColor: '#1976d2', marginLeft: '10px', marginTop: '10px' }}>Choose action</h3> */}
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={navigationLinks}
+              freeSolo
+              renderInput={(params) => (
+                <div ref={params.InputProps.ref} className={"position-absolute"}>
+                  <Searchautocomplete params={params.inputProps} />
+                </div>
+              )}
+            />
+            <DrawerHeader />
+            <Divider />
+            <OverlayScrollbarsComponent
+              style={{
+                height: 'calc(100vh - 68px)',
+                padding: 0
+              }}
+              options={{
+                overflowBehavior: {
+                  x: 'hidden'
+                }
+              }}
+            >
+              <Drawerlinks />
+            </OverlayScrollbarsComponent>
+          </div>
+        </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, backgroundColor: '#f5f5f5' }}>
-        <DrawerHeader />
-        {/* <Mapfitun /> */}
-        <OverlayScrollbarsComponent
-        style={{
-          height: 'calc(100vh - 68px)'
-        }}
-        className={cname}
-        >
-          <Outlet />
-        </OverlayScrollbarsComponent>
+        <Box component="main" sx={{ flexGrow: 1, backgroundColor: '#f5f5f5' }}>
+          <DrawerHeader />
+          {/* <Mapfitun /> */}
+          <OverlayScrollbarsComponent
+          style={{
+            height: 'calc(100vh - 68px)'
+          }}
+          className={cname}
+          >
+            <Outlet />
+          </OverlayScrollbarsComponent>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 

@@ -9,13 +9,24 @@ import {
 import 'overlayscrollbars/css/OverlayScrollbars.css';
 import store from './redux/Store';
 import { Provider } from 'react-redux';
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 
+const theme = createTheme({
+  palette: {
+    online: {
+      main: "#00FF22",
+      contrastText: "#fff"
+    }
+  }
+})
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

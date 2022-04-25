@@ -25,16 +25,20 @@ const OpratorSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    identificationCards: [{
-        idType: String,
+    identificationCard: {
+        id_number: String,
         issuedDate: Date,
         expiryDate: Date,
+        id_name: String,
         photos: [String]
-    }],
-    region: [{
-        region: { latitude: String, longitude: String },
-        specific: [{ latitude: String, longitude: String }]
-    }],
+    },
+    region: {
+        coordinates: {
+            lat: Number,
+            lng: Number
+        },
+        radius: Number
+    },
     password: {
         type: String,
         required: true

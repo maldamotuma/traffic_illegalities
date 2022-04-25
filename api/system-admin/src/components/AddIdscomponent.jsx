@@ -14,6 +14,9 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Identificationform from './Identificationform';
 import Idphotoscomponent from './Idphotoscomponent';
 import { styled } from '@mui/material/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as operatorActionBinders from '../redux/actions/operatoractions';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -24,6 +27,10 @@ const Input = styled('input')({
 });
 export default function Addidscomponent() {
     const [open, setOpen] = React.useState(false);
+
+    const dispatch = useDispatch();
+    const { add_operator } = bindActionCreators(operatorActionBinders, dispatch);
+    const personId = useSelector(state => state?.newOperator.identificationCard);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -71,7 +78,13 @@ export default function Addidscomponent() {
                     </Divider>
                     <Grid item xs={3}>
                         <label htmlFor="icon-button-file">
-                            <Input accept="image/*" id="icon-button-file" type="file" />
+                            <Input
+                            accept="image/*"
+                            id="icon-button-file"
+                            type="file"
+                            multiple={true}
+                            onChange={e => add_operator({IDphotos: [...e.target.files]})}
+                            />
                             <IconButton color="secondary" aria-label="upload picture" component="span">
                                 <AddAPhotoIcon />
                             </IconButton>

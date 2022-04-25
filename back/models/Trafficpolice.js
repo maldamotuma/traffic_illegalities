@@ -25,12 +25,13 @@ const TrafficPoliceSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    identificationCards: [{
-        idType: String,
+    identificationCards: {
+        id_name: String,
+        id_number: String,
         issuedDate: Date,
         expiryDate: Date,
         photos: [String]
-    }],
+    },
     password: {
         type: String,
         required: true
