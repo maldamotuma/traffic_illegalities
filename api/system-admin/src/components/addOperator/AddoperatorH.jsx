@@ -12,7 +12,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Basicinfo from './Basicinfo';
 import Idcards from './Idcards';
 import Card from '@mui/material/Card';
-import Mapfitun from '../mapcomponents/Mapfitun';
+import { useDispatch, useSelector } from 'react-redux';
+import * as operatorActionBinders from '../../redux/actions/operatoractions';
+import { bindActionCreators } from 'redux';
+import AddRegion from './AddRegion';
+import Loading from '../common/Loading';
+import Success from '../common/Success';
 
 const steps = ['Basic Information', "Id's information", 'Region assignment'];
 
@@ -24,7 +29,7 @@ function getStepContent(step) {
             return <Idcards />;
         case 2:
             // return <Review />;
-            return <Mapfitun />;
+            return <AddRegion />;
         default:
             throw new Error('Unknown step');
     }
@@ -34,6 +39,10 @@ const theme = createTheme();
 
 export default function AddoperatorH() {
     const [activeStep, setActiveStep] = React.useState(0);
+    const [screen, setscreen] = React.useState("form");
+
+    const dispatch = useDispatch();
+    const { submit_operator } = bindActionCreators( operatorActionBinders, dispatch);
 
     const handleNext = () => {
         setActiveStep(activeStep + 1);
@@ -43,6 +52,12 @@ export default function AddoperatorH() {
         setActiveStep(activeStep - 1);
     };
 
+    const handleSubmit = e => {
+        setscreen("loading");
+        submit_operator(setscreen);
+    }
+    if(screen === "loading") return <Loading />;
+    else if (screen === "success") return <Success />;
     return (
         <ThemeProvider theme={theme} sx={{transitionDuration: "0.3s"}}>
             <CssBaseline />
@@ -84,7 +99,7 @@ export default function AddoperatorH() {
 
                                         <Button
                                             variant="contained"
-                                            onClick={handleNext}
+                                            onClick={ activeStep === steps.length - 1 ? handleSubmit : handleNext}
                                             sx={{ mt: 3, ml: 1 }}
                                         >
                                             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}

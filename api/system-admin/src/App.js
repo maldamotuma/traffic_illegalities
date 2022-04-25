@@ -2,11 +2,12 @@ import React from 'react';
 import RoutingComponent from './components/Routes';
 import Generalnotification from './components/Generalnotification';
 import { connect } from 'react-redux';
+import "./custom.css"
 
 function App() {
   return (
     <div className="">
-    <Generalnotification />
+      <Generalnotification />
       <RoutingComponent />
     </div>
   );

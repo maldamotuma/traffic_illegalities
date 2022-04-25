@@ -11,7 +11,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountDropdown from './AccountDropdown';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
-
+import Onlines from './Onlines';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -88,6 +88,7 @@ export default function Navbar({ toggleDrawer }) {
       </Search>
       <Box sx={{ flexGrow: 1 }} />
       <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+      <Onlines />
         <IconButton
           size="large"
           aria-label="show 17 new notifications"

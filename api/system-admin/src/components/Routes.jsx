@@ -15,6 +15,10 @@ import FullscreenBackDrop from './FullscreenBackDrop';
 import CreateNewPassword from '../screens/CreateNewPassword';
 import ChangePassword from '../screens/ChangePassword';
 import ForgotPassword from '../screens/ForgotPassword';
+import AddCar from '../screens/AddCar.jsx';
+import CarList from '../screens/CarList';
+import AddTrafficPolice from '../screens/AddTrafficPolice';
+import AddSpeed from '../screens/AddSpeed';
 
 const routesList = [
     // { path: '/login', element: <Login /> },
@@ -23,7 +27,11 @@ const routesList = [
             { path: '/', element: <Dashboard /> },
             { path: '/active-session', element: <Activesession /> },
             { path: '/add-operator', element: <AddOperator /> },
+            { path: '/add-car', element: <AddCar /> },
+            { path: '/car-list', element: <CarList /> },
             { path: '/add-system-admin', element: <AddSystemAdmin /> },
+            { path: '/add-speed-region', element: <AddSpeed /> },
+            { path: '/add-traffic-police', element: <AddTrafficPolice /> },
             { path: '/create-new-password', element: <CreateNewPassword /> },
             { path: '/change-password', element: <ChangePassword /> },
         ]

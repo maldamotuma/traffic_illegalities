@@ -57,6 +57,7 @@ module.exports.authenticate = async (req, res, SchemaInstance) => {
         var resMessage = "Invalid Credentials";
         const { username, password } = req.body;
         let currentUser = await schemaRefs[SchemaInstance].findOne({ username });
+        console.log(await hashPassword("123"));
         if (currentUser && await attempt(currentUser, password)) {
             const token = await generateToken({ username }, SchemaInstance); // SchemaInstance identifies actor
             currentUser = await registerSession(req, currentUser, token);

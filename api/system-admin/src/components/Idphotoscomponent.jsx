@@ -1,7 +1,9 @@
 import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
+import Grid from '@mui/material/Grid';
 import ImageListItem from '@mui/material/ImageListItem';
 import Showdialogueimage from './Showdialogueimage';
+import { useSelector } from 'react-redux';
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -14,47 +16,34 @@ function srcset(image, size, rows = 1, cols = 1) {
 
 export default function Idphotoscomponent() {
     const [open, setOpen] = React.useState({status: false, image: null});
+
+    const newOperator = useSelector(state => state?.newOperator);
+
+    React.useEffect(()=>{
+      console.log(newOperator);
+    },[newOperator])
   return (
-    <ImageList
-      sx={{ width: 500, mt: 2, pl: 3 }}
-      variant="quilted"
-      cols={4}
+    <Grid container
+      // sx={{ width: 500, mt: 2, pl: 3 }}
+      // variant="quilted"
+      // cols={4}
+      spacing={3}
     >
-      {itemData.map((item) => (
-        <ImageListItem key={item.img} cols={item.cols || 1} rows={item.rows || 1}>
-          <img
-            {...srcset(item.img, 121, item.rows, item.cols)}
-            alt={item.title}
-            loading="lazy"
-            onClick={e => setOpen({status: true, image: item.img})}
-          />
-        </ImageListItem>
-      ))}
+      {
+        newOperator &&
+        newOperator.IDphotos?.map((item) => (
+          <Grid item xs={6}>
+            <img
+              src={URL.createObjectURL(item)}
+              alt={""}
+              loading="lazy"
+              width={"100%"}
+              onClick={e => setOpen({status: true, image: URL.createObjectURL(item)})}
+            />
+          </Grid>
+        ))
+      }
       <Showdialogueimage open={open} setOpen={setOpen}/>
-    </ImageList>
+    </Grid>
   );
 }
-
-const itemData = [
-  {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    title: 'Breakfast',
-    rows: 2,
-    cols: 2,
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    title: 'Burger',
-    rows: 2,
-    cols: 2,
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    title: 'Coffee',
-    cols: 3,
-  },
-];
