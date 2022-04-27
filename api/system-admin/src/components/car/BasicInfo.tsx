@@ -10,17 +10,17 @@ import IconButton from '@mui/material/IconButton';
 import Alert from '@mui/material/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as operatorActionBinders from '../../redux/actions/operatoractions';
+import * as carActionCreators from "../../redux/actions/carActions";
 
 const Input = styled('input')({
   display: 'none',
 });
 
-export default function Basicinfo({carInfo, setcarInfo}) {
+export default function Basicinfo() {
 
   const dispatch = useDispatch();
-  const { add_operator } = bindActionCreators( operatorActionBinders, dispatch);
-  const operatorInfo = useSelector(state => state.newOperator);
+  const { add_car_info } = bindActionCreators(carActionCreators, dispatch);
+  const carInfo = useSelector(state => state.newCar);
 
   return (
     <React.Fragment>
@@ -37,7 +37,7 @@ export default function Basicinfo({carInfo, setcarInfo}) {
             fullWidth
             variant="standard"
             value={carInfo.name}
-            onChange={e => setcarInfo(prev => ({...prev, name: e.target.value}))}
+            onChange={e => add_car_info({name: e.target.value })}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -49,7 +49,7 @@ export default function Basicinfo({carInfo, setcarInfo}) {
             fullWidth
             variant="standard"
             value={carInfo.type}
-            onChange={e => setcarInfo(prev => ({...prev, type: e.target.value}))}
+            onChange={e => add_car_info({type: e.target.value })}
           />
         </Grid>
         <Grid item xs={12}>
@@ -61,7 +61,7 @@ export default function Basicinfo({carInfo, setcarInfo}) {
             fullWidth
             variant="standard"
             value={carInfo.platenumber}
-            onChange={e => setcarInfo(prev => ({...prev, platenumber: e.target.value}))}
+            onChange={e => add_car_info({platenumber: e.target.value })}
           />
         </Grid>
         <Grid item xs={6}>
@@ -71,8 +71,8 @@ export default function Basicinfo({carInfo, setcarInfo}) {
             label="Community"
             fullWidth
             variant="standard"
-            value={carInfo.level.community}
-            onChange={e => setcarInfo(prev => ({...prev, level: {...carInfo.level, community: e.target.value}}))}
+            value={carInfo.level?.community}
+            onChange={e => add_car_info({level: { ...carInfo.level, community: e.target.value } })}
           />
         </Grid>
         <Grid item xs={6}>
@@ -82,8 +82,8 @@ export default function Basicinfo({carInfo, setcarInfo}) {
             label="Level"
             fullWidth
             variant="standard"
-            value={carInfo.level.level}
-            onChange={e => setcarInfo(prev => ({...prev, level: {...carInfo.level, level: e.target.value}}))}
+            value={carInfo.level?.level}
+            onChange={e => add_car_info({level: { ...carInfo.level, level: e.target.value } })}
           />
         </Grid>
       </Grid>

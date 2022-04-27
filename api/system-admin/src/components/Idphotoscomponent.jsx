@@ -17,11 +17,8 @@ function srcset(image, size, rows = 1, cols = 1) {
 export default function Idphotoscomponent() {
     const [open, setOpen] = React.useState({status: false, image: null});
 
-    const newOperator = useSelector(state => state?.newOperator);
+    const newOperator = useSelector(state => state?.newOperator.newOperator);
 
-    React.useEffect(()=>{
-      console.log(newOperator);
-    },[newOperator])
   return (
     <Grid container
       // sx={{ width: 500, mt: 2, pl: 3 }}

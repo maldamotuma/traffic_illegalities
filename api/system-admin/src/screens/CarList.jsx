@@ -1,140 +1,63 @@
-import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import { Box, Typography } from '@mui/material';
+import React, { useEffect } from 'react';
+import TableDisplay from '../components/display/TableDisplay';
+import * as carActionCreators from "../redux/actions/carActions";
+import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const columns = [
-  { id: 'name', label: 'Car Name', minWidth: 170 },
-  { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-  {
-    id: 'population',
-    label: 'Population',
-    minWidth: 170,
-    align: 'right',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'size',
-    label: 'Size\u00a0(km\u00b2)',
-    minWidth: 170,
-    align: 'right',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'density',
-    label: 'Density',
-    minWidth: 170,
-    align: 'right',
-    format: (value) => value.toFixed(2),
-  },
-];
-
-function createData(name, code, population, size) {
-  const density = population / size;
-  return { name, code, population, size, density };
+function createData(name, type, plate, community, owner) {
+  return { name, type, plate, community, owner };
 }
 
-const rows = [
-  createData('India', 'IN', 1324171354, 3287263),
-  createData('China', 'CN', 1403500365, 9596961),
-  createData('Italy', 'IT', 60483973, 301340),
-  createData('United States', 'US', 327167434, 9833520),
-  createData('Canada', 'CA', 37602103, 9984670),
-  createData('Australia', 'AU', 25475400, 7692024),
-  createData('Germany', 'DE', 83019200, 357578),
-  createData('Ireland', 'IE', 4857000, 70273),
-  createData('Mexico', 'MX', 126577691, 1972550),
-  createData('Japan', 'JP', 126317000, 377973),
-  createData('France', 'FR', 67022000, 640679),
-  createData('United Kingdom', 'GB', 67545757, 242495),
-  createData('Russia', 'RU', 146793744, 17098246),
-  createData('Nigeria', 'NG', 200962417, 923768),
-  createData('Brazil', 'BR', 210147125, 8515767),
-];
+const CarList = () => {
 
-export default function CardList() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const dispatch = useDispatch();
+  const { fetch_cars } = bindActionCreators(carActionCreators, dispatch);
+  const { cars } = useSelector(state => state.newCar);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  useEffect(() => {
+    fetch_cars();
+  }, []);
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const generateColumn = () => {
+    let columns = [];
+    cars?.forEach(car => {
+      columns.push( createData(car.name, car.type, car.platenumber, car.level.community, car.owner));
+    });
+    return columns;
+  }
 
+  const columns = [
+    { id: 'name', label: 'Name', minWidth: 170 },
+    { id: 'type', label: 'Type', minWidth: 100 },
+    {
+      id: 'platenumber',
+      label: 'plate',
+      minWidth: 170,
+      align: 'right',
+      format: (value) => value.toLocaleString('en-US'),
+    },
+    {
+      id: 'level.community',
+      label: 'Community',
+      minWidth: 170,
+      align: 'right',
+      format: (value) => value.toLocaleString('en-US'),
+    },
+    {
+      id: 'owner',
+      label: 'Owner',
+      minWidth: 170,
+      align: 'right',
+      format: (value) => value.toFixed(2),
+    },
+  ];
   return (
-    <Paper sx={{ width: '100%', position: 'relative', mt: 6, pt: '30px' }}>
-      <Box sx={{
-        width: '90%',
-        bgcolor: 'primary.main',
-        position: 'absolute',
-        top: '-25px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        height: '50px',
-        zIndex: 3,
-        borderRadius: '5px',
-        boxShadow: 3
-      }}>
-        <Typography textAlign={"center"} lineHeight={"50px"} fontWeight={900} color={"#fff"}>
-          Cars List
-        </Typography>
-      </Box>
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number'
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
-  );
+    <TableDisplay
+      title={"Cars List"}
+      columns={columns}
+      rows={cars ?? []}
+    />
+  )
 }
+
+export default CarList

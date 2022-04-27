@@ -11,8 +11,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as speedActionCreators from "../../redux/actions/speedactions";
+import { Polygon } from '@react-google-maps/api';
 
-const DetailForm = () => {
+const DetailForm = ({show, setshow}) => {
     const dispatch = useDispatch();
     const { add_new_speed, reduceCoordinate } = bindActionCreators(speedActionCreators, dispatch);
     const { newSpeed } = useSelector(state => state.speed);
@@ -49,7 +50,7 @@ const DetailForm = () => {
             <Stack direction={"row"} alignItems={"center"} gap={1} sx={{ mt: 1 }}>
                 <Box sx={{ bgcolor: "#A8CBEE", p: 1, borderRadius: 1 }}>{newSpeed?.speedLimit ?? 30}Km/Hr</Box>
                 <FormControlLabel
-                    control={<Switch defaultChecked={true} />}
+                    control={<Switch checked={show} onChange={e => setshow(e.target.checked)}/>}
                     label={"show on Map"} />
             </Stack>
 

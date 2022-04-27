@@ -9,10 +9,14 @@ import {
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import Dropzone from 'react-dropzone'
 import PreparePhoto from './PreparePhoto';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as carActionCreators from "../../redux/actions/carActions";
 
 const DropDOwn = () => {
-    const [images, setimages] = useState([]);
-
+    const dispatch = useDispatch();
+    const { add_car_info } = bindActionCreators(carActionCreators, dispatch);
+    const images = useSelector(state => state.newCar.photos);
     return (
         <Box sx={{
             width: '80%',
@@ -21,7 +25,7 @@ const DropDOwn = () => {
             gap: 3
         }}>
             <Box sx={{ flex: 1, transition: ".2s all ease-out" }}>
-                <Dropzone onDrop={acceptedFiles => setimages(acceptedFiles)} >
+                <Dropzone onDrop={acceptedFiles => add_car_info({photos: acceptedFiles})} >
                     {({ getRootProps, getInputProps, isDragActive }) => (
                         <section>
                             <div {...getRootProps()}>
@@ -81,7 +85,7 @@ const DropDOwn = () => {
                 </Dropzone >
             </Box>
             {
-                images.length !== 0 &&
+                images &&
                 <Box sx={{ flex: 3, transition: ".2s all ease-out" }}>
                     {
                         images.map(image => <PreparePhoto image={image} />)

@@ -25,7 +25,7 @@ const TrafficPoliceSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    identificationCards: {
+    identificationCard: {
         id_name: String,
         id_number: String,
         issuedDate: Date,

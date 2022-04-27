@@ -57,6 +57,9 @@ const OpratorSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+OpratorSchema.virtual("full_name").get(function() {
+    return this.name.first + " " + this.name.last;
+});
 
 const Operator = mongoose.model('Operator', OpratorSchema);
 

@@ -20,7 +20,7 @@ export default function Basicinfo() {
 
   const dispatch = useDispatch();
   const { add_operator } = bindActionCreators( operatorActionBinders, dispatch);
-  const operatorInfo = useSelector(state => state.newOperator);
+  const operatorInfo = useSelector(state => state.newOperator.newOperator);
 
   return (
     <React.Fragment>

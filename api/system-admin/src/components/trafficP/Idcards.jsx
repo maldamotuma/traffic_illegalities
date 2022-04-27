@@ -12,7 +12,7 @@ const Idcard = () => {
   const dispatch = useDispatch();
   const { add_traffic_police } = bindActionCreators(trafficPActionBinders, dispatch);
 
-  const newTrafficPolice = useSelector(state => state.newTrafficPolice);
+  const newTrafficPolice = useSelector(state => state.newTrafficPolice.newTrafficPolice);
   const personId = newTrafficPolice.identificationCard;
 
   return (

@@ -13,7 +13,7 @@ import Basicinfos from './Basicinfo';
 import Idcards from './Idcards';
 import Card from '@mui/material/Card';
 import { useDispatch, useSelector } from 'react-redux';
-import * as operatorActionBinders from '../../redux/actions/operatoractions';
+import * as trafficPlcActionBinders from '../../redux/actions/trafficpoliceactions';
 import { bindActionCreators } from 'redux';
 import Loading from '../common/Loading';
 import Success from '../common/Success';
@@ -23,7 +23,7 @@ export default function AddTrafficP() {
     const [screen, setscreen] = React.useState("form");
 
     const dispatch = useDispatch();
-    const { submit_operator } = bindActionCreators(operatorActionBinders, dispatch);
+    const { submit_new_traffic_police } = bindActionCreators(trafficPlcActionBinders, dispatch);
 
     const steps = ["Traffic Info", "Traffic ID"];
     const components = [<Basicinfos />, <Idcards />];
@@ -35,6 +35,7 @@ export default function AddTrafficP() {
             title={"Add Traffic Police"}
             steps={steps}
             components={components}
+            submitAction={submit_new_traffic_police}
         />
     );
 }
