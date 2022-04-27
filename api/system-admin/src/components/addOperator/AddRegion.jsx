@@ -15,7 +15,7 @@ import * as operatorActionBinders from '../../redux/actions/operatoractions';
 const AddRegion = () => {
   const dispatch = useDispatch();
   const { add_operator } = bindActionCreators( operatorActionBinders, dispatch);
-  const operatorInfo = useSelector(state => state.newOperator.region);
+  const operatorInfo = useSelector(state => state.newOperator.newOperator.region);
 
   const [region, setregion] = useState({
     coordinates: {

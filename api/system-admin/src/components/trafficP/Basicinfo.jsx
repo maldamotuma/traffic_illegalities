@@ -7,7 +7,7 @@ const Basicinfos = () => {
   
   const dispatch = useDispatch();
   const { add_traffic_police } = bindActionCreators( trafficPActionBinders, dispatch);
-  const operatorInfo = useSelector(state => state.newTrafficPolice);
+  const operatorInfo = useSelector(state => state.newTrafficPolice.newTrafficPolice);
 
   return (
     <Basicinfo add_operator={add_traffic_police} operatorInfo={operatorInfo}/>

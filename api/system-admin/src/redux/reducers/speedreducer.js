@@ -1,4 +1,4 @@
-import { ADDNEWSPEED, ADDNEWSPEEDCOORDINATES, DELETECOORDINATE } from "../ActionTypes";
+import { ADDNEWSPEED, ADDNEWSPEEDCOORDINATES, DELETECOORDINATE, SPEEDLIMITSLIST } from "../ActionTypes";
 
 const initialState = {
     newSpeed: {
@@ -20,6 +20,8 @@ export const speed_reducer = (state = initialState, action) => {
                 ...state,
                 newSpeed: { ...state.newSpeed, coordinates: [...tmpCoordinates] }
             }
+        case SPEEDLIMITSLIST:
+            return {...state, speedlimits: action.payload}
         default:
             return state;
     }

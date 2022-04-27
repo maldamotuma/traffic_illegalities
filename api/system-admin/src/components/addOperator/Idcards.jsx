@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Idcards() {
 
-  const personId = useSelector(state => state.newOperator.identificationCard);
+  const personId = useSelector(state => state.newOperator.newOperator.identificationCard);
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>

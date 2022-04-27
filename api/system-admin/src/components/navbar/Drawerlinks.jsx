@@ -21,6 +21,7 @@ const Drawerlinks = () => {
                 Icon={SupportAgentIcon}
                 submenus={[
                     { title: 'Add Operator', address: '/add-operator' },
+                    { title: 'Operators List', address: '/operator-list' },
                 ]}
             />
             <Dropdownist
@@ -43,6 +44,7 @@ const Drawerlinks = () => {
                 Icon={Traffic}
                 submenus={[
                     { title: 'Add Traffic Police', address: '/add-traffic-police' },
+                    { title: "Traffic Police List", address: "/traffic-polices"}
                 ]}
             />
             <Dropdownist
@@ -50,6 +52,7 @@ const Drawerlinks = () => {
                 Icon={Speed}
                 submenus={[
                     { title: 'Add Speed Region', address: '/add-speed-region' },
+                    { title: 'Speed limits list', address: '/speed-limits' },
                 ]}
             />
         </>

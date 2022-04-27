@@ -19,6 +19,9 @@ import AddCar from '../screens/AddCar.jsx';
 import CarList from '../screens/CarList';
 import AddTrafficPolice from '../screens/AddTrafficPolice';
 import AddSpeed from '../screens/AddSpeed';
+import OperatorList from '../screens/OperatorList';
+import TrafficPoliceList from '../screens/TrafficPoliceList';
+import SpeedLimits from '../screens/SpeedLimits';
 
 const routesList = [
     // { path: '/login', element: <Login /> },
@@ -29,9 +32,12 @@ const routesList = [
             { path: '/add-operator', element: <AddOperator /> },
             { path: '/add-car', element: <AddCar /> },
             { path: '/car-list', element: <CarList /> },
+            { path: '/operator-list', element: <OperatorList /> },
             { path: '/add-system-admin', element: <AddSystemAdmin /> },
             { path: '/add-speed-region', element: <AddSpeed /> },
+            { path: '/speed-limits', element: <SpeedLimits /> },
             { path: '/add-traffic-police', element: <AddTrafficPolice /> },
+            { path: '/traffic-polices', element: <TrafficPoliceList /> },
             { path: '/create-new-password', element: <CreateNewPassword /> },
             { path: '/change-password', element: <ChangePassword /> },
         ]

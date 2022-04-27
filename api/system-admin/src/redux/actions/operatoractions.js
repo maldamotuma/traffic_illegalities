@@ -1,4 +1,4 @@
-import { ADDOPERATOR, SUBMITOPERATOR } from "../ActionTypes";
+import { ADDOPERATOR, SUBMITOPERATOR, FETCHOPERATORerator, FETCHOPERATORS } from "../ActionTypes";
 import axios from "../caxios";
 import { formdataGenerator } from "./helper";
 
@@ -10,7 +10,7 @@ export const add_operator = operator => dispatch => {
 }
 
 export const submit_operator = (setscreen) => (dispatch, getState) => {
-    const operator = getState().newOperator;
+    const operator = getState().newOperator.newOperator;
     // const formdata = new FormData();
     // for(const key in operator) {
     //     formdata.append(key, operator[key]);
@@ -43,4 +43,14 @@ export const submit_operator = (setscreen) => (dispatch, getState) => {
             }, 2000);
         }
     });
+}
+
+export const fetch_operators = () => async dispatch => {
+    const res = await axios.get("/operators");
+    if (res.data.success === 1) {
+        dispatch({
+            type: FETCHOPERATORS,
+            payload: res.data.operators
+        });
+    }
 }

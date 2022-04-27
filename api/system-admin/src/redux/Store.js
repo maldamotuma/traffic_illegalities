@@ -8,6 +8,7 @@ import { message_reducer } from './reducers/messageReducers';
 import { track_reducer } from './reducers/trackreducer';
 import { trafficpolice_reducer } from './reducers/trafficpolicereducer';
 import { speed_reducer } from './reducers/speedreducer';
+import { carReducer } from "./reducers/carReducer";
 
 const initialState = {
     user: -1,
@@ -23,7 +24,8 @@ const store = createStore(
         conversations: message_reducer,
         track: track_reducer,
         newTrafficPolice: trafficpolice_reducer,
-        speed: speed_reducer
+        speed: speed_reducer,
+        newCar: carReducer
     }),
     initialState,
     composeEnhancer(applyMiddleware(thunk))

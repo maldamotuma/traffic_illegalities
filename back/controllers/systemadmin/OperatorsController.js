@@ -24,3 +24,14 @@ module.exports.addOperator = async (req, res) => {
         sendServerError(res);
     }
 }
+
+module.exports.operators = async (req, res) => {
+    try {
+        const operators = await OpratorSchema.find({}).exec();
+        // operators = operators.toObject({virtuals: true});
+        sendRespose(res, {operators});
+    } catch (error) {
+        console.log(error);
+        sendServerError(res);
+    }
+}

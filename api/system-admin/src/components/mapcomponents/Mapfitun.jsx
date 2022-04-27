@@ -9,7 +9,7 @@ import * as speedActionCreators from "../../redux/actions/speedactions";
 
 const center = { lat: 8.564339, lng: 39.289629 };
 
-function Mapfitun({ filtersView, track, setregion, region, polygon }) {
+function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits }) {
   const [bounds, setBounds] = useState(null);
 
   const mapref = useRef();
@@ -123,11 +123,26 @@ function Mapfitun({ filtersView, track, setregion, region, polygon }) {
               options={{
                 fillColor: "#007fff",
                 fillOpacity: .5,
-                // visible: region.show,
+                visible: polygon.show,
                 strokeColor: "#007fff",
                 strokeWeight: 1
               }}
             />
+          }
+          {
+            speedlimits &&
+            speedlimits.map(limit => (
+              <Polygon
+                paths={limit.region}
+                options={{
+                  fillColor: "#007fff",
+                  fillOpacity: .5,
+                  visible: true,
+                  strokeColor: "#007fff",
+                  strokeWeight: 1
+                }}
+              />
+            ))
           }
         </GoogleMap>
       </LoadScript>

@@ -26,6 +26,7 @@ const mongoose = require('mongoose');
 //  const Systemadmin = require('./models/Systemadmin');
 //  const Operator = require('./models/Oprator');
 const Conversation = require('./models/Conversation');
+const Speed = require('./models/Speed');
 // const { id } = require('date-fns/locale');
 /** end of model configuration */
 
