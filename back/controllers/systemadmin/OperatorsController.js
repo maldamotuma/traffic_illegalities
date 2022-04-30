@@ -35,3 +35,13 @@ module.exports.operators = async (req, res) => {
         sendServerError(res);
     }
 }
+
+module.exports.operator = async (req, res) => {
+    try {
+        const operator = await OpratorSchema.findOne({_id: req.params.id}).exec();
+        sendRespose(res, {operator});
+    } catch (error) {
+        console.log(error);
+        sendServerError(res);
+    }
+}

@@ -1,4 +1,4 @@
-import { ADDOPERATOR, SUBMITOPERATOR, FETCHOPERATORerator, FETCHOPERATORS } from "../ActionTypes";
+import { ADDOPERATOR, SUBMITOPERATOR, FETCHSINGLEOPERATOR, FETCHOPERATORS } from "../ActionTypes";
 import axios from "../caxios";
 import { formdataGenerator } from "./helper";
 
@@ -51,6 +51,16 @@ export const fetch_operators = () => async dispatch => {
         dispatch({
             type: FETCHOPERATORS,
             payload: res.data.operators
+        });
+    }
+}
+
+export const get_operator = opid => async dispatch => {
+    const res = await axios.get(`/operator/${opid}`);
+    if (res.data.success === 1) {
+        dispatch({
+            type: FETCHSINGLEOPERATOR,
+            payload: res.data.operator
         });
     }
 }

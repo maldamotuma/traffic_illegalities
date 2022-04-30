@@ -1,4 +1,4 @@
-import { ADDOPERATOR, FETCHOPERATORS, SUBMITOPERATOR } from "../ActionTypes";
+import { ADDOPERATOR, FETCHOPERATORS, SUBMITOPERATOR, FETCHSINGLEOPERATOR } from "../ActionTypes";
 
 const initialState = {
     newOperator: {
@@ -20,6 +20,8 @@ export const OperatorReducers = (state = initialState, action) => {
             return initialState;
         case FETCHOPERATORS:
             return { ...state, operators: action.payload }
+        case FETCHSINGLEOPERATOR:
+            return {...state, operator: action.payload}
         default:
             return state;
     }
