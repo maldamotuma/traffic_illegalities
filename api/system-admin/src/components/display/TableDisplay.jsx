@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 
 export default function TableDisplay(props) {
@@ -39,7 +40,7 @@ export default function TableDisplay(props) {
         boxShadow: 3
       }}>
         <Typography textAlign={"center"} lineHeight={"50px"} fontWeight={900} color={"#fff"}>
-          { title }
+          {title}
         </Typography>
       </Box>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -67,9 +68,11 @@ export default function TableDisplay(props) {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number'
-                            ? column.format(value)
-                            : value}
+                          <Link to={`/edit-operator/${row._id}`}>
+                            {column.format && typeof value === 'number'
+                              ? column.format(value)
+                              : value}
+                          </Link>
                         </TableCell>
                       );
                     })}

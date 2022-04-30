@@ -9,7 +9,7 @@ import Mainpage from '../screens/Mainpage';
 import Activesession from '../screens/Activesession';
 import AddOperator from '../screens/AddOperator';
 import AddSystemAdmin from '../screens/AddSystemAdmin';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { checkAuth } from '../redux/actions/authactions';
 import FullscreenBackDrop from './FullscreenBackDrop';
 import CreateNewPassword from '../screens/CreateNewPassword';
@@ -22,6 +22,9 @@ import AddSpeed from '../screens/AddSpeed';
 import OperatorList from '../screens/OperatorList';
 import TrafficPoliceList from '../screens/TrafficPoliceList';
 import SpeedLimits from '../screens/SpeedLimits';
+import MainDisplay from '../components/singleDisplay/MainDIsplay';
+import EditOperator from '../screens/EditOperator';
+import Index from './tryassignment/Index';
 
 const routesList = [
     // { path: '/login', element: <Login /> },
@@ -40,6 +43,10 @@ const routesList = [
             { path: '/traffic-polices', element: <TrafficPoliceList /> },
             { path: '/create-new-password', element: <CreateNewPassword /> },
             { path: '/change-password', element: <ChangePassword /> },
+            { path: '/edit-operator/:id', element: <EditOperator /> },
+            { path: '/single-display', element: <MainDisplay /> },
+
+            { path: '/try', element: <Index /> },
         ]
     },
 ];
