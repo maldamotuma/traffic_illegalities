@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { parse, stringify, toJSON, fromJSON } from 'flatted';
-import { GoogleMap, LoadScript, Marker, DrawingManager, Polygon, Circle } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, DrawingManager, Polygon, Circle, InfoBox } from '@react-google-maps/api';
 import OnmapOptions from './OnmapOptions';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -9,7 +9,7 @@ import * as speedActionCreators from "../../redux/actions/speedactions";
 
 const center = { lat: 8.564339, lng: 39.289629 };
 
-function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits }) {
+function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits, assignment }) {
   const [bounds, setBounds] = useState(null);
 
   const mapref = useRef();
@@ -143,6 +143,35 @@ function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits 
                 }}
               />
             ))
+          }
+          {
+            assignment &&
+            <>
+              {
+                assignment.cars.map(car => <Marker
+                  position={{ lat: car.lat, lng: car.lng }}
+                  icon={assignment.assignment.car === car._id ? "/smallcarbordered.png" : "/smallcar.png"}
+                  onClick={() => assignment.handleClick(car._id)} />)
+              }
+              {
+                assignment.traffics.map(traffic => <Marker
+                  position={{ lat: traffic.lat, lng: traffic.lng }} icon={assignment.assignment.traffic === traffic._id ? "/trafficpolicebordered.png" : "/trafficpolice.png"}
+                  onClick={() => assignment.handleAssign(traffic._id)}>
+                  <InfoBox
+                    // onLoad={onLoad}
+                    // options={options}
+                    position={traffic}
+                  >
+                    <div style={{ backgroundColor: '#0099ff', color: "#fff",  padding: 5 }}>
+                      <div style={{ fontSize: 16, fontColor: `#08233B` }}>
+                        waiting: 5 <br />
+                        holding: 2
+                      </div>
+                    </div>
+                  </InfoBox>
+                </Marker>)
+              }
+            </>
           }
         </GoogleMap>
       </LoadScript>
