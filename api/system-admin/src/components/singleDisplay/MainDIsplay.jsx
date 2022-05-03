@@ -9,14 +9,15 @@ import {
 import LeftContent from './LeftContent';
 import RightContent from './RightContent';
 import {
-  Edit
+  Edit,
+  Save
 } from "@mui/icons-material";
 
 const MainDIsplay = (props) => {
-  const { children } = props;
+  const { children, edit, setedit } = props;
   return (
     <>
-      <Container maxWidth={"xl"} sx={{position: "relative", mt: 2}}>
+      <Container maxWidth={"xl"} sx={{ position: "relative", mt: 2 }}>
         <Box sx={{
           // textAlign: "center",
           my: 1,
@@ -24,11 +25,14 @@ const MainDIsplay = (props) => {
           top: "-25px",
           left: "0"
         }}>
-          <IconButton color={"secondary"} sx={{
-            bgcolor: "#fff",
-            boxShadow: 1
-          }}>
-            <Edit />
+          <IconButton color={edit ? "primary" : "secondary"}
+            sx={{
+              bgcolor: "#fff",
+              boxShadow: 1
+            }}
+            onClick={() => setedit(!edit)}
+          >
+            {edit ? <Save /> : <Edit />}
           </IconButton>
         </Box>
         <Paper sx={{ p: 3 }}>

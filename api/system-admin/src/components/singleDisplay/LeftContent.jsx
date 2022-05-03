@@ -13,17 +13,18 @@ import {
 } from "@mui/icons-material";
 
 const LeftContent = (props) => {
-  const { labelData, pp } = props;
+  const { labelData, pp, edit } = props;
   const [hover, sethover] = useState(false);
   const ppPath = process.env.REACT_APP_SERVER;
   return (
     <Box sx={{
       borderRight: "1px solid #ccc",
-      pr: 5
+      pr: 5,
+      flex: 1
     }}>
       <Box sx={{ position: "relative" }}
-        onMouseEnter={() => sethover(true)}
-        onMouseLeave={() => sethover(false)}
+        onMouseEnter={() => edit ? sethover(true) : null}
+        onMouseLeave={() => edit ? sethover(false) : null}
       >
         <Box
           component={"img"}
@@ -59,7 +60,7 @@ const LeftContent = (props) => {
       <Divider />
       <Box sx={{ my: 2 }}>
         {
-          labelData.map(ld => <SingleInfoLabel data={ld}/>)
+          labelData.map(ld => <SingleInfoLabel data={ld} edit={edit}/>)
         }
         {/* <SingleInfoLabel />
         <SingleInfoLabel />

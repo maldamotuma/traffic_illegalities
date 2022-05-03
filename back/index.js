@@ -4,6 +4,7 @@ const { Server } = require("socket.io");
 const databaseConfiguration = require('./config/database');
 const AdminRouter = require('./routes/systemadmin/authroute');
 const UserRouter = require('./routes/userroute');
+const OperatorRouter = require('./routes/operatorroute');
 const cors = require('cors');
 const app = express();
 const httpServer = createServer(app);
@@ -43,6 +44,8 @@ const systemAdminCorsConfig = {
 app.use('/sa', cors(systemAdminCorsConfig));
 app.use('/sa', AdminRouter);
 app.use('/user', UserRouter);
+app.use('/operator', cors(systemAdminCorsConfig));
+app.use('/operator', OperatorRouter);
 
 /**
  * database configuration

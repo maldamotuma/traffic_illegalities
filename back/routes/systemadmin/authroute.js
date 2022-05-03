@@ -8,7 +8,7 @@ const { addOfficeTraffic } = require('../../controllers/systemadmin/OfficeTraffi
 const { addCar, cars } = require('../../controllers/systemadmin/CarsController');
 const { addSystemAdmin, getConversation } = require('../../controllers/systemadmin/SystemAdminsControllor');
 const { addDriverOwner } = require('../../controllers/systemadmin/DriverandorOwnersController');
-const multer  = require('multer');
+const multer = require('multer');
 const { addSpeed, speedLimits } = require('../../controllers/systemadmin/SpeedController');
 
 const operatorProfile = "./pictures/profile/operator";
@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         let extArray = file.mimetype.split("/");
         let extension = extArray.pop();
-        cb(null, Date.now()+`.${extension}`);
+        cb(null, req.user._id + Math.ceil(Math.random() * 99999) + Date.now() + `.${extension}`);
     }
 });
 
@@ -34,7 +34,7 @@ const carStorage = multer.diskStorage({
     filename: (req, file, cb) => {
         let extArray = file.mimetype.split("/");
         let extension = extArray.pop();
-        cb(null, Date.now()+`.${extension}`);
+        cb(null, Date.now() + `.${extension}`);
     }
 });
 
@@ -45,12 +45,12 @@ const traffic_police_storage = multer.diskStorage({
     filename: (req, file, cb) => {
         let extArray = file.mimetype.split("/");
         let extension = extArray.pop();
-        cb(null, Date.now()+`.${extension}`);
+        cb(null, req.user._id + Math.random() * 99999 + Date.now() + `.${extension}`);
     }
 });
 const upload = multer({ storage });
-const traffic_upload = multer({ storage:  traffic_police_storage});
-const car_upload = multer({ storage:  carStorage});
+const traffic_upload = multer({ storage: traffic_police_storage });
+const car_upload = multer({ storage: carStorage });
 
 
 router.post('/signin', signIn);
@@ -75,6 +75,6 @@ router.post('/add-driver-owner', VerifyAuth, addDriverOwner);
 router.get('/auth-user', VerifyAuth, currentUser);
 router.get('/get-conversation', VerifyAuth, getConversation);
 
-router.post('/testauth', VerifyAuth,test);
+router.post('/testauth', VerifyAuth, test);
 
 module.exports = router;
