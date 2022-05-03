@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     useParams
@@ -10,6 +10,7 @@ import RightContent from '../components/singleDisplay/RightContent';
 import * as operatorActionCreators from "../redux/actions/operatoractions";
 
 const EditOperator = () => {
+    const [edit, setedit] = useState(false);
     const params = useParams();
     const dispatch = useDispatch();
     const { get_operator } = bindActionCreators(operatorActionCreators, dispatch);
@@ -42,17 +43,18 @@ const EditOperator = () => {
     }, []);
 
     const region = operator?.region;
-    const pp = "/pictures/profile/operator/" + operator?.profilePicture;
+    const pp = "/profile/operator/" + operator?.profilePicture;
 
     return (
         <div>
-            <MainDIsplay>
-                <LeftContent labelData={toObject()} pp={pp} />
+            <MainDIsplay edit={edit} setedit={setedit}>
+                <LeftContent labelData={toObject()} pp={pp} edit={edit}/>
                 <RightContent
                     idInfo={toObjectID()}
                     region={region}
                     IDPhotos={operator?.identificationCard?.photos}
-                    PIC_PATH={"pictures/IDs/operator"}
+                    PIC_PATH={"IDs/operator"}
+                    edit={edit}
                 />
             </MainDIsplay>
         </div>

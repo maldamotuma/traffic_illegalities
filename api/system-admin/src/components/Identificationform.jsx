@@ -22,7 +22,7 @@ const theme = createTheme();
 export default function Identificationform() {
   const dispatch = useDispatch();
   const { add_operator } = bindActionCreators(operatorActionBinders, dispatch);
-  const personId = useSelector(state => state?.newOperator.identificationCard);
+  const personId = useSelector(state => state?.newOperator.newOperator.identificationCard);
 
   const handleSubmit = (event) => {
     event.preventDefault();

@@ -9,12 +9,12 @@ import Mapfitun from "../mapcomponents/Mapfitun";
 import SingleInfoLabel from './SingleInfoLabel';
 
 const RightContent = (props) => {
-  const { idInfo, region, IDPhotos, PIC_PATH } = props;
+  const { idInfo, region, IDPhotos, PIC_PATH, edit } = props;
   const PICTURE_SERVER = process.env.REACT_APP_SERVER;
   return (
     <Box sx={{
       pl: 5,
-      width: "100%",
+      flex: 5
     }}>
       <Stack
         gap={1}
@@ -36,10 +36,10 @@ const RightContent = (props) => {
           <Stack direction={"row"} alignItems={"start"} gap={3}>
             <Box>
               {
-                idInfo?.map(ii => <SingleInfoLabel data={ii} />)
+                idInfo?.map(ii => <SingleInfoLabel data={ii} edit={edit} />)
               }
             </Box>
-            <Box>
+            <Stack direction={"row"} alignItems={"start"}>
               {
                 IDPhotos?.map(photo => (
                   <Box
@@ -51,7 +51,7 @@ const RightContent = (props) => {
                   />
                 ))
               }
-            </Box>
+            </Stack>
           </Stack>
         </Box>
       </Stack>

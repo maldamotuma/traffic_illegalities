@@ -54,12 +54,18 @@ const OpratorSchema = new mongoose.Schema({
     assignedBy: {
         type: mongoose.Types.ObjectId,
         ref: 'Systemadmin',
-    }
+    },
+    activeSessions: [{
+        token: String,
+        dateTime: Date,
+        userAgent: String,
+        Os: String
+    }],
 }, { timestamps: true });
 
-OpratorSchema.virtual("full_name").get(function() {
-    return this.name.first + " " + this.name.last;
-});
+// OpratorSchema.virtual("full_name").get(function() {
+//     return this.name.first + " " + this.name.last;
+// });
 
 const Operator = mongoose.model('Operator', OpratorSchema);
 
