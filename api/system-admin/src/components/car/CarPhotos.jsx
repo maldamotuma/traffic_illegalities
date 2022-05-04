@@ -16,7 +16,7 @@ import * as carActionCreators from "../../redux/actions/carActions";
 const DropDOwn = () => {
     const dispatch = useDispatch();
     const { add_car_info } = bindActionCreators(carActionCreators, dispatch);
-    const images = useSelector(state => state.newCar.photos);
+    const images = useSelector(state => state.newCar?.newCar.photos);
     return (
         <Box sx={{
             width: '80%',
