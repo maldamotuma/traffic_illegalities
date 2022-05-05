@@ -8,11 +8,13 @@ import { handleCarClick, handleTrafficClick } from './assignmentactions';
 function Mapfitun() {
     const [assignment, setassignment] = useState({ car: null, traffic: null });
     const region = useSelector(state => state.user?.region);
+    const { cars, traffics } = useSelector(state => state.track);
+    const carSocket = useSelector(state => state.socket?.car);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(addTrack({cars: [1,2,3]}));
-    }, [])
+    // useEffect(() => {
+    //     dispatch(addTrack({cars: [1,2,3]}));
+    // }, [])
     const containerStyle = {
         width: '100%',
         height: `calc(100vh - ${64}px)`,
@@ -23,14 +25,10 @@ function Mapfitun() {
         
     }
 
-    const cars = [
-        { _id: 1, lat: 8.558635, lng: 39.285559 },
-        { _id: 2, lat: 8.558468, lng: 39.285959 },
-    ];
-    const traffics = [
-        { _id: 1, lat: 8.558762, lng: 39.285221 },
-        { _id: 2, lat: 8.557807, lng: 39.287571 }
-    ];
+    const handleAssignment = (traffic) => {
+        carSocket.emit("car_assignment", `tr_${traffic}`,`ca_${assignment.car}`)
+    }
+
     return (
         <>
             <LoadScript
@@ -66,7 +64,7 @@ function Mapfitun() {
                         cars.map(car => <Marker position={car} icon={assignment.car === car._id ? "/smallcarbordered.png" : "/smallcar.png"} onClick={() => handleCarClick(assignment, setassignment, car._id) }/>)
                     }
                     {
-                        traffics.map(traffic => <Marker position={traffic} icon={assignment.traffic === traffic._id ? "/trafficpolicebordered.png" : "/trafficpolice.png"} onClick={() => handleTrafficClick(assignment, setassignment, traffic._id)}/>)
+                        traffics.map(traffic => <Marker position={traffic} icon={assignment.traffic === traffic._id ? "/trafficpolicebordered.png" : "/trafficpolice.png"} onClick={() => handleTrafficClick(assignment, setassignment, traffic._id, handleAssignment)}/>)
                     }
                 </GoogleMap>
             </LoadScript>

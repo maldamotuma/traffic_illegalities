@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Basicinfo from './BasicInfo.tsx';
+import Basicinfo from './BasicInfo';
 import CarOwner from './CarOwner';
 import CarPhotos from './CarPhotos';
 import FormStepper from '../commonForm/FormStepper';
