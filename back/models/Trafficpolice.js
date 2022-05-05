@@ -47,7 +47,13 @@ const TrafficPoliceSchema = new mongoose.Schema({
     assignedBy: {
         type: mongoose.Types.ObjectId,
         ref: 'Systemadmin',
-    }
+    },
+    activeSessions: [{
+        token: String,
+        dateTime: Date,
+        userAgent: String,
+        Os: String
+    }],
 }, { timestamps: true });
 
 const Trafficpolice = mongoose.model('Trafficpolice', TrafficPoliceSchema);

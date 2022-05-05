@@ -9,10 +9,13 @@ export const socketSlice = createSlice({
     reducers: {
         setUserSocket(state, { payload }) {
             state.user = payload
+        },
+        setCarSocket(state, { payload }) {
+            state.car = payload
         }
     }
 });
 
-export const { setUserSocket } = socketSlice.actions;
+export const { setUserSocket, setCarSocket } = socketSlice.actions;
 
 export default socketSlice.reducer;

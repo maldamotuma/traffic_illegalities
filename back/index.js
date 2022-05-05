@@ -5,6 +5,7 @@ const databaseConfiguration = require('./config/database');
 const AdminRouter = require('./routes/systemadmin/authroute');
 const UserRouter = require('./routes/userroute');
 const OperatorRouter = require('./routes/operatorroute');
+const TraffcPoliceRouter = require("./routes/trafficPoliceRoute");
 const cors = require('cors');
 const app = express();
 const httpServer = createServer(app);
@@ -22,6 +23,7 @@ let onlineUsers = [];
 
 const mongoose = require('mongoose');
 const UserOperator = require('./models/Useroperator');
+const { info } = require('./controllers/generalController');
 
 /**
  * model configuration
@@ -47,6 +49,7 @@ app.use('/sa', AdminRouter);
 app.use('/user', UserRouter);
 app.use('/operator', cors(systemAdminCorsConfig));
 app.use('/operator', OperatorRouter);
+app.use('/traffic-police', TraffcPoliceRouter);
 
 /**
  * database configuration
@@ -58,6 +61,7 @@ databaseConfiguration()
 app.get('/', (req, res) => {
     res.send('hello from simple server ');
 });
+app.get('/info', info);
 const userOperatorSocket = io.of('/userOperator');
 userOperatorSocket.on("connection", (socket) => {
     socket.on("join", (id) => {
@@ -76,7 +80,6 @@ userOperatorSocket.on("connection", (socket) => {
         tmpconversation.messages.push(message);
         const newMessage = await tmpconversation.save();
 
-        console.log(message);
         userOperatorSocket.to(receiver).emit('receive_message', { _id: conversation._id, message });
     });
     // socket.on("send_message", (conv_id, receiver) => {
@@ -87,17 +90,14 @@ userOperatorSocket.on("connection", (socket) => {
 const carSocket = io.of('/car');
 carSocket.on("connection", (socket) => {
     console.log('Car connected!!!');
-    socket.on("info", (id, speed, lat, long) => {
-        console.log("ID: " + id);
-        console.log("speed: " + speed);
-        console.log("long: " + long);
-        console.log("lat: " + lat);
-        carSocket.emit('track_car', {
-            id,
-            speed,
-            lat,
-            long
-        });
+    socket.on("join", (id) => {
+        socket.join("op_" + id);
+    });
+    socket.on("os_inform", (car_obj, receiver) => {
+        carSocket.to(receiver).emit('track_car', car_obj);
+    });
+    socket.on("car_assignment", (traffic, car) => {
+        console.log(traffic, car);
     });
 });
 io.on("connection", (socket) => {

@@ -19,7 +19,7 @@ const Index = () => {
 	// const { add_new_message } = bindActionCreators(messageActions, dispatch);
 	const { user, conversations} = useSelector(state => state);
 	useEffect(()=>{
-		dispatch(setUserSocket(UserSocket));
+		// dispatch(setUserSocket(UserSocket));
         UserSocket.emit("join", user._id);
 		UserSocket.on("receive_message", (conv) => {
 			dispatch(newMessage(conv));

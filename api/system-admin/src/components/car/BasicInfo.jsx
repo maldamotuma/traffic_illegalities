@@ -20,7 +20,7 @@ export default function Basicinfo() {
 
   const dispatch = useDispatch();
   const { add_car_info } = bindActionCreators(carActionCreators, dispatch);
-  const carInfo = useSelector(state => state.newCar);
+  const carInfo = useSelector(state => state.newCar?.newCar);
 
   return (
     <React.Fragment>
@@ -36,7 +36,7 @@ export default function Basicinfo() {
             label="Car Name"
             fullWidth
             variant="standard"
-            value={carInfo.name}
+            value={carInfo?.name}
             onChange={e => add_car_info({name: e.target.value })}
           />
         </Grid>
@@ -48,7 +48,7 @@ export default function Basicinfo() {
             label="Car Type"
             fullWidth
             variant="standard"
-            value={carInfo.type}
+            value={carInfo?.type}
             onChange={e => add_car_info({type: e.target.value })}
           />
         </Grid>
@@ -60,7 +60,7 @@ export default function Basicinfo() {
             label="Plate"
             fullWidth
             variant="standard"
-            value={carInfo.platenumber}
+            value={carInfo?.platenumber}
             onChange={e => add_car_info({platenumber: e.target.value })}
           />
         </Grid>
@@ -71,7 +71,7 @@ export default function Basicinfo() {
             label="Community"
             fullWidth
             variant="standard"
-            value={carInfo.level?.community}
+            value={carInfo?.level?.community}
             onChange={e => add_car_info({level: { ...carInfo.level, community: e.target.value } })}
           />
         </Grid>
@@ -82,7 +82,7 @@ export default function Basicinfo() {
             label="Level"
             fullWidth
             variant="standard"
-            value={carInfo.level?.level}
+            value={carInfo?.level?.level}
             onChange={e => add_car_info({level: { ...carInfo.level, level: e.target.value } })}
           />
         </Grid>
