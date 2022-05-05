@@ -15,6 +15,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
 import Drawerlinks from './Drawerlinks';
 import Navbar from './Navbar';
+import Index from '../chat/Index';
 // import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 // import { connect } from 'react-redux';
 // import { cancelNotifyFixed } from '../redux/actions/helperActions'
@@ -118,6 +119,7 @@ const Mainpage = ({close}) => {
   return (
     <>
       {/* <Chat /> */}
+      <Index />
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="fixed" open={open} elevation={0} xs={{ bgColor: '#fff' }}>
