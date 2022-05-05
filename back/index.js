@@ -21,6 +21,7 @@ const io = new Server(httpServer, {
 let onlineUsers = [];
 
 const mongoose = require('mongoose');
+const UserOperator = require('./models/Useroperator');
 
 /**
  * model configuration
@@ -56,6 +57,31 @@ databaseConfiguration()
 
 app.get('/', (req, res) => {
     res.send('hello from simple server ');
+});
+const userOperatorSocket = io.of('/userOperator');
+userOperatorSocket.on("connection", (socket) => {
+    socket.on("join", (id) => {
+        socket.join("op_" + id);
+    });
+    socket.on("user_join", (id) => {
+        socket.join("us_" + id);
+    });
+    socket.on("send_message", async(conversation, receiver) => {
+        const message = {
+            sender: conversation.sender,
+            receiver: conversation.receiver,
+            text: conversation.text
+        };
+        const tmpconversation = await UserOperator.findOne({ _id: conversation._id });
+        tmpconversation.messages.push(message);
+        const newMessage = await tmpconversation.save();
+
+        console.log(message);
+        userOperatorSocket.to(receiver).emit('receive_message', { _id: conversation._id, message });
+    });
+    // socket.on("send_message", (conv_id, receiver) => {
+    //     userOperatorSocket.to(receiver).emit('receive_message', conversation);
+    // });
 });
 
 const carSocket = io.of('/car');
