@@ -10,6 +10,7 @@ const { addSystemAdmin, getConversation } = require('../../controllers/systemadm
 const { addDriverOwner } = require('../../controllers/systemadmin/DriverandorOwnersController');
 const multer = require('multer');
 const { addSpeed, speedLimits } = require('../../controllers/systemadmin/SpeedController');
+const { userOwner } = require('../../controllers/systemadmin/userscontroller');
 
 const operatorProfile = "./pictures/profile/operator";
 const operatorID = "./pictures/IDs/operator";
@@ -74,6 +75,7 @@ router.post('/add-system-admin', VerifyAuth, addSystemAdmin);
 router.post('/add-driver-owner', VerifyAuth, addDriverOwner);
 router.get('/auth-user', VerifyAuth, currentUser);
 router.get('/get-conversation', VerifyAuth, getConversation);
+router.get('/user-owner', VerifyAuth, userOwner)
 
 router.post('/testauth', VerifyAuth, test);
 

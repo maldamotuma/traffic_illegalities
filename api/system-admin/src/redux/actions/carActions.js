@@ -3,12 +3,13 @@ import axios from "../caxios";
 import { formdataGenerator } from "./helper";
 
 export const register_car = setScreen => (dispatch, getState) => {
-    const car = getState().newCar.newCar;
+    let car = getState().newCar.newCar;
+    car.owner = car.owner._id;
     const formdata = formdataGenerator(car);
     axios.post("/add-car", formdata).then(res => {
         if (res.data.success === 1) {
             setScreen("success");
-        }else {
+        } else {
             setScreen("form");
         }
     });

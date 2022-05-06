@@ -24,17 +24,21 @@ let onlineUsers = [];
 const mongoose = require('mongoose');
 const UserOperator = require('./models/Useroperator');
 const { info } = require('./controllers/generalController');
+const { UseOperatorEvent } = require('./eventhandlers/UserOperator');
+const { carEvents } = require('./eventhandlers/car');
 
 /**
  * model configuration
  */
-//  const Systemadmin = require('./models/Systemadmin');
-// const Operator = require('./models/Oprator');
-// const Conversation = require('./models/Conversation');
-// const Speed = require('./models/Speed');
-// const User = require('./models/User');
-// const Useroperator = require('./models/Useroperator');
-// const { id } = require('date-fns/locale');
+const Systemadmin = require('./models/Systemadmin');
+const Operator = require('./models/Oprator');
+const Conversation = require('./models/Conversation');
+const Speed = require('./models/Speed');
+const User = require('./models/User');
+const Useroperator = require('./models/Useroperator');
+const Record = require('./models/Record');
+const Rule = require('./models/Rule');
+
 /** end of model configuration */
 
 app.use(require('cookie-parser')());
@@ -62,44 +66,17 @@ app.get('/', (req, res) => {
     res.send('hello from simple server ');
 });
 app.get('/info', info);
+
 const userOperatorSocket = io.of('/userOperator');
 userOperatorSocket.on("connection", (socket) => {
-    socket.on("join", (id) => {
-        socket.join("op_" + id);
-    });
-    socket.on("user_join", (id) => {
-        socket.join("us_" + id);
-    });
-    socket.on("send_message", async(conversation, receiver) => {
-        const message = {
-            sender: conversation.sender,
-            receiver: conversation.receiver,
-            text: conversation.text
-        };
-        const tmpconversation = await UserOperator.findOne({ _id: conversation._id });
-        tmpconversation.messages.push(message);
-        const newMessage = await tmpconversation.save();
-
-        userOperatorSocket.to(receiver).emit('receive_message', { _id: conversation._id, message });
-    });
-    // socket.on("send_message", (conv_id, receiver) => {
-    //     userOperatorSocket.to(receiver).emit('receive_message', conversation);
-    // });
+    UseOperatorEvent(socket, userOperatorSocket);
 });
 
 const carSocket = io.of('/car');
 carSocket.on("connection", (socket) => {
-    console.log('Car connected!!!');
-    socket.on("join", (id) => {
-        socket.join("op_" + id);
-    });
-    socket.on("os_inform", (car_obj, receiver) => {
-        carSocket.to(receiver).emit('track_car', car_obj);
-    });
-    socket.on("car_assignment", (traffic, car) => {
-        console.log(traffic, car);
-    });
+    carEvents(socket, carSocket);
 });
+
 io.on("connection", (socket) => {
     console.log('connected!!!');
     // io.emit('status', 'connected');
