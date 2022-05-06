@@ -4,11 +4,11 @@ import { newMessage } from "./chatapi";
 const initialState = [
     { _id: 1, name: { first: "malda", last: "motuma" } },
     { _id: 2, name: { first: "John", last: "Doe" } },
-    { _id: 3, name: { first: "Tesfae", last: "Gobena" } },
-    { _id: 4, name: { first: "Biruk", last: "Sebsibe" } },
-    { _id: 5, name: { first: "Robera", last: "Fanta" } },
-    { _id: 6, name: { first: "Burje", last: "Yohannis" } },
-    { _id: 7, name: { first: "Josh", last: "Eyasu" } },
+    // { _id: 3, name: { first: "Tesfae", last: "Gobena" } },
+    // { _id: 4, name: { first: "Biruk", last: "Sebsibe" } },
+    // { _id: 5, name: { first: "Robera", last: "Fanta" } },
+    // { _id: 6, name: { first: "Burje", last: "Yohannis" } },
+    // { _id: 7, name: { first: "Josh", last: "Eyasu" } },
 ];
 
 var messAudio = new Audio("sounds/message.mp3");

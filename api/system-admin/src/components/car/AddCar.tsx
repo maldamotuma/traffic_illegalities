@@ -15,7 +15,7 @@ export default function AddCar() {
     const components = [<Basicinfo />, <CarOwner />, <CarPhotos />];
     return (
         <FormStepper
-            title={"Add Traffic Police"}
+            title={"Add Car"}
             steps={steps}
             components={components}
             submitAction={register_car}

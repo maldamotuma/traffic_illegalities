@@ -1,7 +1,8 @@
 const Car = require("../../models/Car");
+const User = require("../../models/User");
 const { sendRespose, sendServerError } = require("../helpers/utils");
 
-module.exports.addCar = async (req, res) => {
+module.exports.addCar = async(req, res) => {
     try {
         const params = req.body;
         params.level = JSON.parse(params.level);
@@ -10,19 +11,21 @@ module.exports.addCar = async (req, res) => {
             params.photos.push(elmnt.filename)
         });
         const newCar = await Car.create({
-            ...params, assignedBy: req.user,
+            ...params,
+            assignedBy: req.user,
         });
-        sendRespose(res, newCar);
+        await User.updateOne({ _id: params.owner }, { $push: { ownedcars: newCar._doc._id } }).exec();
+        sendRespose(res, { newCar: newCar._doc });
     } catch (error) {
         console.log(error);
         sendServerError(res);
     }
 }
 
-module.exports.cars = async (req, res) => {
+module.exports.cars = async(req, res) => {
     try {
         const cars = await Car.find({}).exec();
-        sendRespose(res, {cars});
+        sendRespose(res, { cars });
     } catch (error) {
         console.log(error);
         sendServerError(res);

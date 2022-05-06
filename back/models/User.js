@@ -27,6 +27,22 @@ const UserSchema = new mongoose.Schema({
         expiryDate: Date,
         photos: [String]
     }],
+    driver_assignment_verification: [{
+        type: mongoose.Types.ObjectId,
+        ref: "Car.driver_assignment",
+    }],
+    driver_assignment: [{
+        car: {
+            type: mongoose.Types.ObjectId,
+            ref: "Car"
+        },
+        driver: {
+            type: mongoose.Types.ObjectId,
+            ref: "User"
+        },
+        verified_at: Date,
+        rejected_at: Date
+    }],
     password: String,
     status: {
         operator: {
