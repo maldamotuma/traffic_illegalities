@@ -38,6 +38,9 @@ const User = require('./models/User');
 const Useroperator = require('./models/Useroperator');
 const Record = require('./models/Record');
 const Rule = require('./models/Rule');
+const Crashlog = require('./models/Crashlog');
+const { logger_to_file } = require('./logger');
+const { sendServerError } = require('./controllers/helpers/utils');
 
 /** end of model configuration */
 
@@ -62,8 +65,13 @@ databaseConfiguration()
     /** end of database configuration */
 
 
-app.get('/', (req, res) => {
-    res.send('hello from simple server ');
+app.get('/', async(req, res) => {
+    try {
+        const ab = hello.get();
+        res.send('hello from simple server ');
+    } catch (error) {
+        sendServerError(res, error, "User");
+    }
 });
 app.get('/info', info);
 
