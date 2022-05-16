@@ -23,9 +23,13 @@ const RecordSchema = new mongoose.Schema({
     }],
     exact_violation: [String],
     driver_fault: Boolean,
-    consequences: [String],
+    consequences: [{
+        consequence_type: String,
+        measurement: String,
+        numeric_measurement: Number
+    }],
     arrested: [
-        { name: String, measurement: String }
+        { arrest_type: String, measurement: String }
     ]
 }, { timestamps: true });
 

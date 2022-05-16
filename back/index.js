@@ -14,7 +14,7 @@ const port = process.env.PORT;
 
 const io = new Server(httpServer, {
     cors: {
-        origin: ['http://localhost:3000', 'http://192.168.32.26:5000'],
+        origin: ['http://localhost:3000', '10.240.72.66:5000'],
         credentials: true
     }
 });
@@ -41,6 +41,7 @@ const Rule = require('./models/Rule');
 const Crashlog = require('./models/Crashlog');
 const { logger_to_file } = require('./logger');
 const { sendServerError } = require('./controllers/helpers/utils');
+const { downloadCrash } = require('./controllers/systemadmin/crashreport');
 
 /** end of model configuration */
 
@@ -48,7 +49,7 @@ app.use(require('cookie-parser')());
 app.use(express.static('pictures'));
 app.use(express.json());
 const systemAdminCorsConfig = {
-    origin: ['http://localhost:3000', 'http://192.168.32.26:5000'],
+    origin: ['http://localhost:3000', '10.240.72.66:5000'],
     credentials: true
 };
 app.use('/sa', cors(systemAdminCorsConfig));
@@ -67,8 +68,7 @@ databaseConfiguration()
 
 app.get('/', async(req, res) => {
     try {
-        const ab = hello.get();
-        res.send('hello from simple server ');
+        await Comment.get();
     } catch (error) {
         sendServerError(res, error, "User");
     }
@@ -87,7 +87,7 @@ carSocket.on("connection", (socket) => {
 
 io.on("connection", (socket) => {
     console.log('connected!!!');
-    // io.emit('status', 'connected');
+    // io.emit('status', 'connec');
     socket.on("online", user => {
         onlineUsers.push({...user, sid: socket.id });
         socket.join(user.id);

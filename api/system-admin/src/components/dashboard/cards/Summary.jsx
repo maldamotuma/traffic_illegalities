@@ -9,7 +9,7 @@ import {
 } from "@mui/icons-material";
 
 const Summary = (props) => {
-    const { hover } = props;
+    const { hover, data } = props;
     return (
         <Box sx={{
             width: "300px",
@@ -27,10 +27,10 @@ const Summary = (props) => {
             }}>
                 <Visibility sx={{ color: "#fff", width: "50px", height: "50px" }} />
             </Box>
-            <Typography color={hover ? "#fff" : "primary.light"} sx={{ mt: 2, px: 1 }} fontWeight={200}>Total Users</Typography>
-            <Typography color={hover ? "#fff" : "primary.main"} sx={{ mb: 2, mt: 0, px: 1 }} fontWeight={600} fontSize={25}>+300</Typography>
+            <Typography color={hover ? "#fff" : "primary.light"} sx={{ mt: 2, px: 1 }} fontWeight={200}>{data?.title}</Typography>
+            <Typography color={hover ? "#fff" : "primary.main"} sx={{ mb: 2, mt: 0, px: 1 }} fontWeight={600} fontSize={25}>{data?.measurement}</Typography>
             <Divider sx={{ color: hover ? "#fff" : "primary.light" }} />
-            <Typography color={hover ? "#fff" : "primary.light"} sx={{ mb: 2, mt: 1, px: 1 }} fontWeight={100}>starting from January 28</Typography>
+            <Typography color={hover ? "#fff" : "primary.light"} sx={{ mb: 2, mt: 1, px: 1 }} fontWeight={100}>{data?.footer}</Typography>
             <Box
                 component={"img"}
                 alt={""}

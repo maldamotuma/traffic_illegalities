@@ -3,7 +3,7 @@ import SatelliteAltIcon from '@mui/icons-material/SatelliteAlt';
 import Dropdownist from '../lists/Dropdownlist';
 import Singlelist from '../lists/Singlelist';
 import { Dashboard } from '@mui/icons-material';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import DirectionsCarFilledRoundedIcon from '@mui/icons-material/DirectionsCarFilledRounded';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import {
@@ -34,7 +34,7 @@ const Drawerlinks = () => {
             />
             <Dropdownist
                 title={"System Admins"}
-                Icon={AssignmentIndIcon}
+                Icon={AdminPanelSettingsIcon}
                 submenus={[
                     { title: 'Add system admin', address: '/add-system-admin' },
                 ]}

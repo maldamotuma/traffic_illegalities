@@ -15,10 +15,6 @@ const SystemadminSchema = new mongoose.Schema({
         expiryDate: Date,
         photos: [String]
     }],
-    region: [{
-        region: { latitude: String, longitude: String },
-        specific: [{ latitude: String, longitude: String }]
-    }],
     password: String,
     veryFirst: {
         type: Boolean,

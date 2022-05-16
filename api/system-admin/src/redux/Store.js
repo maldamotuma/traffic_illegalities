@@ -9,11 +9,13 @@ import { track_reducer } from './reducers/trackreducer';
 import { trafficpolice_reducer } from './reducers/trafficpolicereducer';
 import { speed_reducer } from './reducers/speedreducer';
 import { carReducer } from "./reducers/carReducer";
+import { crash_reducer } from './reducers/crashreducer';
+import { systemadmin_reducer } from './reducers/systemadminreducer';
 
 const initialState = {
     user: -1,
 };
-const composeEnhancer =  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
     combineReducers({
@@ -25,7 +27,9 @@ const store = createStore(
         track: track_reducer,
         newTrafficPolice: trafficpolice_reducer,
         speed: speed_reducer,
-        newCar: carReducer
+        newCar: carReducer,
+        crashes: crash_reducer,
+        system_admin: systemadmin_reducer
     }),
     initialState,
     composeEnhancer(applyMiddleware(thunk))

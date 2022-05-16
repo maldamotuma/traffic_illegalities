@@ -1,3 +1,4 @@
+const xml = require("xml");
 const { logger_to_file } = require("../../logger");
 const Crashlog = require("../../models/Crashlog");
 const { log_path } = require("./logfilespath");
@@ -24,4 +25,14 @@ module.exports.sendServerError = async(res, error, actor = "unknown") => {
         }
     });
     return res.status(500).json({ success: 0, message: "Server Error" });
+}
+
+module.exports.XMLResponse = (res, message) => {
+    try {
+        res.set('Content-Type', 'text/xml');
+        return res.send(xml(message));
+    } catch (error) {
+        console.log(error);
+        this.sendServerError(res, error, "System/Backend to user XML Sending");
+    }
 }

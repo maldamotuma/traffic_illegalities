@@ -22,11 +22,11 @@ function Mapfitun() {
     };
 
     const handleOnLoad = () => {
-        
+
     }
 
     const handleAssignment = (traffic) => {
-        carSocket.emit("car_assignment", `tr_${traffic}`,`ca_${assignment.car}`)
+        carSocket.emit("car_assignment", `tr_${traffic}`, `ca_${assignment.car}`)
     }
 
     return (
@@ -61,10 +61,18 @@ function Mapfitun() {
                         />
                     }
                     {
-                        cars.map(car => <Marker position={car} icon={assignment.car === car._id ? "/smallcarbordered.png" : "/smallcar.png"} onClick={() => handleCarClick(assignment, setassignment, car._id) }/>)
+                        cars.map(car => <Marker
+                            position={car}
+                            icon={{
+                                url: assignment.car === car._id ? "/smallcarbordered.png" : "/smallcar.png",
+                                anchor: { x: 10, y: 10 },
+                                // scaledSize: new window.google?.maps?.Size(20, 20),
+                            }}
+                            onClick={() => handleCarClick(assignment, setassignment, car._id)}
+                        />)
                     }
                     {
-                        traffics.map(traffic => <Marker position={traffic} icon={assignment.traffic === traffic._id ? "/trafficpolicebordered.png" : "/trafficpolice.png"} onClick={() => handleTrafficClick(assignment, setassignment, traffic._id, handleAssignment)}/>)
+                        traffics.map(traffic => <Marker position={traffic} icon={assignment.traffic === traffic._id ? "/trafficpolicebordered.png" : "/trafficpolice.png"} onClick={() => handleTrafficClick(assignment, setassignment, traffic._id, handleAssignment)} />)
                     }
                 </GoogleMap>
             </LoadScript>
