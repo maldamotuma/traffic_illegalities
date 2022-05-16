@@ -10,14 +10,24 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Status from './Status';
+import { bindActionCreators } from 'redux';
+import * as crashActions from "../../redux/actions/crashactions";
+import {
+    useDispatch,
+    useSelector
+} from "react-redux";
+import axios from 'axios';
+import url from "../../redux/baseUrl";
+import fileDownload from 'js-file-download';
 
 
 function Row(props) {
-    const { row } = props;
+    const { row, download_crashlog } = props;
     const [open, setOpen] = React.useState(false);
+    const [hover, sethover] = React.useState(false);
 
     return (
         <React.Fragment>
@@ -31,13 +41,31 @@ function Row(props) {
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-                <TableCell component="th" scope="row">
-                    {row.name}
+                <TableCell component="th" scope="row" onClick={() => download_crashlog(row._id)}>
+                    <Typography textOverflow={"ellipsis"} sx={{
+                        maxWidth: "200px",
+                        overflow: "hidden",
+                        cursor: "pointer",
+                        transition: ".2s all ease"
+                    }}
+                        onMouseEnter={() => sethover(true)}
+                        onMouseLeave={() => sethover(false)}
+                        color={hover ? "#fff" : ""}
+                        bgcolor={hover ? "primary.light" : ""}
+                        borderRadius={1}
+                        px={1}
+                    >
+                        {row.log_file}
+                    </Typography>
                 </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
+                <TableCell align="right" sx={{
+                    maxWidth: "50px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis"
+                }}>{row.from}</TableCell>
+                <TableCell align="right">
+                    <Status status={row.seen_at ? "pending" : "new"} />
+                </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -49,25 +77,23 @@ function Row(props) {
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Date</TableCell>
-                                        <TableCell>Customer</TableCell>
-                                        <TableCell align="right">Amount</TableCell>
-                                        <TableCell align="right">Total price ($)</TableCell>
+                                        <TableCell>Happened_at</TableCell>
+                                        <TableCell>adddressed_at</TableCell>
+                                        <TableCell align="right">seen_at</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.history.map((historyRow) => (
-                                        <TableRow key={historyRow.date}>
-                                            <TableCell component="th" scope="row">
-                                                {historyRow.date}
-                                            </TableCell>
-                                            <TableCell>{historyRow.customerId}</TableCell>
-                                            <TableCell align="right">{historyRow.amount}</TableCell>
-                                            <TableCell align="right">
-                                                {Math.round(historyRow.amount * row.price * 100) / 100}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                    <TableRow key={"sub" + row._id}>
+                                        <TableCell component="th" scope="row" sx={{
+                                            maxWidth: "100px",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis"
+                                        }}>
+                                            {row.createdAt}
+                                        </TableCell>
+                                        <TableCell>{row.addressed_at ?? "NA"}</TableCell>
+                                        <TableCell align="right">{row.seen_at ?? "NS"}</TableCell>
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </Box>
@@ -78,56 +104,30 @@ function Row(props) {
     );
 }
 
-function createData(name, calories, fat) {
-    return {
-        name,
-        calories,
-        fat,
-        history: [
-            {
-                date: '2020-01-05',
-                customerId: '11091700',
-                amount: 3,
-            },
-            {
-                date: '2020-01-02',
-                customerId: 'Anonymous',
-                amount: 1,
-            },
-        ],
-    };
-}
-
-
-
-Row.propTypes = {
-    row: PropTypes.shape({
-        calories: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        history: PropTypes.arrayOf(
-            PropTypes.shape({
-                amount: PropTypes.number.isRequired,
-                customerId: PropTypes.string.isRequired,
-                date: PropTypes.string.isRequired,
-            }),
-        ).isRequired,
-        name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-    }).isRequired,
-};
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0),
-    createData('Ice cream sandwich', 237, 9.0),
-    createData('Eclair', 262, 16.0),
-    createData('Cupcake', 305, 3.7),
-    createData('Gingerbread', 356, 16.0),
-];
-
 const Crashreport = () => {
+    const dispatch = useDispatch();
+    const { fetch_crashes, download_crashlog } = bindActionCreators(crashActions, dispatch);
+    const { crashes } = useSelector(state => state);
+    React.useEffect(() => {
+        fetch_crashes();
+    }, []);
+
+    const handleDownload = async crash_id => {
+        try {
+            const res = await axios({
+                url: url + "/download-crash?crash=" + crash_id,
+                method: "GET",
+                responseType: "blob",
+                withCredentials: true
+            });
+            fileDownload(res.data);
+        } catch (error) {
+            alert("something gone wrong!!");
+        }
+    }
     return (
         <Box>
-            <Typography fontSize={20} fontWeight={700} color={"primary.dark"} sx={{mt: 5}}>
+            <Typography fontSize={20} fontWeight={700} color={"primary.dark"} sx={{ mt: 5 }}>
                 Crash Report
             </Typography>
             <TableContainer component={"div"}>
@@ -135,14 +135,14 @@ const Crashreport = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell />
-                            <TableCell>Dessert (100g serving)</TableCell>
-                            <TableCell align="right">Calories</TableCell>
-                            <TableCell align="right">Fat&nbsp;(g)</TableCell>
+                            <TableCell>Crash</TableCell>
+                            <TableCell align="right">from</TableCell>
+                            <TableCell align="right">status</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
-                            <Row key={row.name} row={row} />
+                        {crashes.reverse().map((crash) => (
+                            <Row key={crash._id} row={crash} download_crashlog={handleDownload} />
                         ))}
                     </TableBody>
                 </Table>

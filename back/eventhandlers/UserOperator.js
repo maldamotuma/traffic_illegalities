@@ -13,9 +13,9 @@ module.exports.UseOperatorEvent = (socket, userOperatorSocket) => {
             receiver: conversation.receiver,
             text: conversation.text
         };
-        const tmpconversation = await UserOperator.findOne({ _id: conversation._id });
-        tmpconversation.messages.push(message);
-        const newMessage = await tmpconversation.save();
+        // const tmpconversation = await UserOperator.findOne({ _id: conversation._id });
+        // tmpconversation.messages.push(message);
+        // const newMessage = await tmpconversation.save();
 
         userOperatorSocket.to(receiver).emit('receive_message', { _id: conversation._id, message });
     });

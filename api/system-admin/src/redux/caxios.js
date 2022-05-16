@@ -3,7 +3,7 @@ import url from './baseUrl';
 
 const baxios = axios.create({
     withCredentials: true,
-    baseURL: url
+    baseURL: url,
 });
 
 export default baxios;

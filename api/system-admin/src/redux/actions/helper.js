@@ -5,12 +5,11 @@ export const formdataGenerator = formObject => {
             formObject[key].forEach(photo => {
                 formdata.append(`${key}[]`, photo);
             });
-        } else if (typeof (formObject[key]) === "object" && key !== "profilePicture") {
+        } else if (typeof(formObject[key]) === "object" && key !== "profilePicture") {
             formdata.append(key, JSON.stringify(formObject[key]));
         } else {
             formdata.append(key, formObject[key]);
         }
     }
-
     return formdata;
 }
