@@ -25,12 +25,12 @@ const OfficeTrafficSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    identificationCards: [{
+    identificationCards: {
         idType: String,
         issuedDate: Date,
         expiryDate: Date,
         photos: [String]
-    }],
+    },
     password: {
         type: String,
         required: true
@@ -46,7 +46,13 @@ const OfficeTrafficSchema = new mongoose.Schema({
     assignedBy: {
         type: mongoose.Types.ObjectId,
         ref: 'Systemadmin',
-    }
+    },
+    activeSessions: [{
+        token: String,
+        dateTime: Date,
+        userAgent: String,
+        Os: String
+    }],
 }, { timestamps: true });
 
 const Officetraffic = mongoose.model('Officetraffic', OfficeTrafficSchema);

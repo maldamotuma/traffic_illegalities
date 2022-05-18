@@ -28,6 +28,7 @@ module.exports.login = async(req, res) => {
 module.exports.test = async(req, res) => {
     try {
         const user = req.user;
+        console.log("hello!!");
         return sendRespose(res, { user });
     } catch (error) {
         console.log(error);

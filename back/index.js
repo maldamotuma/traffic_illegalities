@@ -6,6 +6,8 @@ const AdminRouter = require('./routes/systemadmin/authroute');
 const UserRouter = require('./routes/userroute');
 const OperatorRouter = require('./routes/operatorroute');
 const TraffcPoliceRouter = require("./routes/trafficPoliceRoute");
+const TraffcOfficeRouter = require("./routes/trafficofficeroute");
+var bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const httpServer = createServer(app);
@@ -14,7 +16,7 @@ const port = process.env.PORT;
 
 const io = new Server(httpServer, {
     cors: {
-        origin: ['http://localhost:3000', '10.240.72.66:5000'],
+        origin: ['http://localhost:3001', 'http://localhost:3000', '10.240.72.36:5000'],
         credentials: true
     }
 });
@@ -44,12 +46,15 @@ const { sendServerError } = require('./controllers/helpers/utils');
 const { downloadCrash } = require('./controllers/systemadmin/crashreport');
 
 /** end of model configuration */
-
 app.use(require('cookie-parser')());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+// in latest body-parser use like below.
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('pictures'));
 app.use(express.json());
 const systemAdminCorsConfig = {
-    origin: ['http://localhost:3000', '10.240.72.66:5000'],
+    origin: ['http://localhost:3001', 'http://localhost:3000', '10.240.72.36:5000'],
     credentials: true
 };
 app.use('/sa', cors(systemAdminCorsConfig));
@@ -58,6 +63,7 @@ app.use('/user', UserRouter);
 app.use('/operator', cors(systemAdminCorsConfig));
 app.use('/operator', OperatorRouter);
 app.use('/traffic-police', TraffcPoliceRouter);
+app.use('/traffic-office', TraffcOfficeRouter);
 
 /**
  * database configuration
@@ -73,10 +79,19 @@ app.get('/', async(req, res) => {
         sendServerError(res, error, "User");
     }
 });
+app.post('/test-lab', async(req, res) => {
+    try {
+        console.log("dagi connected !!", req.cookies);
+        res.send("successfull dagisho!!!");
+    } catch (error) {
+        sendServerError(res, error, "User");
+    }
+});
 app.get('/info', info);
 
 const userOperatorSocket = io.of('/userOperator');
 userOperatorSocket.on("connection", (socket) => {
+    console.log("new conversatoion");
     UseOperatorEvent(socket, userOperatorSocket);
 });
 

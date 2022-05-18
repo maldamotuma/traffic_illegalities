@@ -6,6 +6,7 @@ import { Dashboard } from '@mui/icons-material';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import DirectionsCarFilledRoundedIcon from '@mui/icons-material/DirectionsCarFilledRounded';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import GavelIcon from '@mui/icons-material/Gavel';
 import {
     Traffic,
     Speed
@@ -53,6 +54,13 @@ const Drawerlinks = () => {
                 submenus={[
                     { title: 'Add Speed Region', address: '/add-speed-region' },
                     { title: 'Speed limits list', address: '/speed-limits' },
+                ]}
+            />
+            <Dropdownist
+                title={"Traffic Office"}
+                Icon={GavelIcon}
+                submenus={[
+                    { title: 'Add traffic office', address: '/add-traffic-office' },
                 ]}
             />
         </>
