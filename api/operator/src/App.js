@@ -11,7 +11,7 @@ function App() {
     useEffect(() => {
         dispatch(authUser());
     }, []);
-    if (user === "UNDEFINED") {
+    if (user === "UNDEFNED") {
       return <Backdrop open={true}/>
     }
     return (

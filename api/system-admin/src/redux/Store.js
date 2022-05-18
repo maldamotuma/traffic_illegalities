@@ -11,6 +11,7 @@ import { speed_reducer } from './reducers/speedreducer';
 import { carReducer } from "./reducers/carReducer";
 import { crash_reducer } from './reducers/crashreducer';
 import { systemadmin_reducer } from './reducers/systemadminreducer';
+import { traffic_office_reducer } from './reducers/trafficofficereducer';
 
 const initialState = {
     user: -1,
@@ -29,7 +30,8 @@ const store = createStore(
         speed: speed_reducer,
         newCar: carReducer,
         crashes: crash_reducer,
-        system_admin: systemadmin_reducer
+        system_admin: systemadmin_reducer,
+        traffic_office: traffic_office_reducer
     }),
     initialState,
     composeEnhancer(applyMiddleware(thunk))

@@ -14,6 +14,7 @@ import { removeMessageFromView } from "../../redux/slices/chat/chatSlice";
 import ActionMenu from "./Actionmenu";
 import { newMessage } from "../../redux/slices/chat/chatapi";
 // import Online from "./Online";
+import TimeAgo from 'timeago-react';
 
 const TopChat = ({ conversation }) => {
     const dispatch = useDispatch();
@@ -74,7 +75,7 @@ const TextArea = ({ conversation }) => {
     const dispatch = useDispatch();
     const me = useSelector(state => state.user);
     const useSocket = useSelector(state => state.socket.user);
-    
+
     const handleSubmit = e => {
         e.preventDefault();
         const smessage = {
@@ -100,10 +101,11 @@ const TextArea = ({ conversation }) => {
                 receiver: {
                     participatorType: 'User',
                     pid: conversation.user._id,
-                }
+                },
+                createdAt: Date.now()
             }
         }));
-        useSocket.emit("send_message", smessage,"us_"+conversation.user._id);
+        useSocket.emit("send_message", smessage, "us_" + conversation.user._id);
         setMessage("");
     }
     return (
@@ -154,7 +156,9 @@ const SingleMessage = ({ message }) => {
             <Typography variant={"caption"} sx={{
                 float: 'right'
             }}>
-                2min ago
+                <TimeAgo
+                    datetime={message.createdAt}
+                    />
             </Typography>
         </Card>
     )

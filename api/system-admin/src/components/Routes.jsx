@@ -25,6 +25,7 @@ import SpeedLimits from '../screens/SpeedLimits';
 import MainDisplay from '../components/singleDisplay/MainDIsplay';
 import EditOperator from '../screens/EditOperator';
 import Index from './tryassignment/Index';
+import AddTrafficOffice from '../screens/AddTrafficOffice';
 
 const routesList = [
     // { path: '/login', element: <Login /> },
@@ -40,6 +41,7 @@ const routesList = [
             { path: '/add-speed-region', element: <AddSpeed /> },
             { path: '/speed-limits', element: <SpeedLimits /> },
             { path: '/add-traffic-police', element: <AddTrafficPolice /> },
+            { path: '/add-traffic-office', element: <AddTrafficOffice /> },
             { path: '/traffic-polices', element: <TrafficPoliceList /> },
             { path: '/create-new-password', element: <CreateNewPassword /> },
             { path: '/change-password', element: <ChangePassword /> },

@@ -117,7 +117,7 @@ const Crashreport = () => {
             const res = await axios({
                 url: url + "/download-crash?crash=" + crash_id,
                 method: "GET",
-                responseType: "blob",
+                // responseType: "blob",
                 withCredentials: true
             });
             fileDownload(res.data);
