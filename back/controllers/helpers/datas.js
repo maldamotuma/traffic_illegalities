@@ -11,4 +11,5 @@ module.exports.secretVariables = [
     process.env.USER_SIGN_STRING,
     process.env.OPERATOR_SIGN_STRING,
     process.env.TRAFFIC_POLICE_SIGN_STRING,
+    process.env.TRAFFIC_OFFICE_SIGN_STRING
 ];

@@ -23,7 +23,7 @@ module.exports.addOperator = async(req, res) => {
         sendRespose(res, params);
     } catch (error) {
         console.log(error);
-        sendServerError(res);
+        sendServerError(res, error, "System Admin");
     }
 }
 
