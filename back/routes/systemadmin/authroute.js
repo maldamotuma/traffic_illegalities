@@ -64,7 +64,7 @@ router.post('/create-new-password', VerifyAuth, createNewPassword);
 router.post('/change-password', VerifyAuth, change_Password);
 router.post('/add-operator', VerifyAuth, upload.any(), addOperator);
 router.post('/add-traffic-police', VerifyAuth, traffic_upload.any(), addTrafficPolices);
-router.post('/add-traffic-office', VerifyAuth, addOfficeTraffic);
+router.post('/add-traffic-office', VerifyAuth, upload.any(), addOfficeTraffic);
 router.post('/add-car', VerifyAuth, car_upload.any(), addCar);
 router.get('/cars', VerifyAuth, cars);
 router.get('/traffic-polices', VerifyAuth, trafficpolices);
