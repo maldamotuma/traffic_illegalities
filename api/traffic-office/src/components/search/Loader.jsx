@@ -3,6 +3,9 @@ import Box from '@mui/material/Box';
 import CircularProgress, {
   circularProgressClasses,
 } from '@mui/material/CircularProgress';
+import {
+  Slide
+} from "@mui/material";
 
 // Inspired by the former Facebook spinners.
 function FacebookCircularProgress(props) {
@@ -14,7 +17,7 @@ function FacebookCircularProgress(props) {
           color: (theme) =>
             theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
         }}
-        size={40}
+        size={30}
         thickness={4}
         {...props}
         value={100}
@@ -31,7 +34,7 @@ function FacebookCircularProgress(props) {
             strokeLinecap: 'round',
           },
         }}
-        size={40}
+        size={30}
         thickness={4}
         {...props}
       />
@@ -40,9 +43,32 @@ function FacebookCircularProgress(props) {
 }
 
 export default function CustomizedProgressBars() {
+  const [open, setopen] = React.useState(false);
+  const cntnr = React.useRef();
+  React.useEffect(() => {
+    setopen(true);
+  }, [])
+
+  
   return (
-    <Box>
-      <FacebookCircularProgress />
+    <Box ref={cntnr}>
+      <Slide
+        in={open}
+        container={cntnr.current}
+      >
+        <Box
+          boxShadow={3}
+          borderRadius={"50%"}
+          pl={1.25}
+          pt={1.25}
+          width={50}
+          height={50}
+        >
+          <Box>
+            <FacebookCircularProgress />
+          </Box>
+        </Box>
+      </Slide>
     </Box>
   );
 }

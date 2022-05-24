@@ -4,6 +4,7 @@ module.exports.carEvents = (socket, carSocket) => {
     });
 
     socket.on("os_inform", (car_obj, receiver) => {
+        console.log(car_obj, receiver);
         carSocket.to(receiver).emit('track_car', car_obj);
     });
 

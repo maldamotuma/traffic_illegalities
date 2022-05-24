@@ -13,7 +13,7 @@ const RightContent = (props) => {
   const PICTURE_SERVER = process.env.REACT_APP_SERVER;
   return (
     <Box sx={{
-      pl: 5,
+      pl: 3,
       flex: 5
     }}>
       <Stack
@@ -34,7 +34,9 @@ const RightContent = (props) => {
             ID Crds
           </Typography>
           <Stack direction={"row"} alignItems={"start"} gap={3}>
-            <Box>
+            <Box sx={{
+              width: "350px"
+            }}>
               {
                 idInfo?.map(ii => <SingleInfoLabel data={ii} edit={edit} />)
               }

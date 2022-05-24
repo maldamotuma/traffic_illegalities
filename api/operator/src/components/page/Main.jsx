@@ -16,6 +16,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Drawerlinks from './Drawerlinks';
 import Navbar from './Navbar';
 import Index from '../chat/Index';
+import { useSelector } from 'react-redux';
 // import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 // import { connect } from 'react-redux';
 // import { cancelNotifyFixed } from '../redux/actions/helperActions'
@@ -104,12 +105,14 @@ const Mainpage = ({close}) => {
   const [cname, setcname] = React.useState('/');
   const location = useLocation();
 
+  const { user } = useSelector(state => state);
+
   React.useEffect(()=>{
     // close();
   },[]);
-  React.useEffect(() => {
-    setcname(location.pathname === "/active-session" ? "" : 'p-3');
-  }, [location]);
+  // React.useEffect(() => {
+  //   setcname(location.pathname === "/active-session" ? "" : 'p-3');
+  // }, [location]);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -119,7 +122,7 @@ const Mainpage = ({close}) => {
   return (
     <>
       {/* <Chat /> */}
-      <Index />
+      {user &&  <Index />}
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="fixed" open={open} elevation={0} xs={{ bgColor: '#fff' }}>

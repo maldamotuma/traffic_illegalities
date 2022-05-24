@@ -3,28 +3,42 @@ import {
     Stack,
     Typography,
     Box,
-    Input
+    TextField
 } from "@mui/material";
 const SingleInfoLabel = (props) => {
     const { data, edit } = props;
+
+    const handleDataChange = e => {
+        // alert("blurred !!");
+    }
     return (
-        <Stack direction={"row"} gap={1} sx={{ my: 1 }} alignItems={"center"}>
-            <Typography>
-                {data?.label}:
-            </Typography>
+        <Stack gap={0} sx={{ my: 1 }} alignItems={"start"}>
             {
                 edit ?
-                <Input defaultValue={data?.value} size={"small"}/>
-                :
-                <Box sx={{
-                    bgcolor: "#d9deff",
-                    px: 1,
-                    borderRadius: 1
-                }}>
-                    <Typography color={"#00169c"} fontWeight={600}>
-                        {data?.value}
-                    </Typography>
-                </Box>
+                    <TextField
+                        label={data?.label}
+                        varvariant="outlined"
+                        defaultValue={data?.value}
+                        size={"small"}
+                        fullWidth
+                        sx={{ my: 1 }}
+                        onChange={handleDataChange}
+                    />
+                    :
+                    <>
+                        <Typography fontWeight={800} color={"#00169c"}>
+                            {data?.label}
+                        </Typography>
+                        <Box sx={{
+                            // bgcolor: "#e6e9fc",
+                            // px: 1,
+                            borderRadius: 1,
+                        }}>
+                            <Typography fontWeight={400}>
+                                {data?.value}
+                            </Typography>
+                        </Box>
+                    </>
             }
         </Stack>
     )

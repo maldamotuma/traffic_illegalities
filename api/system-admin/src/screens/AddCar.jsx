@@ -1,5 +1,5 @@
 import React from 'react';
-import AddNewCar from '../components/car/AddCar.tsx';
+import AddNewCar from '../components/car/AddCar';
 
 const AddCar = () => {
   return (

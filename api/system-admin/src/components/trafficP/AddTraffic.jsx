@@ -18,15 +18,26 @@ import { bindActionCreators } from 'redux';
 import Loading from '../common/Loading';
 import Success from '../common/Success';
 import FormStepper from '../commonForm/FormStepper';
+import { validate } from '../car/formValidator';
 
 export default function AddTrafficP() {
     const [screen, setscreen] = React.useState("form");
+    const [errors, seterrors] = React.useState([]);
+    const [vinfo, setvinfo] = React.useState({});
 
     const dispatch = useDispatch();
     const { submit_new_traffic_police } = bindActionCreators(trafficPlcActionBinders, dispatch);
 
     const steps = ["Traffic Info", "Traffic ID"];
-    const components = [<Basicinfos />, <Idcards />];
+    const components = [<Basicinfos errors={errors} setvinfo={setvinfo} />, <Idcards />];
+    const validateForm = () => {
+        const tmpErrors = validate(vinfo);
+        seterrors(tmpErrors);
+        return Object.keys(tmpErrors).length;
+    }
+    const validFinal = () => {
+        alert("final malda");
+    }
 
     if (screen === "loading") return <Loading />;
     else if (screen === "success") return <Success />;
@@ -36,6 +47,8 @@ export default function AddTrafficP() {
             steps={steps}
             components={components}
             submitAction={submit_new_traffic_police}
+            validateForm={validateForm}
+            validFinal={validFinal}
         />
     );
 }
