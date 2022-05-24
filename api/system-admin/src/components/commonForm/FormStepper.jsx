@@ -22,7 +22,7 @@ import Success from '../common/Success';
 const theme = createTheme();
 
 export default function FormStepper(props) {
-    const { title, steps, components, large, submitAction } = props;
+    const { title, steps, components, large, submitAction, validateForm, validFinal } = props;
     const [activeStep, setActiveStep] = React.useState(0);
     const [screen, setscreen] = React.useState("form");
 
@@ -30,7 +30,9 @@ export default function FormStepper(props) {
     const { submit_operator } = bindActionCreators( operatorActionBinders, dispatch);
 
     const handleNext = () => {
-        setActiveStep(activeStep + 1);
+        if (validateForm() === 0) {
+            setActiveStep(activeStep + 1);
+        }
     };
 
     const handleBack = () => {
@@ -38,9 +40,11 @@ export default function FormStepper(props) {
     };
 
     const handleSubmit = e => {
-        setscreen("loading");
-        // submit_operator(setscreen);
-        submitAction(setscreen);
+        if (validFinal()) {
+            setscreen("loading");
+            submit_operator(setscreen);
+            submitAction(setscreen);
+        }
     }
     if(screen === "loading") return <Loading />;
     else if (screen === "success") return <Success />;

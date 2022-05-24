@@ -18,18 +18,19 @@ import { bindActionCreators } from 'redux';
 import AddRegion from './AddRegion';
 import Loading from '../common/Loading';
 import Success from '../common/Success';
+import Addidscomponent from '../AddIdscomponent';
 
 const steps = ['Basic Information', "Id's information", 'Region assignment'];
 
-function getStepContent(step) {
+function getStepContent(step, sbmtBtn, setpass) {
     switch (step) {
         case 0:
-            return <Basicinfo />;
+            return <Basicinfo sbmtBtn={sbmtBtn} setpass={setpass} />;
         case 1:
-            return <Idcards />;
+            return <Idcards sbmtBtn={sbmtBtn} setpass={setpass}><Addidscomponent /></Idcards>;
         case 2:
             // return <Review />;
-            return <AddRegion />;
+            return <AddRegion sbmtBtn={sbmtBtn} />;
         default:
             throw new Error('Unknown step');
     }
@@ -40,14 +41,23 @@ const theme = createTheme();
 export default function AddoperatorH() {
     const [activeStep, setActiveStep] = React.useState(0);
     const [screen, setscreen] = React.useState("form");
+    const [sbmtBtn, setsbmtBtn] = React.useState(null);
+    const [pass, setpass] = React.useState(false);
 
     const dispatch = useDispatch();
-    const { submit_operator } = bindActionCreators( operatorActionBinders, dispatch);
+    const { submit_operator } = bindActionCreators(operatorActionBinders, dispatch);
 
     const handleNext = () => {
-        setActiveStep(activeStep + 1);
+        sbmtBtn.current.click();
+        if (pass) {
+            setpass(false);
+        }
     };
-
+    React.useEffect(() => {
+        if (pass) {
+            setActiveStep(activeStep + 1);
+        }
+    }, [pass]);
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     };
@@ -56,10 +66,11 @@ export default function AddoperatorH() {
         setscreen("loading");
         submit_operator(setscreen);
     }
-    if(screen === "loading") return <Loading />;
+
+    if (screen === "loading") return <Loading />;
     else if (screen === "success") return <Success />;
     return (
-        <ThemeProvider theme={theme} sx={{transitionDuration: "0.3s"}}>
+        <ThemeProvider theme={theme} sx={{ transitionDuration: "0.3s" }}>
             <CssBaseline />
             <Container maxWidth={activeStep === 2 ? "lg" : "sm"} sx={{ py: { xs: 2, md: 5 }, transitionDuration: "0.3s" }}>
                 <Card>
@@ -89,7 +100,7 @@ export default function AddoperatorH() {
                                 </React.Fragment>
                             ) : (
                                 <React.Fragment>
-                                    {getStepContent(activeStep)}
+                                    {getStepContent(activeStep, setsbmtBtn, setpass)}
                                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                         {activeStep !== 0 && (
                                             <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
@@ -99,7 +110,7 @@ export default function AddoperatorH() {
 
                                         <Button
                                             variant="contained"
-                                            onClick={ activeStep === steps.length - 1 ? handleSubmit : handleNext}
+                                            onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
                                             sx={{ mt: 3, ml: 1 }}
                                         >
                                             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}

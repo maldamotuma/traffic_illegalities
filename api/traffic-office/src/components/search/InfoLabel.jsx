@@ -1,18 +1,19 @@
 import React from 'react';
 import {
-    Box,
-    Typography
+  Box,
+  Typography
 } from "@mui/material";
 
-const InfoLabel = () => {
+const InfoLabel = (props) => {
+  const { label, value } = props;
   return (
     <Box>
-        <Typography fontWeight={900} color={"primary.dark"}>
-            Label
-        </Typography>
-        <Typography color={"primary.light"}>
-            Value
-        </Typography>
+      <Typography fontWeight={900} color={"primary.dark"}>
+        {label}
+      </Typography>
+      <Typography color={"primary.light"}>
+        {value}
+      </Typography>
     </Box>
   )
 }

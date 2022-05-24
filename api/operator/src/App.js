@@ -11,11 +11,18 @@ function App() {
     useEffect(() => {
         dispatch(authUser());
     }, []);
-    if (user === "UNDEFNED") {
-      return <Backdrop open={true}/>
+    if (user === "UNDEFINED") {
+        return (
+            <>
+                <Backdrop open={true} />
+            </>
+        )
     }
     return (
-        <Router />
+        <>
+            <audio src="sounds/message.mp3" id="message_audio" loop="loop"></audio>
+            <Router />
+        </>
     );
 }
 

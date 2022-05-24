@@ -16,18 +16,41 @@ const Input = styled('input')({
   display: 'none',
 });
 
-export default function Basicinfo() {
-
+export default function Basicinfo(props) {
+  const { setvinfo, errors } = props;
+  const ref = React.useRef();
   const dispatch = useDispatch();
   const { add_car_info } = bindActionCreators(carActionCreators, dispatch);
   const carInfo = useSelector(state => state.newCar?.newCar);
+  const rules = {
+    name: /^[A-Za-z]{3,}$/,
+    type: /^[A-Za-z]{3,}$/,
+    Plate: /^[A-Z]{2}-[12345]-[A-Z][0-9]{4,5}$/,
+    community: /^[A-Za-z]{3,}$/,
+    Level: /^[0-9]{1,3}$/
+  }
 
+  const messages = {
+    name: "Please Provide the right car name",
+    type: "Please Provide the right car type",
+    Plate: "Please Provide the right car plate",
+    community: "Please Provide the right car community",
+    Level: "Please Provide the right car level"
+  }
+
+  React.useEffect(() => {
+    setvinfo({rules, messages, ref})
+  }, [])
+  
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Basic Information
       </Typography>
-      <Grid container spacing={3}>
+      <Grid
+        component={"form"}
+        ref={ref}
+        container spacing={3}>
         <Grid item xs={12} sm={12}>
           <TextField
             required
@@ -37,10 +60,12 @@ export default function Basicinfo() {
             fullWidth
             variant="standard"
             value={carInfo?.name}
-            onChange={e => add_car_info({name: e.target.value })}
+            onChange={e => add_car_info({ name: e.target.value })}
+            error={errors?.name}
+            helperText={errors?.name ? messages.name : ""}
           />
         </Grid>
-        <Grid item xs={12} sm={12}>
+        <Grid item xs={12} sm={12} >
           <TextField
             required
             id="type"
@@ -49,7 +74,9 @@ export default function Basicinfo() {
             fullWidth
             variant="standard"
             value={carInfo?.type}
-            onChange={e => add_car_info({type: e.target.value })}
+            onChange={e => add_car_info({ type: e.target.value })}
+            error={errors?.type}
+            helperText={errors?.type ? messages.type : ""}
           />
         </Grid>
         <Grid item xs={12}>
@@ -61,7 +88,9 @@ export default function Basicinfo() {
             fullWidth
             variant="standard"
             value={carInfo?.platenumber}
-            onChange={e => add_car_info({platenumber: e.target.value })}
+            onChange={e => add_car_info({ platenumber: e.target.value })}
+            error={errors?.Plate}
+            helperText={errors?.Plate ? messages.Plate : ""}
           />
         </Grid>
         <Grid item xs={6}>
@@ -72,7 +101,9 @@ export default function Basicinfo() {
             fullWidth
             variant="standard"
             value={carInfo?.level?.community}
-            onChange={e => add_car_info({level: { ...carInfo.level, community: e.target.value } })}
+            onChange={e => add_car_info({ level: { ...carInfo.level, community: e.target.value } })}
+            error={errors?.community}
+            helperText={errors?.community ? messages.community : ""}
           />
         </Grid>
         <Grid item xs={6}>
@@ -83,7 +114,9 @@ export default function Basicinfo() {
             fullWidth
             variant="standard"
             value={carInfo?.level?.level}
-            onChange={e => add_car_info({level: { ...carInfo.level, level: e.target.value } })}
+            onChange={e => add_car_info({ level: { ...carInfo.level, level: e.target.value } })}
+            error={errors?.Level}
+            helperText={errors?.Level ? messages.Level : ""}
           />
         </Grid>
       </Grid>

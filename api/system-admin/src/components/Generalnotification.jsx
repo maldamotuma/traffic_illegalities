@@ -18,8 +18,8 @@ const Generalnotification = ({notification, cancel}) => {
   return (
     <Snackbar
         open={notification.open}
-        autoHideDuration={6000}
-        // onClose={handleClose}
+        autoHideDuration={4000}
+        onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         TransitionComponent={pr => <Slide {...pr} direction="down" />}
       >

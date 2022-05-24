@@ -16,7 +16,7 @@ const port = process.env.PORT;
 
 const io = new Server(httpServer, {
     cors: {
-        origin: ['http://localhost:3001', 'http://localhost:3000', '10.240.72.36:5000'],
+        origin: ['http://localhost:3001', 'http://localhost:3000', '10.240.72.42:5000', "http://10.240.72.42:3000"],
         credentials: true
     }
 });
@@ -48,10 +48,11 @@ const Crashlog = require('./models/Crashlog');
 const { logger_to_file } = require('./logger');
 const { sendServerError } = require('./controllers/helpers/utils');
 const { downloadCrash } = require('./controllers/systemadmin/crashreport');
+const { UseTrafficEvent } = require('./eventhandlers/userTraffic');
 
 /** end of model configuration */
 const systemAdminCorsConfig = {
-    origin: ['http://localhost:3001', 'http://localhost:3000', '10.240.72.36:5000'],
+    origin: ['http://localhost:3001', 'http://localhost:3000', '10.240.72.42:5000', "http://10.240.72.42:3000"],
     credentials: true
 };
 app.use('/sa', cors(systemAdminCorsConfig));
@@ -89,12 +90,18 @@ app.get('/info', info);
 
 const userOperatorSocket = io.of('/userOperator');
 userOperatorSocket.on("connection", (socket) => {
-    console.log("new conversatoion");
     UseOperatorEvent(socket, userOperatorSocket);
+});
+
+const UseTrafficSocket = io.of('/userTraffic');
+UseTrafficSocket.on("connection", (socket) => {
+    console.log("new Traffic user connected !!");
+    UseTrafficEvent(socket, UseTrafficSocket);
 });
 
 const carSocket = io.of('/car');
 carSocket.on("connection", (socket) => {
+    console.log("car connected !!!");
     carEvents(socket, carSocket);
 });
 

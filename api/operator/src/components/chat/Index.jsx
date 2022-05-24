@@ -17,14 +17,18 @@ const Index = () => {
 	const dispatch = useDispatch();
 	// const { add_socket_info, online_users } = bindActionCreators(socketActionCreators, dispatch);
 	// const { add_new_message } = bindActionCreators(messageActions, dispatch);
-	const { user, conversations} = useSelector(state => state);
-	useEffect(()=>{
+	const { user, conversations } = useSelector(state => state);
+	useEffect(() => {
 		dispatch(setUserSocket(UserSocket));
-        UserSocket.emit("join", user._id);
-		UserSocket.on("receive_message", (conv) => {
-			dispatch(newMessage(conv));
-		});
-	},[]);
+		if (user._id) {
+			UserSocket.emit("join", user._id);
+
+			UserSocket.on("receive_message", (conv) => {
+				dispatch(newMessage(conv));
+			});
+			console.log("this is user malda !!: ", user);
+		}
+	}, [user?._id]);
 	return (
 		<Box sx={{
 			display: "flex",
@@ -34,10 +38,14 @@ const Index = () => {
 			zIndex: 9,
 			gap: 2
 		}}>
-		{
-			conversations.filter(cnv => cnv.hide !== true).map(conversation => <Conversation conversation={conversation}/>)
-		}
-        {/* <Conversation />
+			{
+				conversations.filter(cnv => cnv.hide !== true).map(conversation => (
+					<div key={conversation._id}>
+						<Conversation conversation={conversation} />
+					</div>
+				))
+			}
+			{/* <Conversation />
         <Conversation />
         <Conversation />
         <Conversation /> */}

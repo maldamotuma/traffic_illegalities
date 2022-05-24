@@ -5,10 +5,19 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import RecordInfo from "./RecordInfo";
+import AccordionInfo from './AccordionInfo';
+import InfoLabel from "./InfoLabel";
+import {
+    Grid,
+    Container,
+    Chip
+} from "@mui/material";
+import {
+    useSelector
+} from "react-redux";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-
     return (
         <div
             role="tabpanel"
@@ -41,6 +50,7 @@ function a11yProps(index) {
 
 export default function VerticalTabs() {
     const [value, setValue] = React.useState(0);
+    const { driver } = useSelector(state => state.driver);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -72,7 +82,210 @@ export default function VerticalTabs() {
                 <RecordInfo />
             </TabPanel>
             <TabPanel value={value} index={3}>
-                <RecordInfo />
+                <AccordionInfo title="Basic Information" summary_caption={"hey there write here"}>
+                    {/* <Container sx={{
+                        width: "150px",
+                        my: 2,
+                    }}> */}
+                        <Box
+                            component={"img"}
+                            src={"https://picsum.photos/200"}
+                            sx={{
+                                borderRadius: "50%",
+                                mb: 2,
+                                width: "150px",
+                                boxShadow: 3,
+                                border: "3px solid",
+                                borderColor: "primary.dark",
+                            }}
+                        ></Box>
+                    {/* </Container> */}
+                    <Grid container rowSpacing={2}>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Name"}
+                                value={`${driver.name.first} ${driver.name.last}`}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Email"}
+                                value={driver.email}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Phone Number"}
+                                value={driver.phoneNumber}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Username"}
+                                value={driver.username}
+                            />
+                        </Grid>
+                    </Grid>
+                </AccordionInfo>
+                <AccordionInfo title="License Information" summary_caption={"hey there write here"}>
+                    <Grid container rowSpacing={2} border={"1px dashed #ccc"} p={2}>
+                        <Grid item xs={6} minWidth={150} >
+                            <Chip
+                                label={"Auto"}
+                                color={"primary"}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Issuer School"}
+                                value={`${driver.name.first} ${driver.name.last}`}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Type"}
+                                value={driver.email}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Issued Date"}
+                                value={driver.phoneNumber}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Expiry Date"}
+                                value={driver.username}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"License Number"}
+                                value={driver.username}
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container rowSpacing={2} border={"1px dashed #ccc"} p={2}>
+                        <Grid item xs={6} minWidth={150} >
+                            <Chip
+                                label={"Hisb 1"}
+                                color={"primary"}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Issuer School"}
+                                value={`${driver.name.first} ${driver.name.last}`}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Type"}
+                                value={driver.email}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Issued Date"}
+                                value={driver.phoneNumber}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Expiry Date"}
+                                value={driver.username}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"License Number"}
+                                value={driver.username}
+                            />
+                        </Grid>
+                    </Grid>
+                </AccordionInfo>
+                <AccordionInfo title="Identification Card" summary_caption={"hey there write here"}>
+                <Grid container rowSpacing={2} border={"1px dashed #ccc"} p={2}>
+                        <Grid item xs={6} minWidth={150} >
+                            <Chip
+                                label={"Adama Sceince and Technology University --teacher"}
+                                color={"primary"}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Issuer School"}
+                                value={`${driver.name.first} ${driver.name.last}`}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Type"}
+                                value={driver.email}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Issued Date"}
+                                value={driver.phoneNumber}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Expiry Date"}
+                                value={driver.username}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Identification Number"}
+                                value={driver.username}
+                            />
+                        </Grid>
+                    </Grid>
+                </AccordionInfo>
+                <AccordionInfo title="Owened Cars" summary_caption={"hey there write here"}>
+                <Grid container rowSpacing={2} border={"1px dashed #ccc"} p={2}>
+                        <Grid item xs={6} minWidth={150} >
+                            <Chip
+                                label={"Adama Sceince and Technology University --teacher"}
+                                color={"primary"}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Issuer School"}
+                                value={`${driver.name.first} ${driver.name.last}`}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Type"}
+                                value={driver.email}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Issued Date"}
+                                value={driver.phoneNumber}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Expiry Date"}
+                                value={driver.username}
+                            />
+                        </Grid>
+                        <Grid item xs={6} minWidth={150} >
+                            <InfoLabel
+                                label={"Identification Number"}
+                                value={driver.username}
+                            />
+                        </Grid>
+                    </Grid>
+                </AccordionInfo>
+                
             </TabPanel>
         </Box>
     );

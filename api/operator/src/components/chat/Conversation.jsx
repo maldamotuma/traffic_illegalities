@@ -14,7 +14,7 @@ import { removeMessageFromView } from "../../redux/slices/chat/chatSlice";
 import ActionMenu from "./Actionmenu";
 import { newMessage } from "../../redux/slices/chat/chatapi";
 // import Online from "./Online";
-import TimeAgo from 'timeago-react';
+import Moment from 'react-moment';
 
 const TopChat = ({ conversation }) => {
     const dispatch = useDispatch();
@@ -156,9 +156,12 @@ const SingleMessage = ({ message }) => {
             <Typography variant={"caption"} sx={{
                 float: 'right'
             }}>
-                <TimeAgo
-                    datetime={message.createdAt}
-                    />
+                {/* <TimeAgo
+                    datetime=
+                    /> */}
+                <Moment fromNow>
+                    {message.createdAt}
+                </Moment>
             </Typography>
         </Card>
     )

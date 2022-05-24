@@ -48,7 +48,7 @@ const EditOperator = () => {
     return (
         <div>
             <MainDIsplay edit={edit} setedit={setedit}>
-                <LeftContent labelData={toObject()} pp={pp} edit={edit}/>
+                <LeftContent labelData={toObject()} pp={pp} edit={edit} headerText={operator?.name?.first+" "+operator?.name?.last}/>
                 <RightContent
                     idInfo={toObjectID()}
                     region={region}

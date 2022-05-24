@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -13,13 +13,17 @@ import {
 } from "@mui/icons-material";
 
 const LeftContent = (props) => {
-  const { labelData, pp, edit } = props;
+  const { labelData, pp, edit, headerText } = props;
   const [hover, sethover] = useState(false);
   const ppPath = process.env.REACT_APP_SERVER;
+  useEffect(() => {
+    console.log(labelData);
+  }, [])
+  
   return (
     <Box sx={{
       borderRight: "1px solid #ccc",
-      pr: 5,
+      pr: 3,
       flex: 1
     }}>
       <Box sx={{ position: "relative" }}
@@ -28,7 +32,7 @@ const LeftContent = (props) => {
       >
         <Box
           component={"img"}
-          src={ppPath+pp}
+          src={ppPath+(pp==0? pp : "/no_profile_picture.jpg")}
           alt={""}
           sx={{
             boxShadow: 2,
@@ -56,7 +60,7 @@ const LeftContent = (props) => {
           </Typography>
         </Stack>
       </Box>
-      <Typography sx={{ my: 1 }} fontSize={20} fontWeight={600}>Malda Motuma</Typography>
+      <Typography sx={{ my: 1 }} fontSize={20} fontWeight={600}>{headerText}</Typography>
       <Divider />
       <Box sx={{ my: 2 }}>
         {
@@ -74,4 +78,4 @@ const LeftContent = (props) => {
   )
 }
 
-export default LeftContent
+export default LeftContent;
