@@ -7,13 +7,19 @@ import {
 const InfoLabel = (props) => {
   const { label, value } = props;
   return (
-    <Box>
-      <Typography fontWeight={900} color={"primary.dark"}>
-        {label}
-      </Typography>
-      <Typography color={"primary.light"}>
-        {value}
-      </Typography>
+    <Box sx={{my: 1}}>
+        <Typography fontWeight={800} color={"#00169c"}>
+          {label}
+        </Typography>
+        <Box sx={{
+          // bgcolor: "#e6e9fc",
+          // px: 1,
+          borderRadius: 1,
+        }}>
+          <Typography fontWeight={400}>
+            {value}
+          </Typography>
+        </Box>
     </Box>
   )
 }

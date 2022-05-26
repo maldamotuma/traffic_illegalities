@@ -2,7 +2,7 @@ import React from 'react';
 import SatelliteAltIcon from '@mui/icons-material/SatelliteAlt';
 import Dropdownist from '../lists/Dropdownlist';
 import Singlelist from '../lists/Singlelist';
-import { Dashboard } from '@mui/icons-material';
+import { Dashboard, Rule } from '@mui/icons-material';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import DirectionsCarFilledRoundedIcon from '@mui/icons-material/DirectionsCarFilledRounded';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
@@ -63,6 +63,7 @@ const Drawerlinks = () => {
                     { title: 'Add traffic office', address: '/add-traffic-office' },
                 ]}
             />
+            <Singlelist Icon={Rule} name={"Rule"} address="/rule" />
         </>
     );
 }

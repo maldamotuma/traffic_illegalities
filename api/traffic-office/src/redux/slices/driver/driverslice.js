@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { driverinfo } from "./driverapi";
+import { driverinfo, recordArrest } from "./driverapi";
 
 const initialState = {
     driver: null,
@@ -20,7 +20,10 @@ const driverSlicer = createSlice({
     },
     extraReducers: {
         [driverinfo.fulfilled]: (state, { payload }) => {
-            return {...state, driver: payload, not_found: payload === null ? true : false };
+            return {...state, ...payload, not_found: payload.driver === null ? true : false };
+        },
+        [recordArrest.fulfilled]: (state, { payload }) => {
+            return state;
         }
     }
 });

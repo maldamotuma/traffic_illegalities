@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const RecordSchema = new mongoose.Schema({
+    title: String,
     driver: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
