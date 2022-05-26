@@ -6,7 +6,11 @@ const RuleSchema = new mongoose.Schema({
     frequent: [
         { count: Number, expected: String }
     ],
-    article: String
+    article: String,
+    admin: {
+        type: mongoose.Types.ObjectId,
+        ref: "Systemadmin"
+    }
 }, { timestamps: true });
 
 

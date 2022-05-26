@@ -50,7 +50,7 @@ function a11yProps(index) {
 
 export default function VerticalTabs() {
     const [value, setValue] = React.useState(0);
-    const { driver } = useSelector(state => state.driver);
+    const { driver, new_records } = useSelector(state => state.driver);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -73,7 +73,7 @@ export default function VerticalTabs() {
                 <Tab label="Driver Detail" {...a11yProps(3)} />
             </Tabs>
             <TabPanel value={value} index={0}>
-                <RecordInfo />
+                <RecordInfo new_records={new_records}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <RecordInfo />

@@ -1,4 +1,5 @@
 const Operator = require("../models/Oprator");
+const Record = require("../models/Record");
 const Speed = require("../models/Speed");
 const User = require("../models/User");
 const { sendRespose, XMLResponse } = require("./helpers/utils");
@@ -22,7 +23,8 @@ module.exports.driver = async(req, res) => {
         const dataq = {};
         dataq[label] = value;
         const driver = await User.findOne(queries).exec();
-        return sendRespose(res, { driver });
+        const new_records = await Record.find({ driver: driver }).populate("car traffic_police").exec();
+        return sendRespose(res, { driver, new_records });
     } catch (error) {
         return sendRespose(res, "forbidden");
     }

@@ -26,6 +26,7 @@ import MainDisplay from '../components/singleDisplay/MainDIsplay';
 import EditOperator from '../screens/EditOperator';
 import Index from './tryassignment/Index';
 import AddTrafficOffice from '../screens/AddTrafficOffice';
+import Addrule from '../screens/Addrule';
 
 const routesList = [
     // { path: '/login', element: <Login /> },
@@ -47,6 +48,7 @@ const routesList = [
             { path: '/change-password', element: <ChangePassword /> },
             { path: '/edit-operator/:id', element: <EditOperator /> },
             { path: '/single-display', element: <MainDisplay /> },
+            { path: '/rule', element: <Addrule /> },
 
             { path: '/try', element: <Index /> },
         ]

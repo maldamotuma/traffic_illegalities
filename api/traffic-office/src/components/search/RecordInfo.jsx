@@ -10,181 +10,162 @@ import {
   Button,
   Grid,
   TextField,
-  IconButton
+  IconButton,
+  Chip,
+  Stack
 } from "@mui/material";
 import {
   Add,
-  Delete
+  AddTask,
+  Announcement,
+  AnnouncementRounded,
+  Crop,
+  Delete,
+  DoNotDisturbOff,
+  PlusOne
 } from "@mui/icons-material";
-// import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
+// import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import AccordionInfo from "./AccordionInfo";
+import Mapfitun from "../map/Mapfitun";
+import { recordArrest } from '../../redux/slices/driver/driverapi';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { useDispatch } from 'react-redux';
 
 
-export default function RecordInfo() {
-  const [forms, setforms] = React.useState([]);
+
+export default function RecordInfo(props) {
+  const [loading, setloading] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
-  const ref = React.useRef();
+  const [elemnts, setelemnts] = React.useState([]);
+  const { new_records } = props;
+
+  const dispatch = useDispatch();
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const removeform = () => {
-    const tmpforms = [...forms];
-    tmpforms.pop();
-    setforms([...tmpforms]);
+  const handleRemoveform = () => {
+    const tmpforms = [...elemnts];
+    setelemnts(tmpforms.slice(0, tmpforms.length));
   }
-  
-  const formadd = (
-    <Grid item xs={12} container gap={1}  >
-      <Grid item xs={5}>
-        <TextField id="name" label="name" variant="standard" />
-      </Grid>
-      <Grid item xs={4}>
-        <TextField id="amount" label="amount" variant="standard" />
-      </Grid>
-      <Grid item xs={1} alignSelf={"normal"}>
-        <IconButton color={"secondary"} onClick={removeform}>
-          <Delete />
-        </IconButton>
-      </Grid>
-    </Grid>
+
+  const el = (
+    <Stack direction={"row"} columnGap={1} sx={{ my: 1 }}>
+      <TextField size={"small"} label={"Arrest Type"} sx={{ flex: 5 }} required name={"type[]"}/>
+      <TextField size={"small"} label={"Amount"} sx={{ flex: 5 }} required name={"value[]"}/>
+      <IconButton sx={{ flex: 1 }} color={"secondary"} onClick={handleRemoveform}>
+        <Delete />
+      </IconButton>
+    </Stack>
   );
 
-  const addform = () => {
-    setforms([...forms, formadd]);
+  const handleAddForm = () => {
+    setelemnts([...elemnts, el]);
   }
 
-  
+  const handleSubmit = e => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    // const inputdatas = Object.fromEntries(data.entries());
+    dispatch(recordArrest({setloading, form: data}));
+  }
+
 
   return (
-    <div>
-      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>
-            General settings
-          </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>I am an accordion</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Grid container rowSpacing={1}
-            sx={{
-              width: 1000,
-            }}
-          >
-            <Grid container item xs={8}>
+    <>
+      {
+        new_records?.map(record => (
+          // <Accordion onChange={handleChange('panel2')}>
+          //   <AccordionSummary
+          //     expandIcon={<ExpandMoreIcon />}
+          //     aria-controls="panel2bh-content"
+          //     id="panel2bh-header"
+          //   >
+          //     <Typography sx={{ width: '33%', flexShrink: 0 }}>Users</Typography>
+          //     <Typography sx={{ color: 'text.secondary' }}>
+          //       You are currently not an owner
+          //     </Typography>
+          //   </AccordionSummary>
+          //   <AccordionDetails>
+          //     <Typography>
+          //       Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus,
+          //       varius pulvinar diam eros in elit. Pellentesque convallis laoreet
+          //       laoreet.
+          //     </Typography>
+          //   </AccordionDetails>
+          // </Accordion>
+          <AccordionInfo title={record.title ?? "No title mentioned"} summary_caption={"hey there write here"}>
+            <Grid container sx={{
+              maxWidth: "1000px"
+            }}>
               <Grid item xs={6}>
-                <InfoLabel />
+                <InfoLabel label={"Title"} value={record.title} />
               </Grid>
               <Grid item xs={6}>
-                <InfoLabel />
+                <InfoLabel label={"Exact Violation"} value={
+                  record?.exact_violation?.map(ev => (
+                    <>
+                      <Typography>{ev}</Typography>
+                    </>
+                  ))
+                } />
               </Grid>
               <Grid item xs={6}>
-                <InfoLabel />
+                <InfoLabel label={"Car"} value={record.car?.name} />
               </Grid>
               <Grid item xs={6}>
-                <InfoLabel />
+                <InfoLabel label={"Car Plate"} value={record.car?.platenumber} />
               </Grid>
               <Grid item xs={6}>
-                <InfoLabel />
+                <InfoLabel label={"Car Type"} value={record.car?.type} />
               </Grid>
               <Grid item xs={6}>
-                <InfoLabel />
+                <InfoLabel label={"Driver Fault"} value={record.driver_fault ? <Chip label="Yes" color={"secondary"} icon={<AddTask />} size={"small"} /> : <Chip label="No" color={"success"} icon={<DoNotDisturbOff />} size={"small"} />} />
               </Grid>
-            </Grid>
-            <Grid item xs={4} container gap={0}>
-              <Grid item xs={12} container gap={0}
-                sx={{
-                  maxHeight: 200,
-                  overflow: "auto"
-                }}
-              >
-                {/* <OverlayScrollbarsComponent
-                  style={{
-                    height: 'calc(100vh - 68px)'
-                  }}> */}
-                  <Grid container gap={1}  >
-                    <Grid item xs={5}>
-                      <TextField id="name" label="name" variant="standard" />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <TextField id="amount" label="amount" variant="standard" />
-                    </Grid>
-                    <Grid item xs={1} alignSelf={"normal"}>
-                      <IconButton color={"primary"} onClick={addform}>
-                        <Add />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
+              <Grid item xs={6}>
+                <InfoLabel label={"Traffic Police"} value={record?.traffic_police?.name.first + " " + record?.traffic_police?.name.last} />
+              </Grid>
+              <Grid item xs={6}>
+                <InfoLabel label={"Violated Rule"} value={record?.violated_rule} />
+              </Grid>
+              <Grid item xs={6} sx={{
+                borderRadius: 3,
+                overflow: "hidden",
+                mt: 2
+              }}>
+                <Mapfitun region={record.region} />
+              </Grid>
+              <Grid item xs={6} sx={{
+                mt: 3,
+                pl: 2
+              }}>
+                <Box
+                  component={"form"}
+                  onSubmit={handleSubmit}
+                  sx={{
+                    p: 2,
+                    boxShadow: 3,
+                    borderRadius: 2,
+                  }}>
+                    
+                  <Stack direction={"row"} columnGap={1}>
+                    <TextField size={"small"} label={"Arrest Type"} sx={{ flex: 5 }} required name={"type[]"}/>
+                    <TextField size={"small"} label={"Amount"} sx={{ flex: 5 }} required name={"value[]"}/>
+                    <IconButton sx={{ flex: 1 }} color={"primary"} onClick={handleAddForm}>
+                      <Add />
+                    </IconButton>
+                  </Stack>
                   {
-                    forms.map(frm => frm)
+                    elemnts
                   }
-                {/* </OverlayScrollbarsComponent> */}
-              </Grid>
-              <Grid item xs={12}>
-                <Button variant={"contained"} fullWidth >Submit</Button>
+                  <LoadingButton loading={loading} color={"primary"} fullWidth size={"small"} variant={"contained"} sx={{ mt: 3 }} type={"submit"}>Submit</LoadingButton >
+                </Box>
               </Grid>
             </Grid>
-          </Grid>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2bh-content"
-          id="panel2bh-header"
-        >
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>Users</Typography>
-          <Typography sx={{ color: 'text.secondary' }}>
-            You are currently not an owner
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus,
-            varius pulvinar diam eros in elit. Pellentesque convallis laoreet
-            laoreet.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel3bh-content"
-          id="panel3bh-header"
-        >
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>
-            Advanced settings
-          </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>
-            Filtering has been entirely disabled for whole web server
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
-            amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel4bh-content"
-          id="panel4bh-header"
-        >
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>Personal data</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
-            amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-    </div>
+          </AccordionInfo>
+        ))
+      }
+    </>
   );
 }

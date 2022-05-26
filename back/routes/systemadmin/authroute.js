@@ -12,6 +12,7 @@ const multer = require('multer');
 const { addSpeed, speedLimits } = require('../../controllers/systemadmin/SpeedController');
 const { userOwner } = require('../../controllers/systemadmin/userscontroller');
 const { crashes, downloadCrash } = require('../../controllers/systemadmin/crashreport');
+const { addRule, fetchRules, deleteRules } = require('../../controllers/systemadmin/rulescontroller');
 
 const operatorProfile = "./pictures/profile/operator";
 const operatorID = "./pictures/IDs/operator";
@@ -79,6 +80,9 @@ router.get('/get-conversation', VerifyAuth, getConversation);
 router.get('/user-owner', VerifyAuth, userOwner);
 router.get('/crashes', VerifyAuth, crashes);
 router.get('/download-crash', VerifyAuth, downloadCrash);
+router.post('/add-rule', VerifyAuth, upload.none(), addRule);
+router.get('/fetch-rules', VerifyAuth, upload.none(), fetchRules);
+router.post('/delete-rules', VerifyAuth, upload.none(), deleteRules);
 
 router.post('/testauth', VerifyAuth, test);
 
