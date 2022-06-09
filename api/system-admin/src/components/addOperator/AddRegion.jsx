@@ -12,27 +12,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as operatorActionBinders from '../../redux/actions/operatoractions';
 
-const AddRegion = () => {
+const AddRegion = (props) => {
+  const { edit, info, setinfo } = props;
   const dispatch = useDispatch();
   const { add_operator } = bindActionCreators( operatorActionBinders, dispatch);
   const operatorInfo = useSelector(state => state.newOperator.newOperator.region);
 
   const [region, setregion] = useState({
     coordinates: {
-      lat: operatorInfo.coordinates?.lat, lng: operatorInfo.coordinates.lng
+      lat: edit ?  info?.region?.coordinates?.lat :  operatorInfo.coordinates?.lat, lng: edit ? info?.region?.coordinates?.lng : operatorInfo.coordinates.lng
     },
-    radius: operatorInfo.radius,
+    radius: edit ? info?.region?.radius : operatorInfo.radius,
     show: true
   });
 
 
   useEffect(() => {
-    add_operator({region: {coordinates: region.coordinates, radius: region.radius }});
+    if (edit) {
+      setinfo({region: {coordinates: region.coordinates, radius: region.radius }});
+    } else {
+      add_operator({region: {coordinates: region.coordinates, radius: region.radius }});
+    }
   }, [region]);
   
 
   return (
-    <Stack direction={"row"} alignItems={"start"} gap={1}>
+    <Stack direction={edit ? "row-reverse" : "row"} alignItems={"start"} gap={1}>
       <Box sx={{ width: '500px', boxShadow: 3, px: 3, py: 2, borderRadius: 2 }}>
         <TextField
           label={"coordinates"}

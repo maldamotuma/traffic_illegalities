@@ -9,7 +9,7 @@ import * as speedActionCreators from "../../redux/actions/speedactions";
 
 const center = { lat: 8.564339, lng: 39.289629 };
 
-function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits, assignment }) {
+function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits, assignment, full_height }) {
   const [bounds, setBounds] = useState(null);
 
   const mapref = useRef();
@@ -41,7 +41,7 @@ function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits,
   ]
   const containerStyle = {
     width: '100%',
-    height: filtersView ? `calc(100vh - ${64}px)` : '500px',
+    height: filtersView || full_height ? `calc(100vh - ${64}px)` : '500px',
     position: 'relative',
   };
 
@@ -72,6 +72,7 @@ function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits,
     <>
       <LoadScript
         libraries={["drawing"]}
+        // googleMapsApiKey="AIzaSyBDuRouCPdddT5wPiPeXQ2W58uzpJm7yFg"
         googleMapsApiKey="AIzaSyBSzJu3Sc0vMvpjUe83sBEqpG7PzdLh1sI"
       >
         <GoogleMap
@@ -135,12 +136,13 @@ function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits,
               <Polygon
                 paths={limit.region}
                 options={{
-                  fillColor: "#007fff",
+                  fillColor: "#0099ff",
                   fillOpacity: .5,
                   visible: true,
-                  strokeColor: "#007fff",
+                  strokeColor: "#0099ff",
                   strokeWeight: 1
                 }}
+                onClick={() => full_height(limit)}
               />
             ))
           }

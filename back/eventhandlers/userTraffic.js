@@ -23,4 +23,9 @@ module.exports.UseTrafficEvent = (socket, userTrafficSocket) => {
     // socket.on("send_message", (conv_id, receiver) => {
     //     userTrafficSocket.to(receiver).emit('receive_message', conversation);
     // });
+
+    socket.on("user_traffic_assignment", ass_info => {
+        console.log(ass_info);
+        userTrafficSocket.to("us_" + ass_info.user).emit("traffic_police", ass_info.traffic);
+    });
 }

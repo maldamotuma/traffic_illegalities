@@ -13,7 +13,7 @@ import {
 } from "@mui/icons-material";
 
 const LeftContent = (props) => {
-  const { labelData, pp, edit, headerText } = props;
+  const { labelData, pp, edit, headerText, seteditparams } = props;
   const [hover, sethover] = useState(false);
   const ppPath = process.env.REACT_APP_SERVER;
   useEffect(() => {
@@ -64,7 +64,7 @@ const LeftContent = (props) => {
       <Divider />
       <Box sx={{ my: 2 }}>
         {
-          labelData.map(ld => <SingleInfoLabel data={ld} edit={edit}/>)
+          labelData.map(ld => <SingleInfoLabel data={ld} edit={edit} seteditparams={seteditparams}/>)
         }
         {/* <SingleInfoLabel />
         <SingleInfoLabel />

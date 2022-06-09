@@ -49,6 +49,7 @@ const { logger_to_file } = require('./logger');
 const { sendServerError } = require('./controllers/helpers/utils');
 const { downloadCrash } = require('./controllers/systemadmin/crashreport');
 const { UseTrafficEvent } = require('./eventhandlers/userTraffic');
+const { locationSearch } = require('./eventhandlers/system-admin-searches');
 
 /** end of model configuration */
 const systemAdminCorsConfig = {
@@ -103,6 +104,12 @@ const carSocket = io.of('/car');
 carSocket.on("connection", (socket) => {
     console.log("car connected !!!");
     carEvents(socket, carSocket);
+});
+
+const location_searchSocket = io.of('/location-search');
+location_searchSocket.on("connection", (socket) => {
+    console.log("location_searchSocket connected !!!");
+    locationSearch(socket, location_searchSocket);
 });
 
 io.on("connection", (socket) => {

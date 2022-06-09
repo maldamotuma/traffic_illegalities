@@ -1,3 +1,4 @@
+import usertrafficslicer from "./assignment/usertrafficslicer";
 import accountSlices from "./auth/accountSlices";
 import chatSlice from "./chat/chatSlice";
 import socketSlice from "./socket/socket";
@@ -7,7 +8,8 @@ const reducerIndex = {
     user: accountSlices,
     track: trackSlice,
     conversations: chatSlice,
-    socket: socketSlice
+    socket: socketSlice,
+    assignment: usertrafficslicer
 }
 
 export default reducerIndex;

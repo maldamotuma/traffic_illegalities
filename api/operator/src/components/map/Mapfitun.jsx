@@ -4,13 +4,17 @@ import Options from './Options';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTrack } from '../../redux/slices/track/trackSlice';
 import { handleCarClick, handleTrafficClick } from './assignmentactions';
+import { bindActionCreators } from 'redux';
+import * as userttrafficactionbinders from '../../redux/slices/assignment/usertrafficslicer';
 
 function Mapfitun() {
     const [assignment, setassignment] = useState({ car: null, traffic: null });
     const region = useSelector(state => state.user?.region);
     const { cars, traffics } = useSelector(state => state.track);
     const carSocket = useSelector(state => state.socket?.car);
+    const user_customer = useSelector(state => state.assignment?.user);
     const dispatch = useDispatch();
+    const { join_user_traffic } = bindActionCreators(userttrafficactionbinders, dispatch);
 
     // useEffect(() => {
     //     dispatch(addTrack({cars: [1,2,3]}));
@@ -72,7 +76,7 @@ function Mapfitun() {
                         />)
                     }
                     {
-                        traffics.map(traffic => <Marker position={traffic} icon={assignment.traffic === traffic._id ? "/trafficpolicebordered.png" : "/trafficpolice.png"} onClick={() => handleTrafficClick(assignment, setassignment, traffic._id, handleAssignment)} />)
+                        traffics.map(traffic => <Marker position={traffic} icon={assignment.traffic === traffic._id ? "/trafficpolicebordered.png" : "/trafficpolice.png"} onClick={() => handleTrafficClick(assignment, setassignment, traffic._id, handleAssignment, join_user_traffic, user_customer)} />)
                     }
                 </GoogleMap>
             </LoadScript>

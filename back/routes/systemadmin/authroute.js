@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { signIn, signOut, signUp, test, forgotPassword, resetPassword, createNewPassword, currentUser, change_Password } = require("../../controllers/systemadmin/authcontroller");
-const { addOperator, operators, operator } = require('../../controllers/systemadmin/OperatorsController');
+const { addOperator, operators, operator, editOperator, deleeoperatorIDphoto } = require('../../controllers/systemadmin/OperatorsController');
 const { addTrafficPolices, trafficpolices } = require('../../controllers/systemadmin/TrafficPolicesController');
 const { VerifyAuth } = require('../../middlewares/authmiddlewares/Verifyauth');
 const { addOfficeTraffic } = require('../../controllers/systemadmin/OfficeTrafficControllers');
@@ -71,6 +71,8 @@ router.get('/cars', VerifyAuth, cars);
 router.get('/traffic-polices', VerifyAuth, trafficpolices);
 router.get('/operators', VerifyAuth, operators);
 router.get('/operator/:id', VerifyAuth, operator);
+router.post('/edit-operator/:id', VerifyAuth, editOperator);
+router.post('/delete-operator-id-photo/:op_id/:photo', VerifyAuth, deleeoperatorIDphoto);
 router.post('/add-speed', VerifyAuth, addSpeed);
 router.get('/speed-limits', VerifyAuth, speedLimits);
 router.post('/add-system-admin', VerifyAuth, addSystemAdmin);

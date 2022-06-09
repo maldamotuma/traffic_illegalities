@@ -1,5 +1,6 @@
 import { APPENDCARINFO, FETCHCARS } from "../ActionTypes";
 import axios from "../caxios";
+import { login_form } from "../helpers";
 import { formdataGenerator } from "./helper";
 
 export const register_car = setScreen => (dispatch, getState) => {
@@ -9,6 +10,8 @@ export const register_car = setScreen => (dispatch, getState) => {
     axios.post("/add-car", formdata).then(res => {
         if (res.data.success === 1) {
             setScreen("success");
+        } else if (res.data.success === -1) {
+            login_form(dispatch);
         } else {
             setScreen("form");
         }
@@ -29,5 +32,7 @@ export const fetch_cars = () => async dispatch => {
             type: FETCHCARS,
             payload: res.data.cars
         });
+    } else if (res.data.success === -1) {
+        login_form(dispatch);
     }
 }

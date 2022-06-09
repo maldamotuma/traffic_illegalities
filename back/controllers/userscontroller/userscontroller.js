@@ -57,3 +57,14 @@ module.exports.verifyAssignment = async(req, res) => {
         sendRespose(res, "error Happende!!");
     }
 }
+
+module.exports.getDriver = async(req, res) => {
+    try {
+        const query = req.query;
+        const driver = await User.findOne({ username: query.username }).exec();
+        sendRespose(res, { driver });
+    } catch (error) {
+        console.log(error);
+        sendRespose(res, "server get driver to assign!!");
+    }
+}

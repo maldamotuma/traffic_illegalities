@@ -68,10 +68,18 @@ export default function TableDisplay(props) {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          <Link to={`/edit-operator/${row._id}`}>
-                            {column.format && typeof value === 'number'
-                              ? column.format(value)
-                              : value}
+                          <Link to={`/edit-operator/${row._id}`} style={{
+                            textDecoration: "none",
+                            color: "#000"
+                          }}>
+                            {
+                              typeof value === "object" ?
+                                (value.first + " " + value.last)
+                                :
+                                typeof value !== "Object" && column.format && typeof value === 'number'
+                                  ? column.format(value)
+                                  : value
+                            }
                           </Link>
                         </TableCell>
                       );

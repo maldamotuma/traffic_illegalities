@@ -1,6 +1,7 @@
 import axios from "../caxios";
 import { DOWNLOADCRASHLOG, FETCHCRASHREPORT } from "../ActionTypes";
 import { FileDownload } from "js-file-download";
+import { login_form } from "../helpers";
 
 export const fetch_crashes = () => async dispatch => {
     try {
@@ -10,6 +11,8 @@ export const fetch_crashes = () => async dispatch => {
                 type: FETCHCRASHREPORT,
                 payload: res.data.crashes
             });
+        } else if (res.data.success === -1) {
+            login_form(dispatch);
         }
     } catch (error) {
         console.log("malda : ", error);
