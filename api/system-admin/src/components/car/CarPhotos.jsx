@@ -36,7 +36,7 @@ const DropDOwn = () => {
                                         border: `2px dashed ${isDragActive ? "#000" : "#1976D2"}`,
                                         position: "relative",
                                         borderRadius: 3,
-                                        pb: 2.5,
+                                        py: 2.5,
                                         transition: ".2s all ease-out",
                                         position: "relative"
                                     }}>
@@ -66,7 +66,7 @@ const DropDOwn = () => {
                                             }} color={"primary"} fontWeight={"bold"} fontSize={"20px"}>Drop Images or</Typography>
 
                                             <label htmlFor="contained-button-file">
-                                                <Input accept="image/*" id="contained-button-file" multiple type="file" hidden />
+                                                <Input accept="image/*" id="contained-button-file" multiple type="file" hidden name={"photos"}/>
                                                 <Button
                                                     variant="contained"
                                                     component="span"

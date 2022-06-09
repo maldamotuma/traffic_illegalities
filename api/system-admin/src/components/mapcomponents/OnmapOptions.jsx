@@ -12,30 +12,10 @@ import SatelliteAltIcon from '@mui/icons-material/SatelliteAlt';
 import AddRoadIcon from '@mui/icons-material/AddRoad';
 import TerrainIcon from '@mui/icons-material/Terrain';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
+import Inputform from './Inputform';
 
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-    '& .MuiToggleButtonGroup-grouped': {
-        margin: theme.spacing(0.5),
-        border: 0,
-        '&.Mui-disabled': {
-            border: 0,
-        },
-        '&:not(:first-of-type)': {
-            borderRadius: theme.shape.borderRadius,
-        },
-        '&:first-of-type': {
-            borderRadius: theme.shape.borderRadius,
-        },
-    },
-}));
 
 export default function CustomizedDividers() {
-    const [formats, setFormats] = React.useState(() => ['italic']);
-
-    const handleFormat = (event, newFormats) => {
-        setFormats(newFormats);
-    };
-
 
     return (
         <div style={{
@@ -45,76 +25,7 @@ export default function CustomizedDividers() {
             display: 'flex',
             gap: '100px'
         }}>
-            <Paper
-                elevation={0}
-                sx={{
-                    display: 'flex',
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    flexWrap: 'wrap',
-                }}
-            >
-                {/* <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} /> */}
-                <StyledToggleButtonGroup
-                    size="small"
-                    value={formats}
-                    onChange={handleFormat}
-                    aria-label="text formatting"
-                >
-                    <ToggleButton value="sss" aria-label="right aligned">
-                        <BorderAllIcon />
-                    </ToggleButton>
-                    <ToggleButton value="left" aria-label="left aligned">
-                        <TrafficIcon />
-                    </ToggleButton>
-                    <ToggleButton value="center" aria-label="centered">
-                        <DirectionsCarIcon />
-                    </ToggleButton>
-                    <ToggleButton value="right" aria-label="right aligned">
-                        <PersonIcon />
-                    </ToggleButton>
-                    <ToggleButton value="ss" aria-label="right aligned">
-                        <BusinessIcon />
-                    </ToggleButton>
-                </StyledToggleButtonGroup>
-            </Paper>
-            <Paper
-                elevation={0}
-                sx={{
-                    display: 'flex',
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    flexWrap: 'wrap',
-                }}
-            >
-                {/* <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} /> */}
-                <StyledToggleButtonGroup
-                    size="small"
-                    value={formats}
-                    onChange={handleFormat}
-                    aria-label="text formatting"
-                >
-                    <ToggleButton value="sssss" aria-label="right aligned">
-                        <AddRoadIcon />
-                    </ToggleButton>
-                    <ToggleButton value="lessft" aria-label="left aligned">
-                        <SatelliteAltIcon />
-                    </ToggleButton>
-                    <ToggleButton value="cesnter" aria-label="centered">
-                        <TerrainIcon />
-                    </ToggleButton>
-                </StyledToggleButtonGroup>
-            </Paper>
-            <Paper
-                elevation={0}
-                sx={{
-                    display: 'flex',
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    flexWrap: 'wrap',
-                }}
-            >
-                <ToggleButton value="cesnter" aria-label="centjered">
-                    <MyLocationIcon />
-                </ToggleButton>
-            </Paper>
+            <Inputform />
         </div>
     );
 }

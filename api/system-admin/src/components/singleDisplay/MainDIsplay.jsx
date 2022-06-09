@@ -14,7 +14,13 @@ import {
 } from "@mui/icons-material";
 
 const MainDIsplay = (props) => {
-  const { children, edit, setedit } = props;
+  const { children, edit, setedit, persist_change } = props;
+  const handleEditOn = () => {
+    if (edit) {
+      persist_change();
+    }
+    setedit(!edit)
+  }
   return (
     <>
       <Container maxWidth={"xl"} sx={{ position: "relative", mt: 2 }}>
@@ -30,7 +36,7 @@ const MainDIsplay = (props) => {
               bgcolor: "#fff",
               boxShadow: 1
             }}
-            onClick={() => setedit(!edit)}
+            onClick={handleEditOn}
           >
             {edit ? <Save /> : <Edit />}
           </IconButton>

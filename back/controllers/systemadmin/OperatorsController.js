@@ -1,5 +1,6 @@
 const OpratorSchema = require("../../models/Oprator");
 const { hashPassword } = require("../helpers/auth");
+const { convertToMongooseFormat } = require("../helpers/datamap");
 const { sendServerError, sendRespose } = require("../helpers/utils");
 
 module.exports.addOperator = async(req, res) => {
@@ -45,5 +46,28 @@ module.exports.operator = async(req, res) => {
     } catch (error) {
         console.log(error);
         sendServerError(res);
+    }
+}
+
+module.exports.editOperator = async(req, res) => {
+    try {
+        const params = req.body;
+        const query_data = convertToMongooseFormat(params);
+        const operator = await OpratorSchema.updateOne({ _id: req.params.id }, {...query_data }).exec();
+        sendRespose(res, { params });
+    } catch (error) {
+        console.log(error);
+        sendServerError(res, error, "Edit Operator Backed of system admin");
+    }
+}
+
+module.exports.deleeoperatorIDphoto = async(req, res) => {
+    try {
+        const { op_id, photo } = req.params;
+        const rspns = await OpratorSchema.updateOne({ _id: op_id }, { $pull: { "identificationCard.photos": photo } }).exec();
+        sendRespose(res, { rspns });
+    } catch (error) {
+        console.log(error);
+        sendServerError(res, error, "Delete Operator id photos Operator Backed of system admin");
     }
 }

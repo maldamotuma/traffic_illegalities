@@ -9,6 +9,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as conversationActions from '../../redux/actions/messagesAction';
+import * as userttrafficactionbinders from '../../redux/slices/assignment/usertrafficslicer';
 import { AdminPanelSettings, FiberSmartRecord, MoreVertRounded } from "@mui/icons-material";
 import { removeMessageFromView } from "../../redux/slices/chat/chatSlice";
 import ActionMenu from "./Actionmenu";
@@ -19,14 +20,56 @@ import Moment from 'react-moment';
 const TopChat = ({ conversation }) => {
     const dispatch = useDispatch();
     // const { remove_conversation_from_screen } = bindActionCreators(conversationActions, dispatch);
+    const { join_user_traffic } = bindActionCreators(userttrafficactionbinders, dispatch);
+    const assignment = useSelector(state => state.assignment?.user);
 
     const handleRemoveFromScreen = () => {
         dispatch(removeMessageFromView(conversation._id));
     }
+
+    const handleSelect = () => {
+        join_user_traffic({user: conversation.user?._id});
+    }
+    const handleUnselect = (e) => {
+        e.preventDefault();
+        join_user_traffic({user: null});
+    }
     return (
         <CardHeader
             avatar={
-                <Avatar src="https://picsum.photos/200" sx={{ width: '45px', height: '45px' }}>M</Avatar>
+                <Box
+                    sx={{
+                        position: "relative",
+                        p: .5,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                    }}
+                    onClick={handleSelect}
+                    onContextMenu={handleUnselect}
+                >
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            width: "100%",
+                            height: "100%",
+                            background: "rgb(131,58,180)",
+                            background: "linear-gradient(39deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)",
+                            borderRadius: "50%",
+                            opacity: assignment === conversation.user?._id ? .7 : 0
+                        }}
+                    ></Box>
+                    <Avatar
+                        src="https://picsum.photos/200"
+                        sx={{
+                            width: '45px',
+                            height: '45px',
+                            boxShadow: 5,
+                            border: assignment === conversation.user?._id ? "2px solid #5C19AD" : "",
+                            transition: ".1s all ease-in-out"
+                        }}
+                    >M</Avatar>
+                </Box>
             }
             title={
                 <Typography color={"#fff"} fontWeight={700}>

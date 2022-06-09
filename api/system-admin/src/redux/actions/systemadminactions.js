@@ -1,6 +1,7 @@
 import axios from "../caxios";
 import { ADDSYSTEMADMIN, SUBMITSYSTEMADMIN } from "../ActionTypes";
 import { formdataGenerator } from "./helper";
+import { login_form } from "../helpers";
 
 export const submit_system_admin = setScreen => async(dispatch, getState) => {
     try {
@@ -9,6 +10,8 @@ export const submit_system_admin = setScreen => async(dispatch, getState) => {
         const res = await axios.post("/add-system-admin", formdata);
         if (res.data.success === 1) {
             setScreen("success");
+        } else if (res.data.success === -1) {
+            login_form(dispatch);
         }
     } catch (error) {
         // dispatch({

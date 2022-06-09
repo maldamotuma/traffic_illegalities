@@ -14,8 +14,8 @@ const OperatorList = () => {
         fetch_operators();
     }, [])
     const columns = [
-        { id: 'full_name', label: 'Name', minWidth: 170 },
-        { id: 'username', label: 'Type', minWidth: 100 },
+        { id: 'name', label: 'Name', minWidth: 170 },
+        { id: 'username', label: 'Username', minWidth: 100 },
         {
             id: 'email',
             label: 'plate',

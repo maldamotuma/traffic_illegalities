@@ -1,6 +1,7 @@
 import axios from "../caxios";
 import { SETADMIN } from "../ActionTypes";
 import { FIXEDNOTIFICATION, UPDATEONETIME } from '../ActionTypes';
+import { login_form } from "../helpers";
 
 
 
@@ -68,7 +69,7 @@ export const logout = (setloading) => async dispatch => {
 
 export const forgotPassword = (email) => async dispatch => {
     try {
-        let res = await axios.post('/forgot-password', {email: email});
+        let res = await axios.post('/forgot-password', { email: email });
         dispatch({
             type: FIXEDNOTIFICATION,
             payload: { type: 'success', message: 'Email sent.Check you Email ...', open: true }
@@ -82,20 +83,22 @@ export const forgotPassword = (email) => async dispatch => {
     }
 }
 
-export const changePassword = (password, setloading, type) => async (dispatch, getState) => {
-    try{
+export const changePassword = (password, setloading, type) => async(dispatch, getState) => {
+    try {
         let res = await axios.post(type === 'create' ? '/create-new-password' : '/change-password', password);
         if (res.data.success) {
-            if(type === 'create') {
+            if (type === 'create') {
                 dispatch({
                     type: UPDATEONETIME,
                     payload: false
                 });
+                dispatch({
+                    type: FIXEDNOTIFICATION,
+                    payload: { type: 'success', message: 'Password successfully ' + (type === 'create' ? 'Created' : 'Changed'), open: true }
+                });
+            } else if (res.data.success === -1) {
+                login_form(dispatch);
             }
-            dispatch({
-                type: FIXEDNOTIFICATION,
-                payload: { type: 'success', message: 'Password successfully '+(type === 'create' ? 'Created' : 'Changed'), open: true }
-            });
         } else {
             dispatch({
                 type: FIXEDNOTIFICATION,
@@ -103,14 +106,14 @@ export const changePassword = (password, setloading, type) => async (dispatch, g
             });
         }
         setloading(false);
-    }catch(error){
+    } catch (error) {
         setloading(false);
         console.log(error);
     }
 }
 
 export const checkToken = (token, navigate) => async dispatch => {
-    try{
+    try {
         const res = await axios.post('/reset-password', token);
         if (res.data.success == 1) {
             dispatch({
@@ -121,7 +124,7 @@ export const checkToken = (token, navigate) => async dispatch => {
         } else {
             navigate('/login');
         }
-    }catch(error){
+    } catch (error) {
 
     }
 }

@@ -1,5 +1,6 @@
 import { ADDOPERATOR, SUBMITOPERATOR, FETCHSINGLEOPERATOR, FETCHOPERATORS } from "../ActionTypes";
 import axios from "../caxios";
+import { login_form } from "../helpers";
 import { formdataGenerator } from "./helper";
 
 export const add_operator = operator => dispatch => {
@@ -37,6 +38,8 @@ export const submit_operator = (setscreen) => (dispatch, getState) => {
                 type: SUBMITOPERATOR,
                 payload: operator
             });
+        } else if (res.data.success === -1) {
+            login_form(dispatch);
         } else {
             setTimeout(() => {
                 setscreen("form");
@@ -52,6 +55,8 @@ export const fetch_operators = () => async dispatch => {
             type: FETCHOPERATORS,
             payload: res.data.operators
         });
+    } else if (res.data.success === -1) {
+        login_form(dispatch);
     }
 }
 
@@ -62,5 +67,20 @@ export const get_operator = opid => async dispatch => {
             type: FETCHSINGLEOPERATOR,
             payload: res.data.operator
         });
+    } else if (res.data.success === -1) {
+        login_form(dispatch);
     }
+}
+
+export const edit_operator = (oprtr, opid, setloading) => async dispatch => {
+    const res = await axios.post(`/edit-operator/${opid}`, oprtr);
+    setloading(false);
+}
+
+export const delete_id_photos = (photo, oper_id) => async dispatch => {
+    const res = await axios.post(`/delete-operator-id-photo/${oper_id}/${photo}`);
+}
+
+export const upload_id_photos = (photos, oper_id) => async dispatch => {
+    const res = await axios.post(`/upload-operator-id-photo/${oper_id}`, photos);
 }

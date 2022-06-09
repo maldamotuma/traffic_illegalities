@@ -21,7 +21,7 @@ export default function CarOwner(props) {
     const carInfo = useSelector(state => state.newCar?.newCar?.owner);
     const ref = React.useRef();
     const rules = {
-        owner: /^[A-Za-z]{3,}$/
+        owner: /^[A-Za-z_]{3,}$/
     }
     const messages = {
         owner: "Please Provide the car owner"

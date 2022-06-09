@@ -1,5 +1,6 @@
 import { ADDNEWTRAFFICPOLICE, FETCHTRAFFICPOLICES } from "../ActionTypes";
 import axios from "../caxios";
+import { login_form } from "../helpers";
 import { formdataGenerator } from "./helper";
 
 export const add_traffic_police = traffic_police_info => dispatch => {
@@ -9,7 +10,7 @@ export const add_traffic_police = traffic_police_info => dispatch => {
     });
 }
 
-export const submit_new_traffic_police = setScreen => async (dispatch, getState) => {
+export const submit_new_traffic_police = setScreen => async(dispatch, getState) => {
     const trafficPolice = getState().newTrafficPolice.newTrafficPolice;
     const formdata = formdataGenerator(trafficPolice);
     const res = await axios.post("/add-traffic-police", formdata);
@@ -19,6 +20,8 @@ export const submit_new_traffic_police = setScreen => async (dispatch, getState)
         //     type: ADDNEWTRAFFICPOLICE,
         //     payload: traffic_police_info
         // });
+    } else if (res.data.success === -1) {
+        login_form(dispatch);
     }
 }
 
@@ -29,5 +32,7 @@ export const fetch_trafficpolices = () => async dispatch => {
             type: FETCHTRAFFICPOLICES,
             payload: res.data.trafficpolices
         });
+    } else if (res.data.success === -1) {
+        login_form(dispatch);
     }
 }

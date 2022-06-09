@@ -65,15 +65,6 @@ const AccountDropdown = ({ logout }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <Link to="/create-new-password" className="text-decoration-none text-dark">
-          <MenuItem>
-            <Avatar /> Create new Password
-          </MenuItem>
-        </Link>
-        <Divider />
         <Link to="/change-password" className="text-decoration-none text-dark">
           <MenuItem>
             <ListItemIcon>
@@ -82,12 +73,6 @@ const AccountDropdown = ({ logout }) => {
             Change Password
           </MenuItem>
         </Link>
-        <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
