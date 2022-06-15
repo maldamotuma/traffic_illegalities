@@ -1,11 +1,8 @@
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import DirectionsIcon from '@mui/icons-material/Directions';
 import Searchmenu from './Searchmenu';
 import { get_actor_on_map } from '../../redux/actions/trackActions';
 import {
@@ -29,9 +26,6 @@ export default function Inputform() {
             onSubmit={handleSubmit}
             sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
         >
-            {/* <IconButton sx={{ p: '10px' }} aria-label="menu">
-        <MenuIcon />
-      </IconButton> */}
             <Searchmenu choice={choice} setchoice={setchoice} />
             <InputBase
                 sx={{ ml: 1, flex: 1 }}
@@ -42,7 +36,7 @@ export default function Inputform() {
             />
             {
                 loading ?
-                    <IconButton sx={{ p: '10px' }} aria-label="loading">
+                    <IconButton sx={{ p: '10px' }} aria-label="loading" disabled>
                         <CircularProgress size={23.5} />
                     </IconButton>
                     :

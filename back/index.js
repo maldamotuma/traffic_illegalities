@@ -7,12 +7,13 @@ const UserRouter = require('./routes/userroute');
 const OperatorRouter = require('./routes/operatorroute');
 const TraffcPoliceRouter = require("./routes/trafficPoliceRoute");
 const TraffcOfficeRouter = require("./routes/trafficofficeroute");
+const carRoutes = require("./routes/carroute");
 // var bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const httpServer = createServer(app);
 require('dotenv').config();
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 
 const io = new Server(httpServer, {
     cors: {
@@ -32,6 +33,7 @@ const UserOperator = require('./models/Useroperator');
 const { info } = require('./controllers/generalController');
 const { UseOperatorEvent } = require('./eventhandlers/UserOperator');
 const { carEvents } = require('./eventhandlers/car');
+const { assignmentEvents } = require('./eventhandlers/assignments');
 
 /**
  * model configuration
@@ -45,6 +47,8 @@ const Useroperator = require('./models/Useroperator');
 const Record = require('./models/Record');
 const Rule = require('./models/Rule');
 const Crashlog = require('./models/Crashlog');
+const UserTraffic = require('./models/UserTraffic');
+const TrafficHoldingSchema = require('./models/TrafficHolding');
 const { logger_to_file } = require('./logger');
 const { sendServerError } = require('./controllers/helpers/utils');
 const { downloadCrash } = require('./controllers/systemadmin/crashreport');
@@ -64,6 +68,8 @@ app.use('/operator', OperatorRouter);
 app.use('/traffic-police', TraffcPoliceRouter);
 app.use('/traffic-office', cors(systemAdminCorsConfig));
 app.use('/traffic-office', TraffcOfficeRouter);
+app.use('/car', cors(systemAdminCorsConfig));
+app.use('/car', carRoutes);
 
 /**
  * database configuration
@@ -74,14 +80,14 @@ databaseConfiguration()
 
 app.get('/', async(req, res) => {
     try {
-        await Comment.get();
+        return res.send("hello malda");
     } catch (error) {
         sendServerError(res, error, "User");
     }
 });
 app.post('/test-lab', async(req, res) => {
     try {
-        console.log("dagi connected !!", req.cookies);
+        // console.log("dagi connected !!", req.cookies);
         res.send("successfull dagisho!!!");
     } catch (error) {
         sendServerError(res, error, "User");
@@ -96,24 +102,30 @@ userOperatorSocket.on("connection", (socket) => {
 
 const UseTrafficSocket = io.of('/userTraffic');
 UseTrafficSocket.on("connection", (socket) => {
-    console.log("new Traffic user connected !!");
+    // console.log("new Traffic user connected !!");
     UseTrafficEvent(socket, UseTrafficSocket);
 });
 
 const carSocket = io.of('/car');
 carSocket.on("connection", (socket) => {
-    console.log("car connected !!!");
+    // console.log("car connected !!!");
     carEvents(socket, carSocket);
 });
 
 const location_searchSocket = io.of('/location-search');
 location_searchSocket.on("connection", (socket) => {
-    console.log("location_searchSocket connected !!!");
+    // console.log("location_search Socket connected !!!");
     locationSearch(socket, location_searchSocket);
 });
 
+const assignment_socket = io.of('/assignments');
+assignment_socket.on("connection", (socket) => {
+    console.log("assignment connected !!!");
+    assignmentEvents(socket, assignment_socket);
+});
+
 io.on("connection", (socket) => {
-    console.log('connected!!!');
+    // console.log('connected!!!');
     // io.emit('status', 'connec');
     socket.on("online", user => {
         onlineUsers.push({...user, sid: socket.id });

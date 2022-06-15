@@ -2,7 +2,7 @@ const UserOperator = require("../models/Useroperator");
 
 module.exports.UseOperatorEvent = (socket, userOperatorSocket) => {
     socket.on("join", (id) => {
-        console.log("operator joined !!!", id);
+        // console.log("operator joined !!!", id);
         socket.join("op_" + id);
     });
     socket.on("user_join", (id) => {
@@ -17,7 +17,8 @@ module.exports.UseOperatorEvent = (socket, userOperatorSocket) => {
         const tmpconversation = await UserOperator.findOne({ _id: conversation._id });
         tmpconversation.messages.push(message);
         const newMessage = await tmpconversation.save();
-        console.log(conversation, receiver);
+        console.log(message);
+        // console.log(conversation, receiver);
         userOperatorSocket.to(receiver).emit('receive_message', { _id: conversation._id, message });
     });
     // socket.on("send_message", (conv_id, receiver) => {

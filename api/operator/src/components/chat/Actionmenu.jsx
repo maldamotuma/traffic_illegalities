@@ -6,7 +6,7 @@ import { IconButton, ListItemIcon } from '@mui/material';
 import { BookmarkAddedRounded, CloseRounded, MoreVertRounded, VisibilityOffRounded } from '@mui/icons-material';
 
 export default function ActionMenu(props) {
-    const { removeMessageFromView } = props;
+    const { removeMessageFromView, cleIssue } = props;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -47,7 +47,7 @@ export default function ActionMenu(props) {
                     </ListItemIcon>
                     Hide
                 </MenuItem>
-                <MenuItem onClick={handleRemove}>
+                <MenuItem onClick={cleIssue}>
                     <ListItemIcon>
                         <BookmarkAddedRounded sx={{ color: 'secondary.main' }}/>
                     </ListItemIcon>

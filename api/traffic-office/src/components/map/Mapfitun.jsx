@@ -35,7 +35,7 @@ function Mapfitun({ region }) {
         <>
             <LoadScript
                 libraries={["drawing"]}
-                googleMapsApiKey="AIzaSyBSzJu3Sc0vMvpjUe83sBEqpG7PzdLh1sI"
+                googleMapsApiKey="AIzaSyBDuRouCPdddT5wPiPeXQ2W58uzpJm7yFg"
             >
                 <GoogleMap
                     mapContainerStyle={containerStyle}

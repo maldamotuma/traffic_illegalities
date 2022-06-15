@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { newMessage } from "./chatapi";
+import { cleIssue, newMessage } from "./chatapi";
 
 const initialState = [
-    { _id: 1, name: { first: "malda", last: "motuma" } },
-    { _id: 2, name: { first: "John", last: "Doe" } },
+    // { _id: 1, name: { first: "malda", last: "motuma" } },
+    // { _id: 2, name: { first: "John", last: "Doe" } },
     // { _id: 3, name: { first: "Tesfae", last: "Gobena" } },
     // { _id: 4, name: { first: "Biruk", last: "Sebsibe" } },
     // { _id: 5, name: { first: "Robera", last: "Fanta" } },
@@ -54,11 +54,20 @@ const chatSlice = createSlice({
                     if (String(cnv._id) === String(payload._id)) {
                         cnv.hide = null;
                         cnv.messages.push(payload.message);
-                        // cnv.messages.push(payload.message);
                     }
                 });
             }
             messAudio.play();
+        },
+        [cleIssue.fulfilled]: (state, { payload }) => {
+            if (payload) {
+                closeAudio.play();
+                state.forEach(cnv => {
+                    if (cnv._id === payload) {
+                        cnv.hide = true;
+                    }
+                })
+            }
         }
     }
 });

@@ -19,6 +19,7 @@ export default function AddSpeed() {
             components={components}
             large={true}
             submitAction={submit_new_speed_limit}
+            not_validate_final={true}
         />
     );
 }

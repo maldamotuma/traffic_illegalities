@@ -1,14 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { GoogleMap, LoadScript, Circle, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Circle, Marker, InfoWindow } from '@react-google-maps/api';
 import Options from './Options';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTrack } from '../../redux/slices/track/trackSlice';
 import { handleCarClick, handleTrafficClick } from './assignmentactions';
 import { bindActionCreators } from 'redux';
 import * as userttrafficactionbinders from '../../redux/slices/assignment/usertrafficslicer';
+import { Paper, Typography, Box, Stack } from '@mui/material';
+import { CheckCircle } from '@mui/icons-material';
+import { assignmentsSocket } from '../../screens/Activesession';
 
 function Mapfitun() {
     const [assignment, setassignment] = useState({ car: null, traffic: null });
+    const [map_option, setmap_option] = useState({
+        traffic_police: false
+    });
     const region = useSelector(state => state.user?.region);
     const { cars, traffics } = useSelector(state => state.track);
     const carSocket = useSelector(state => state.socket?.car);
@@ -30,14 +36,15 @@ function Mapfitun() {
     }
 
     const handleAssignment = (traffic) => {
-        carSocket.emit("car_assignment", `tr_${traffic}`, `ca_${assignment.car}`)
+        carSocket.emit("car_assignment", `tr_${traffic}`, `ca_${assignment.car}`);
+        assignmentsSocket.emit("car_assignment", `tr_${traffic}`, `ca_${assignment.car}`);
     }
 
     return (
         <>
             <LoadScript
                 libraries={["drawing"]}
-                googleMapsApiKey="AIzaSyBSzJu3Sc0vMvpjUe83sBEqpG7PzdLh1sI"
+                googleMapsApiKey="AIzaSyBDuRouCPdddT5wPiPeXQ2W58uzpJm7yFg"
             >
                 <GoogleMap
                     mapContainerStyle={containerStyle}
@@ -51,7 +58,7 @@ function Mapfitun() {
                     <div style={{
                         position: 'absolute',
                     }}>
-                        <Options />
+                        <Options setmap_option={setmap_option}/>
                     </div>
                     {
                         region &&
@@ -66,6 +73,7 @@ function Mapfitun() {
                     }
                     {
                         cars.map(car => <Marker
+                            key={"car" + car._id}
                             position={car}
                             icon={{
                                 url: assignment.car === car._id ? "/smallcarbordered.png" : "/smallcar.png",
@@ -76,7 +84,46 @@ function Mapfitun() {
                         />)
                     }
                     {
-                        traffics.map(traffic => <Marker position={traffic} icon={assignment.traffic === traffic._id ? "/trafficpolicebordered.png" : "/trafficpolice.png"} onClick={() => handleTrafficClick(assignment, setassignment, traffic._id, handleAssignment, join_user_traffic, user_customer)} />)
+                        // traffics.map(traffic => <Marker key={"traffic" + traffic.sid} position={traffic} icon={assignment.traffic === traffic._id ? "/trafficpolicebordered.png" : "/trafficpolice.png"} onClick={() => handleTrafficClick(assignment, setassignment, traffic._id, handleAssignment, join_user_traffic, user_customer)} />)
+                        map_option.traffic_police === true && traffics.map(traffic =>
+                            <InfoWindow
+                                // onCloseClick={e => {return false}}
+                                key={"traffic" + traffic.sid} position={traffic} icon={assignment.traffic === traffic._id ? "/trafficpolicebordered.png" : "/trafficpolice.png"} onClick={() => handleTrafficClick(assignment, setassignment, traffic._id, handleAssignment, join_user_traffic, user_customer)} >
+                                <Paper
+                                    sx={{
+                                        cursor: "pointer"
+                                    }}
+                                    onClick={() => handleTrafficClick(assignment, setassignment, traffic._id, handleAssignment, join_user_traffic, user_customer)}
+                                >
+                                    <Stack
+                                        direction={"row"}
+                                        alignItems={"center"}
+                                        sx={{
+                                            transition: "0.3s all ease",
+                                            mb: .5
+                                        }}
+                                    >
+                                        <Box
+                                            component={"img"}
+                                            src={"/trafficpolice.png"}
+                                            m={"auto"}
+                                            width={"40px"}
+                                        ></Box>
+                                        <CheckCircle
+                                            sx={{
+                                                color: "primary.light",
+                                                width: 30,
+                                                height: 30,
+                                                width: assignment.traffic === traffic._id ? 30 : 0,
+                                                transition: "0.2s all ease"
+                                            }}
+                                        />
+                                    </Stack>
+                                    <Typography color={"primary.dark"} fontSize={12}><span style={{ fontWeight: "bold" }}>Cars :</span> {traffic.cars}</Typography>
+                                    <Typography color={"primary.dark"} fontSize={12}><span style={{ fontWeight: "bold" }}>Customers :</span> {traffic.customers}</Typography>
+                                </Paper>
+                            </InfoWindow>
+                        )
                     }
                 </GoogleMap>
             </LoadScript>

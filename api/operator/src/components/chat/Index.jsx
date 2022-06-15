@@ -10,7 +10,7 @@ import Conversation from './Conversation';
 import { newMessage } from '../../redux/slices/chat/chatapi';
 import { setUserSocket } from '../../redux/slices/socket/socket';
 
-const UserSocket = io("http://localhost:5000/userOperator");
+const UserSocket = io(process.env.REACT_APP_SERVER + "/userOperator");
 
 const Index = () => {
 

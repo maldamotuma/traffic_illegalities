@@ -28,8 +28,16 @@ const UserSchema = new mongoose.Schema({
         photos: [String]
     }],
     driver_assignment_verification: [{
-        type: mongoose.Types.ObjectId,
-        ref: "Car.driver_assignment",
+        // type: mongoose.Types.ObjectId,
+        // ref: "Car.driver_assignment",
+        car: {
+            type: mongoose.Types.ObjectId,
+            ref: "Car",
+        },
+        ass_id: mongoose.Types.ObjectId,
+        verified_at: Date,
+        rejected_at: Date,
+        requested_on: Date
     }],
     driver_assignment: [{
         car: {
@@ -43,6 +51,10 @@ const UserSchema = new mongoose.Schema({
         verified_at: Date,
         rejected_at: Date
     }],
+    driving: {
+        type: mongoose.Types.ObjectId,
+        ref: "Car"
+    },
     password: String,
     status: {
         operator: {

@@ -16,6 +16,7 @@ function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits,
   const dispatch = useDispatch();
   const { add_operator } = bindActionCreators(operatorActionBinders, dispatch);
   const operatorRegion = useSelector(state => state.newOperator.region);
+  const search_location = useSelector(state => state.search_location);
   const carLocation = useSelector(state => state.track.car);
 
   const { add_new_speed_coordinates } = bindActionCreators(speedActionCreators, dispatch);
@@ -72,13 +73,13 @@ function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits,
     <>
       <LoadScript
         libraries={["drawing"]}
-        // googleMapsApiKey="AIzaSyBDuRouCPdddT5wPiPeXQ2W58uzpJm7yFg"
-        googleMapsApiKey="AIzaSyBSzJu3Sc0vMvpjUe83sBEqpG7PzdLh1sI"
+        googleMapsApiKey="AIzaSyBDuRouCPdddT5wPiPeXQ2W58uzpJm7yFg"
+        // googleMapsApiKey="AIzaSyBSzJu3Sc0vMvpjUe83sBEqpG7PzdLh1sI"
       >
         <GoogleMap
           mapContainerStyle={containerStyle}
           ref={mapref}
-          center={center}
+          center={search_location ?? center}
           zoom={15}
           // onZoomChanged={() => console.log(mapref.getZoom())}
           options={{ mapTypeId: 'hybrid' }}
@@ -88,6 +89,10 @@ function Mapfitun({ filtersView, track, setregion, region, polygon, speedlimits,
         >
           { /* Child components, such as markers, info windows, etc. */}
           {/* <Marker position={{lat: 8.564339, lng: 39.289629}}/> */}
+          {
+            search_location &&
+            <Marker position={search_location} />
+          }
           {
             track ? <Marker position={{ lat: parseFloat(carLocation.lat), lng: parseFloat(carLocation.long) }} icon={"/smallcar.png"} /> : <></>
           }
