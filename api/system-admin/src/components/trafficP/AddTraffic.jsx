@@ -36,7 +36,7 @@ export default function AddTrafficP() {
         return Object.keys(tmpErrors).length;
     }
     const validFinal = () => {
-        alert("final malda");
+        submit_new_traffic_police(setscreen);
     }
 
     if (screen === "loading") return <Loading />;

@@ -7,7 +7,7 @@ import * as socketActionCreators from '../../redux/actions/socketActions';
 import * as messageActions from '../../redux/actions/messagesAction';
 import { bindActionCreators } from 'redux';
 
-const socket = io("http://localhost:5000");
+const socket = io(process.env.REACT_APP_SERVER);
 
 const Index = () => {
 

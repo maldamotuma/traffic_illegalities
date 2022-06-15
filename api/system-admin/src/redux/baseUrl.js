@@ -1,2 +1,2 @@
-export const url = 'http://localhost:5000/sa';
+export const url = process.env.REACT_APP_SERVER + '/sa';
 export default url;

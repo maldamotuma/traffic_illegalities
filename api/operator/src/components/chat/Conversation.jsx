@@ -13,7 +13,7 @@ import * as userttrafficactionbinders from '../../redux/slices/assignment/usertr
 import { AdminPanelSettings, FiberSmartRecord, MoreVertRounded } from "@mui/icons-material";
 import { removeMessageFromView } from "../../redux/slices/chat/chatSlice";
 import ActionMenu from "./Actionmenu";
-import { newMessage } from "../../redux/slices/chat/chatapi";
+import { cleIssue, newMessage } from "../../redux/slices/chat/chatapi";
 // import Online from "./Online";
 import Moment from 'react-moment';
 
@@ -33,6 +33,10 @@ const TopChat = ({ conversation }) => {
     const handleUnselect = (e) => {
         e.preventDefault();
         join_user_traffic({user: null});
+    }
+
+    const handleIssueClose = () => {
+        dispatch(cleIssue(conversation._id));
     }
     return (
         <CardHeader
@@ -93,7 +97,7 @@ const TopChat = ({ conversation }) => {
                 // >
                 //     <CloseRounded sx={{ color: '#aaffff' }} />
                 //     <MoreVertRounded sx={{ color: '#aaffff' }} />
-                <ActionMenu removeMessageFromView={handleRemoveFromScreen} />
+                <ActionMenu removeMessageFromView={handleRemoveFromScreen} cleIssue={handleIssueClose}/>
                 //  </IconButton>
             }
             sx={{

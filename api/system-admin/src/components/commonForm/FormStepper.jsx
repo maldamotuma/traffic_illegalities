@@ -22,12 +22,12 @@ import Success from '../common/Success';
 const theme = createTheme();
 
 export default function FormStepper(props) {
-    const { title, steps, components, large, submitAction, validateForm, validFinal } = props;
+    const { title, steps, components, large, submitAction, validateForm, validFinal, not_validate_final } = props;
     const [activeStep, setActiveStep] = React.useState(0);
     const [screen, setscreen] = React.useState("form");
 
     const dispatch = useDispatch();
-    const { submit_operator } = bindActionCreators( operatorActionBinders, dispatch);
+    const { submit_operator } = bindActionCreators(operatorActionBinders, dispatch);
 
     const handleNext = () => {
         if (validateForm() === 0) {
@@ -40,22 +40,26 @@ export default function FormStepper(props) {
     };
 
     const handleSubmit = e => {
-        if (validFinal()) {
+        if (not_validate_final) {
             setscreen("loading");
-            submit_operator(setscreen);
+            // submit_operator(setscreen);
+            submitAction(setscreen);
+        } else if (validFinal()) {
+            setscreen("loading");
+            // submit_operator(setscreen);
             submitAction(setscreen);
         }
     }
-    if(screen === "loading") return <Loading />;
+    if (screen === "loading") return <Loading />;
     else if (screen === "success") return <Success />;
     return (
-        <ThemeProvider theme={theme} sx={{transitionDuration: "0.3s"}}>
+        <ThemeProvider theme={theme} sx={{ transitionDuration: "0.3s" }}>
             <CssBaseline />
             <Container maxWidth={activeStep === 2 || large ? "lg" : "sm"} sx={{ py: { xs: 2, md: 5 }, transitionDuration: "0.3s" }}>
                 <Card>
                     <Paper variant="" sx={{ p: { xs: 2, md: 3 } }}>
                         <Typography component="h1" variant="h4" align="center">
-                            { title }
+                            {title}
                         </Typography>
                         <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}
                         // alternativeLabel
@@ -89,7 +93,7 @@ export default function FormStepper(props) {
 
                                         <Button
                                             variant="contained"
-                                            onClick={ activeStep === steps.length - 1 ? handleSubmit : handleNext}
+                                            onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
                                             sx={{ mt: 3, ml: 1 }}
                                         >
                                             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}

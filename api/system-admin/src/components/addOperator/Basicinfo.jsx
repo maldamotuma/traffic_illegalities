@@ -12,8 +12,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as operatorActionBinders from '../../redux/actions/operatoractions';
 import {
-  Button
+  Button,
+  Collapse
 } from "@mui/material";
+
+import {
+  Close
+} from "@mui/icons-material";
 
 const Input = styled('input')({
   display: 'none',
@@ -26,6 +31,7 @@ export default function Basicinfo(props) {
   const operatorInfo = useSelector(state => state.newOperator.newOperator);
   const subRef = React.useRef();
   const [errors, seterrors] = React.useState({});
+  const [ppr, setppr] = React.useState(false);
   React.useEffect(() => {
     sbmtBtn(subRef);
   }, []);
@@ -49,9 +55,12 @@ export default function Basicinfo(props) {
     for (const rule in rules) {
       if (!isValid(rules[rule], inputdatas[rule])) tmperrors[rule] = messages[rule];
     }
-    console.log(tmperrors);
     if (Object.keys(tmperrors).length === 0) {
-      setpass(true);
+      if (operatorInfo?.profilePicture) {
+        setpass(true);
+      } else {
+        setppr(true);
+      }
     } else {
       seterrors({ ...tmperrors });
     }
@@ -180,8 +189,14 @@ export default function Basicinfo(props) {
               anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
               badgeContent={
                 <label htmlFor="icon-button-file">
-                  <Input accept="image/*" id="icon-button-file" type="file" onChange={e => add_operator({ profilePicture: e.target.files[0] })} />
-                  <IconButton color="secondary" aria-label="upload picture" component="span">
+                  <Input
+                    accept="image/*"
+                    id="icon-button-file"
+                    type="file"
+                    onChange={e => add_operator({ profilePicture: e.target.files[0] })}
+                  />
+                  <IconButton
+                    color="secondary" aria-label="upload picture" component="span">
                     <AddAPhotoIcon sx={{ bgcolor: '#fff', borderRadius: 1 }} />
                   </IconButton>
                 </label>
@@ -193,6 +208,23 @@ export default function Basicinfo(props) {
             <Alert severity="info">
               Click to choose a profile picture
             </Alert>
+          </Grid>
+          <Grid item xs={10}>
+            <Collapse in={ppr}>
+              <Alert
+                severity="warning"
+                action={
+                  <IconButton
+                    size={"small"}
+                    onClick={() => setppr(false)}
+                  >
+                    <Close />
+                  </IconButton>
+                }
+              >
+                Profile picture is required, <Typography fontWeight={"bold"}>Please Add Profile Picture</Typography>
+              </Alert>
+            </Collapse>
           </Grid>
         </Grid>
         <Button ref={subRef} type={"submit"} hidden>Malda</Button>

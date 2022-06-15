@@ -18,3 +18,15 @@ export const newMessage = createAsyncThunk(
         }
     }
 );
+
+export const cleIssue = createAsyncThunk(
+    'conv/close',
+    async(conv_id) => {
+        const res = await axios.post(`/close-conversation/${conv_id}`);
+        if (res.data.success === 1) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+);

@@ -31,7 +31,11 @@ const RecordSchema = new mongoose.Schema({
     }],
     arrested: [
         { arrest_type: String, measurement: String }
-    ]
+    ],
+    closed: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 

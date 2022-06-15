@@ -19,13 +19,13 @@ const CarSchema = new mongoose.Schema({
     },
     owner: {
         type: mongoose.Types.ObjectId,
-        ref: 'Driverowner'
+        ref: 'User'
     },
     photos: [String],
     illegalDriver: Boolean,
     driver: {
         type: mongoose.Types.ObjectId,
-        ref: 'Driverowner'
+        ref: 'User'
     },
     status: {
         updatedBy: {

@@ -29,7 +29,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     },
 }));
 
-export default function Options() {
+export default function Options({setmap_option}) {
     const [formats, setFormats] = React.useState(() => ['italic']);
 
     const handleFormat = (event, newFormats) => {
@@ -63,7 +63,11 @@ export default function Options() {
                     <ToggleButton value="sss" aria-label="right aligned">
                         <BorderAllIcon />
                     </ToggleButton>
-                    <ToggleButton value="left" aria-label="left aligned">
+                    <ToggleButton
+                    value="left"
+                    aria-label="left aligned"
+                    onClick={() => setmap_option(prev => ({...prev, traffic_police: !prev.traffic_police}))}
+                    >
                         <TrafficIcon />
                     </ToggleButton>
                     <ToggleButton value="center" aria-label="centered">
